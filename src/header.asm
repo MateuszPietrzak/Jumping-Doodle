@@ -105,7 +105,6 @@ UpdateKeys:
     or a, $F0
     swap a
     xor a, b
-    ld b, a
     
 
     ld [wKeysPressed], a
@@ -131,7 +130,7 @@ PollKeys:
 
 SECTION "graphics", ROM0
 graphicTiles:
-    incbin "src/res/PlayerSprite.2bpp"
+    incbin "assets/PlayerSprite.2bpp"
 .end:
 
 SECTION "variables", wram0
