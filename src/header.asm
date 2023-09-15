@@ -1,5 +1,5 @@
 INCLUDE "include/hardware.inc/hardware.inc"
-INCLUDE "utility.asm"
+INCLUDE "include/utility.asm"
 
 SECTION "entry", ROM0[$100]
   jp EntryPoint 
