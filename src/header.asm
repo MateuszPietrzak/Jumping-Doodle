@@ -20,6 +20,7 @@ EntryPoint:
 
     call WaitForVBlank
 
+    ;Disable LCD before writing to VRAM
     xor a
     ld [rLCDC], a
 
@@ -38,13 +39,14 @@ EntryPoint:
     ld [hl+], a         ; TILE ID _OAMRAM + 2
     ld [hl+], a         ; FLAGS   _OAMRAM + 3
 
-
     ld a, LCDCF_ON | LCDCF_OBJON
     ld [rLCDC], a
 
+    ; Load palette for sprites
     ld a, %11100100
     ld [rOBP0], a
 
+    ; Reset frame counter
     xor a
     ld [wFrameCounter], a
 
@@ -58,23 +60,17 @@ MainLoop:
     cp a,15
     jp nz, MainLoop
 
+    ; Reset frame counter
     xor a
     ld [wFrameCounter], a
 
+    ; Update player inputs
     call UpdateKeys
 
-    ; Rotate sprite
-    ld a, [_OAMRAM + 2]
-    inc a
-    cp a, 4
-    jp c, skipRotationModulo
-    ld a, 0
-skipRotationModulo:
-    ld [_OAMRAM + 2], a
 
-    ; Check input
+    ; Test movement
     ld a, [wKeysPressed]
-    and $10
+    and PADF_RIGHT
     jp z, MainLoop
     ld a, [_OAMRAM + 1]
     inc a
