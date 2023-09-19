@@ -1,0 +1,3 @@
+rgbasm -p 0xFF -isrc/ -isrc/include/ -Wall -Wextra -h -M dep/window.mk -MG -MP -MQ obj/window.o -MQ dep/window.mk -o obj/window.o src/window.asm
+rgbasm -p 0xFF -isrc/ -isrc/include/ -Wall -Wextra -h -M dep/utility.mk -MG -MP -MQ obj/utility.o -MQ dep/utility.mk -o obj/utility.o src/utility.asm
+rgbasm -p 0xFF -isrc/ -isrc/include/ -Wall -Wextra -h -M dep/graphics.mk -MG -MP -MQ obj/graphics.o -MQ dep/graphics.mk -o obj/graphics.o src/graphics.asm

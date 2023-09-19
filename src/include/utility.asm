@@ -1,3 +1,5 @@
+INCLUDE "hardware.inc/hardware.inc"
+
 SECTION "Utility", ROM0
 
 ; Memcpy
@@ -89,12 +91,7 @@ PollKeys:
     ldh a, [rP1]
     ret
 
-SECTION "Graphics", ROM0
-graphicTiles:
-    incbin "assets/PlayerSprite.2bpp"
-.end:
-
-SECTION "variables", wram0
+SECTION "variables", WRAM0
 
 wFrameCounter: db
 wKeysPressed: db

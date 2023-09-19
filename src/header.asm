@@ -1,5 +1,7 @@
 INCLUDE "include/hardware.inc/hardware.inc"
+INCLUDE "include/graphics.asm"
 INCLUDE "include/utility.asm"
+INCLUDE "include/window.asm"
 
 SECTION "entry", ROM0[$100]
   jp EntryPoint 
@@ -17,6 +19,9 @@ EntryPoint:
     ld bc, graphicTiles.end - graphicTiles
     call Memcpy
 
+    call initializeWindow
+
+    
     call ClearOam
     ld hl, _OAMRAM
     ld a, 40+16
@@ -26,9 +31,12 @@ EntryPoint:
     xor a
     ld [hl+], a         ; TILE ID _OAMRAM + 2
     ld [hl+], a         ; FLAGS   _OAMRAM + 3
-
-    ld a, LCDCF_ON | LCDCF_OBJON
+    
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
+
+    call switchWindow    
 
     ; Load palette for sprites
     ld a, %11100100
