@@ -6,18 +6,6 @@ SECTION "entry", ROM0[$100]
   ds $150-@, 0 ; Space for the header
 
 EntryPoint:
-    ; turn on volume
-	ld a, %00000001
-	ld [rNR52], a
-
-	; turn on all mixing
-	ld a, %11111111
-	ld [rNR51], a
-
-	; turn on everything
-	ld a, %11111111
-	ld [rNR50], a
-
     call WaitForVBlank
 
     xor a
