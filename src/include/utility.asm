@@ -91,7 +91,7 @@ PollKeys:
     ldh a, [rP1]
     ret
 
-SECTION "variables", WRAM0
+SECTION "VariablesMovement", WRAM0
 
 wFrameCounter: db
 wKeysPressed: db

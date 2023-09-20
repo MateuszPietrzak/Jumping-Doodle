@@ -46,8 +46,9 @@ switchWindow:
 
     ret
 
-
 writeTextToWindow:
+
+    ret
 
 SECTION "WindowTilemap", ROM0
 
