@@ -9,16 +9,6 @@ InitPlayer::
     ld bc, graphicTiles.end - graphicTiles
     call Memcpy
 
-    ; OAMRAM handling
-    ld hl, _OAMRAM
-    ld a, 60+16
-    ld [hl+], a         ; Y       _OAMRAM + 0
-    ld a, 16+8
-    ld [hl+], a         ; X       _OAMRAM + 1
-    xor a
-    ld [hl+], a         ; TILE ID _OAMRAM + 2
-    ld [hl+], a         ; FLAGS   _OAMRAM + 3
-
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $01
@@ -27,9 +17,9 @@ InitPlayer::
     ld [wPlayerX + 1], a
 
     ; Position Y
-    ld a, $01
+    ld a, $08
     ld [wPlayerY], a
-    ld a, $C0
+    ld a, $00
     ld [wPlayerY + 1], a
     
     ; Init velocity
@@ -42,6 +32,33 @@ InitPlayer::
 
 HandlePlayer::
 
+    ; Fall
+    ld a, [wPlayerVelocityY]
+    and a, $7F ; Strip off the sign bit
+    cp a, $20
+    jp nc, .skipAcceleratingDown
+
+    ld a, [wPlayerVelocityY]
+    and a, $80 ; Get the sign bit
+    jp z, .incAccelerate
+
+    ld a, [wPlayerVelocityY]
+    and a, $7F ; Strip off the sign bit
+    dec a
+    jp z, .skipAcceleratingDown ; Don't put the sign bit back on if a = 0    
+    or a, $80
+    jp .skipAcceleratingDown
+
+.incAccelerate:
+    ld a, [wPlayerVelocityY]
+    inc a
+.skipAcceleratingDown:
+    ld [wPlayerVelocityY], a
+
+    ; Default to not moving
+    ld a, $00 
+    ld [wPlayerVelocityX], a
+
     ; Check for d-pad right
     ld a, [wKeysPressed]
     ld b, PADF_RIGHT
@@ -49,19 +66,26 @@ HandlePlayer::
 
     jp z, .pressedRightEnd
 .pressedRight:
-   ld a, $08 
+   ld a, $10
    ld [wPlayerVelocityX], a
+    ; Since going right, flip the sprite right 
+    xor a
+    ld [_OAMRAM + 3], a
 .pressedRightEnd:
 
-    ; Check for d-pad right
+    ; Check for d-pad left
     ld a, [wKeysPressed]
     ld b, PADF_LEFT
     and a, b
 
     jp z, .pressedLeftEnd
 .pressedLeft:
-   ld a, $88 
+   ld a, $90 
    ld [wPlayerVelocityX], a
+    ; Since going left, flip the sprite left
+    ld a, $20
+    ld [_OAMRAM + 3], a
+
 .pressedLeftEnd:
 
     ; Check for B
@@ -71,7 +95,7 @@ HandlePlayer::
 
     jp z, .pressedBeeEnd
 .pressedBee:
-   ld a, $88 
+   ld a, $90 
    ld [wPlayerVelocityY], a
 .pressedBeeEnd:
 
@@ -98,10 +122,6 @@ HandlePlayer::
     xor a, d
     ld d, a
 
-    ; Since going right, flip the sprite right 
-    xor a
-    ld [_OAMRAM + 3], a
-
 .incPlayerX:
     ld a, 0
     cp a, d
@@ -119,10 +139,6 @@ HandlePlayer::
     ; Decrement PlayerX
     xor a, d
     ld d, a
-
-    ; Since going left, flip the sprite left
-    ld a, $20
-    ld [_OAMRAM + 3], a
 
 .decPlayerX:
     ld a, 0
@@ -144,7 +160,7 @@ HandlePlayer::
     ld [wArithmeticVariable], a
     ld a, c
     ld [wArithmeticVariable + 1], a
-    ld a, 3
+    ld a, 4
     ld [wArithmeticModifier], a
 
     ; Get pixel on-screen position from PlayerX
@@ -212,7 +228,7 @@ HandlePlayer::
     ld [wArithmeticVariable], a
     ld a, c
     ld [wArithmeticVariable + 1], a
-    ld a, 3
+    ld a, 4
     ld [wArithmeticModifier], a
 
     ; Get pixel on-screen position from PlayerY
