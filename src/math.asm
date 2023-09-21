@@ -1,6 +1,6 @@
 SECTION "Arithmetic", ROM0
 
-; DOES NOT SAVE wArythmeticVariable
+; ALSO DIVIDES wArythmeticVariable by wArithmeticModifier
 ; function calculating modulo (SHOULD be working)
 ; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the divisor goes into [wArithmeticModifier]

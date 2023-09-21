@@ -23,7 +23,6 @@ EntryPoint:
 
     call SwitchWindow
 
-
     ; Load palette for sprites
     ld a, %11100100
     ld [rOBP0], a
@@ -35,22 +34,21 @@ EntryPoint:
 MainLoop:
     call WaitForVBlank
 
+    ld bc, 10
+    ld hl, $9c00
+    ld de, WindowTilemapCopy
+    call Memcpy
+
+    ld de, $0008
+    ld hl, 42069
+    call WriteNumberToWindow
+
     ; Update player inputs
     call UpdateKeys
 
-    ; ld de, $9C08
-    ; ld hl, 42069
-    ; call WriteNumberToWindow
-    ; ld de, $9C28
-    ; ld hl, 42069
-    ; call WriteNumberToWindow
-    ; ld de, $9C48
-    ; ld hl, 42069
-    ; call WriteNumberToWindow
-    ; ld de, $9C68
-    ; ld hl, 42069
-    ; call WriteNumberToWindow
+    call WaitForVBlank
 
     call HandlePlayer
+
 
     jp MainLoop

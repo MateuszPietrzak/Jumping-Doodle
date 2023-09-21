@@ -25,9 +25,15 @@ InitializeWindow::
     call Memcpy
 
     ; do tilemap for window
-    ld de, windowInitialState
+    ld de, WindowInitialState
     ld hl, $9C00
-    ld bc, windowInitialState.end - windowInitialState
+    ld bc, WindowInitialState.end - WindowInitialState
+    call Memcpy
+
+    ; do tilemap for window
+    ld de, WindowInitialState
+    ld hl, WindowTilemapCopy
+    ld bc, WindowInitialState.end - WindowInitialState
     call Memcpy
 
     ; do tilemap for background
@@ -84,7 +90,7 @@ WriteNumberToWindow::
     ld [wArithmeticModifier], a
 
     ; loop until the number becomes 0
-WhileNumberIsNotZero:
+.whileNumberIsNotZero:
     push de
     push hl
 
@@ -99,45 +105,45 @@ WhileNumberIsNotZero:
 
     ; add 2 to a, because font tiles start from id 2
     add a, 2
-    ; load tile id into tilemap
-    ld [de], a
+    ; load tile id into tilemap copy
+    ld hl, WindowTilemapCopy
+    add hl, de
+    ld [hl], a
 
     ; move one tile back
     dec de
 
-    ; copy from parameters to the ram
-    ld a, h;
-    ld [wArithmeticVariable], a
-    ld a, l
-    ld [wArithmeticVariable+1], a
-
-    push de
-    push hl
-
-    ; get rid of last digit
-    call Divide
-
-    pop hl
-    pop de
-
     ; move result to input and save copy in hl (copy needed because Modulo changes input)
-    ld a, [wArithmeticResult]
-    ld [wArithmeticVariable], a
+    ld a, [wArithmeticVariable]
     ld h, a
-    ld a, [wArithmeticResult+1]
-    ld [wArithmeticVariable+1], a
+    ld a, [wArithmeticVariable+1]
     ld l, a
 
     ; check if loop should end
     ld a, l
     or a, h
-    jp nz, WhileNumberIsNotZero
+    jp nz, .whileNumberIsNotZero
 
     ret
 
+UpdateWindow::
+    ld hl, $9c00
+    ld de, WindowTilemapCopy
+    ld bc, WindowTilemapCopy - WindowTilemapCopy.end
+    call Memcpy
+
+    ret
+
+
+SECTION "WindowTilemapCopy", WRAM0
+
+WindowTilemapCopy:: 
+    ds 32*32
+.end:
+
 SECTION "WindowTilemap", ROM0
 
-windowInitialState:
+WindowInitialState:
 REPT 32
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 ENDR
