@@ -1,31 +1,31 @@
 SECTION "Arithmetic", ROM0
 
 ; function calculating modulo (SHOULD be working)
-; the divident goes into [arithmeticVariable] (higher bits go first, max 2 bytes)
-; the divisor goes into [arithmeticModifier]
-; the quotient will be in [arithmeticResult] (higher bits go first, max 2 bytes)
-modulo:
+; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
+; the divisor goes into [wArithmeticModifier]
+; the quotient will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
+modulo::
 
     call divide
 
     ; save variable for later
-    ld a, [arithmeticVariable]
+    ld a, [wArithmeticVariable]
     ld b, a
-    ld a, [arithmeticVariable+1]
+    ld a, [wArithmeticVariable+1]
     ld c, a
 
     ; move division result as a new variable
-    ld a, [arithmeticResult]
-    ld [arithmeticVariable], a
-    ld a, [arithmeticResult+1]
-    ld [arithmeticVariable+1], a
+    ld a, [wArithmeticResult]
+    ld [wArithmeticVariable], a
+    ld a, [wArithmeticResult+1]
+    ld [wArithmeticVariable+1], a
 
     call multiply
 
     ; load multiplication result
-    ld a, [arithmeticResult]
+    ld a, [wArithmeticResult]
     ld h, a
-    ld a, [arithmeticResult+1]
+    ld a, [wArithmeticResult+1]
     ld l, a
 
     ; sub bc, hl
@@ -43,23 +43,23 @@ modulo:
     ld b, a
 
     ld a, b
-    ld [arithmeticResult], a
+    ld [wArithmeticResult], a
     ld a, c
-    ld [arithmeticResult+1], a
+    ld [wArithmeticResult+1], a
 
     ret
 
 ; function calculating multily (SHOULD be working)
-; the multiplicand goes into [arithmeticVariable] (higher bits go first, max 2 bytes)
-; the multiplier goes into [arithmeticModifier]
-; the product will be in [arithmeticResult] (higher bits go first, max 2 bytes)
-multiply:
+; the multiplicand goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
+; the multiplier goes into [wArithmeticModifier]
+; the product will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
+multiply::
     ld hl, 0
-    ld a, [arithmeticVariable]
+    ld a, [wArithmeticVariable]
     ld d, a
-    ld a, [arithmeticVariable+1]
+    ld a, [wArithmeticVariable+1]
     ld e, a
-    ld a, [arithmeticModifier]
+    ld a, [wArithmeticModifier]
 
 whileMultiplier:
     cp a, 0
@@ -70,22 +70,22 @@ whileMultiplier:
     jp whileMultiplier
 .end
     ld a, h
-    ld [arithmeticResult], a
+    ld [wArithmeticResult], a
     ld a, l
-    ld [arithmeticResult+1], a
+    ld [wArithmeticResult+1], a
 
     ret
     
 ; function divides numbers (SHOULD work for any numbers)
-; the divident goes into [arithmeticVariable] (higher bits go first, max 2 bytes)
-; the divisor goes into [arithmeticModifier]
-; the quotient will be in [arithmeticResult] (higher bits go first, max 2 bytes)
+; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
+; the divisor goes into [wArithmeticModifier]
+; the quotient will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
 ; to change limit of bytes for Variable change number of reserved bytes for Variable and Result, 
 ; change number of repetitions near the end of divide function and clear more result positions
-divide:
+divide::
     ld a, 0
-    ld [arithmeticResult], a
-    ld [arithmeticResult+1], a
+    ld [wArithmeticResult], a
+    ld [wArithmeticResult+1], a
     ; e counts number of passes
     ld e, 0
     ; c is a counter for the amount we currently have
@@ -105,7 +105,7 @@ whileBits:
     jp z, whileBits.end
 
     ; check if bit at position b is on
-    ld hl, arithmeticVariable
+    ld hl, wArithmeticVariable
     add hl, de
     ld a, [hl]
     and b
@@ -120,20 +120,20 @@ whileBits:
 
     ; check if c is large enough
     ; if divisor <= c
-    ld a, [arithmeticModifier]
+    ld a, [wArithmeticModifier]
     ; jump if a > c
     sub a, 1
     cp a, c
     jp nc, whileBits.notBigger
 
-    ld hl, arithmeticResult
+    ld hl, wArithmeticResult
     add hl, de
     ld a, [hl]
     add a, b
     ld [hl], a
     
     ld a, c
-    ld hl, arithmeticModifier
+    ld hl, wArithmeticModifier
     sub a, [hl]
     ld c, a
     
@@ -157,6 +157,6 @@ whileBits:
 
 SECTION "ArithmeticVariables", WRAM0
 
-    arithmeticVariable: ds 2
-    arithmeticResult: ds 2
-    arithmeticModifier: ds 1
+    wArithmeticVariable:: ds 2
+    wArithmeticResult:: ds 2
+    wArithmeticModifier:: ds 1

@@ -7,7 +7,7 @@ SECTION "Utility", ROM0
 ; @param de Beginning of data in ROM
 ; @param hl Deginning of target space in RAM
 ; @param bc data size
-Memcpy:
+Memcpy::
     ld a, [de]
     ld [hl+], a
     inc de
@@ -19,7 +19,7 @@ Memcpy:
 
 ; WaitPorVBlank
 ; Waits until VBlank (duh)
-WaitForVBlank:
+WaitForVBlank::
     ld a, [rLY]
     cp 144
     jp c, WaitForVBlank
@@ -28,7 +28,7 @@ WaitForVBlank:
 
 ; ClearOam
 ; Resets all OAM values to 0
-ClearOam:
+ClearOam::
     xor a
     ld b, $A0
     ld hl, _OAMRAM
@@ -50,7 +50,7 @@ ClearOam:
 ; %001000000 ($40) - UP key
 ; %010000000 ($80) - DOWN key
 ; use PADF_{key} define from hardware.inc
-UpdateKeys:
+UpdateKeys::
     ld a, P1F_GET_BTN
     ldh [rP1], a
 
@@ -77,7 +77,7 @@ UpdateKeys:
 
 ; PollKeys
 ; Polls keys enough times
-PollKeys:
+PollKeys::
     ldh a, [rP1]
     ldh a, [rP1]
     ldh a, [rP1]
@@ -93,5 +93,5 @@ PollKeys:
 
 SECTION "VariablesMovement", WRAM0
 
-wFrameCounter: db
-wKeysPressed: db
+wFrameCounter:: db
+wKeysPressed:: db

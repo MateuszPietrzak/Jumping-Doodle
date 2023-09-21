@@ -1,8 +1,7 @@
 INCLUDE "include/hardware.inc/hardware.inc"
-INCLUDE "include/graphics.asm"
-INCLUDE "include/utility.asm"
-INCLUDE "include/window.asm"
-INCLUDE "include/math.asm"
+; INCLUDE "include/graphics.asm"
+; INCLUDE "include/utility.asm"
+; INCLUDE "include/window.asm"
 
 SECTION "entry", ROM0[$100]
   jp EntryPoint 

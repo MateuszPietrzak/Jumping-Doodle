@@ -1,8 +1,8 @@
 SECTION "Tiles", ROM0
-graphicTiles:
+graphicTiles::
     incbin "assets/PlayerSprite.2bpp"
-.end:
+.end::
 
-fontTiles:
+fontTiles::
     incbin "assets/font.2bpp"
-.end:
+.end::
