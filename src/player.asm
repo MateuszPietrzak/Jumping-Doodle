@@ -33,9 +33,9 @@ InitPlayer::
     ld [wPlayerY + 1], a
     
     ; Init velocity
-    ld a, 8
+    ld a, $88
     ld [wPlayerVelocityX], a
-    ld a, 2
+    ld a, $00
     ld [wPlayerVelocityY], a
 
     ret
@@ -51,9 +51,23 @@ HandlePlayer::
     ld a, [wPlayerX + 1] 
     ld c, a ; Low byte
 
+    ; If the highest bit of the wPlayerVelocityX is 1, the number is negative
+
     ; Increment PlayerX
     ld a, [wPlayerVelocityX]
     ld d, a
+
+    ; Check the highest bit
+    ld a, $80
+    and a, d
+    jp nz, .decPlayerXstart
+    xor a, d
+    ld d, a
+
+    ; Since going right, flip the sprite right 
+    xor a
+    ld [_OAMRAM + 3], a
+
 .incPlayerX:
     ld a, 0
     cp a, d
@@ -63,6 +77,28 @@ HandlePlayer::
     dec d
     jp .incPlayerX
 .incPlayerXend:
+
+    jp .decPlayerXend ; Skip decrementing
+
+.decPlayerXstart:
+
+    ; Decrement PlayerX
+    xor a, d
+    ld d, a
+
+    ; Since going left, flip the sprite left
+    ld a, $20
+    ld [_OAMRAM + 3], a
+
+.decPlayerX:
+    ld a, 0
+    cp a, d
+    jp z, .incPlayerXend
+
+    dec bc ; Increment x position by 1/8 of a pixel
+    dec d
+    jp .decPlayerX
+.decPlayerXend:
 
     ld a, b
     ld [wPlayerX], a
@@ -92,9 +128,19 @@ HandlePlayer::
     ld a, [wPlayerY + 1] 
     ld c, a ; Low byte
 
+    ; If the highest bit of the wPlayerVelocityY is 1, the number is negative
+
     ; Increment PlayerY
     ld a, [wPlayerVelocityY]
     ld d, a
+
+    ; Check the highest bit
+    ld a, $80
+    and a, d
+    jp nz, .decPlayerYstart
+    xor a, d
+    ld d, a
+
 .incPlayerY:
     ld a, 0
     cp a, d
@@ -104,6 +150,23 @@ HandlePlayer::
     dec d
     jp .incPlayerY
 .incPlayerYend:
+
+    jp .decPlayerYend ; Skip decrementing
+
+.decPlayerYstart:
+
+    ; Decrement PlayerY
+    xor a, d
+    ld d, a
+.decPlayerY:
+    ld a, 0
+    cp a, d
+    jp z, .incPlayerYend
+
+    dec bc ; Increment y position by 1/8 of a pixel
+    dec d
+    jp .decPlayerY
+.decPlayerYend:
 
     ld a, b
     ld [wPlayerY], a
