@@ -35,32 +35,21 @@ EntryPoint:
 MainLoop:
     call WaitForVBlank
 
-    ld de, $9C08
-    ld hl, 42069
-    call WriteNumberToWindow
-    ld de, $9C28
-    ld hl, 42069
-    call WriteNumberToWindow
-    ld de, $9C48
-    ld hl, 42069
-    call WriteNumberToWindow
-    ld de, $9C68
-    ld hl, 42069
-    call WriteNumberToWindow
-
-    ; Frame counter
-    ld a, [wFrameCounter]
-    inc a
-    ld [wFrameCounter], a
-    cp a,15
-    jp nz, MainLoop
-
-    ; Reset frame counter
-    xor a
-    ld [wFrameCounter], a
-
     ; Update player inputs
     call UpdateKeys
+
+    ; ld de, $9C08
+    ; ld hl, 42069
+    ; call WriteNumberToWindow
+    ; ld de, $9C28
+    ; ld hl, 42069
+    ; call WriteNumberToWindow
+    ; ld de, $9C48
+    ; ld hl, 42069
+    ; call WriteNumberToWindow
+    ; ld de, $9C68
+    ; ld hl, 42069
+    ; call WriteNumberToWindow
 
     call HandlePlayer
 
