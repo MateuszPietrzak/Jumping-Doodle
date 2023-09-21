@@ -35,10 +35,12 @@ HandlePlayer::
     ; Test movement
     ld a, [wKeysPressed]
     and PADF_RIGHT
-    jp z, MainLoop
+    jp z, .return 
     ld a, [_OAMRAM + 1]
     inc a
     ld [_OAMRAM+1], a
+
+.return
 
     ret
 
