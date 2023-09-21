@@ -33,7 +33,7 @@ InitPlayer::
     ld [wPlayerY + 1], a
     
     ; Init velocity
-    ld a, $88
+    ld a, $00
     ld [wPlayerVelocityX], a
     ld a, $00
     ld [wPlayerVelocityY], a
@@ -41,6 +41,40 @@ InitPlayer::
     ret
 
 HandlePlayer::
+
+    ; Check for d-pad right
+    ld a, [wKeysPressed]
+    ld b, PADF_RIGHT
+    and a, b
+
+    jp z, .pressedRightEnd
+.pressedRight:
+   ld a, $08 
+   ld [wPlayerVelocityX], a
+.pressedRightEnd:
+
+    ; Check for d-pad right
+    ld a, [wKeysPressed]
+    ld b, PADF_LEFT
+    and a, b
+
+    jp z, .pressedLeftEnd
+.pressedLeft:
+   ld a, $88 
+   ld [wPlayerVelocityX], a
+.pressedLeftEnd:
+
+    ; Check for B
+    ld a, [wKeysPressed]
+    ld b, PADF_B
+    and a, b
+
+    jp z, .pressedBeeEnd
+.pressedBee:
+   ld a, $88 
+   ld [wPlayerVelocityY], a
+.pressedBeeEnd:
+
     ; Update position
 
     ; X COORDINATE
