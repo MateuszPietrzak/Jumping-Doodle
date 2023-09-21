@@ -16,7 +16,7 @@ EntryPoint:
     ld bc, graphicTiles.end - graphicTiles
     call Memcpy
 
-    call initializeWindow
+    call InitializeWindow
 
     
     call ClearOam
@@ -33,7 +33,7 @@ EntryPoint:
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
 
-    call switchWindow
+    call SwitchWindow
 
     ; Load palette for sprites
     ld a, %11100100

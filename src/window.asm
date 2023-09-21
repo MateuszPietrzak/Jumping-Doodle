@@ -5,7 +5,7 @@ SECTION "windowFunctions", ROM0
 
 ; function initializing window position
 ; it also turns window on
-initializeWindow::
+InitializeWindow::
     ; WX = 7
     ld a, 7
     ld [rWX], a
@@ -38,7 +38,7 @@ initializeWindow::
 
     ret
 
-switchWindow::
+SwitchWindow::
     ; turn on window displaying
     ld a, [rLCDC]       ; get current LCDC state
     or a, LCDCF_WINON   ; or it with LCD WINON
@@ -47,7 +47,7 @@ switchWindow::
     ret
 
 ; set 
-writeTextToWindow::
+WriteTextToWindow::
 
 
     ret
