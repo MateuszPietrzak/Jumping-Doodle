@@ -1,5 +1,6 @@
 SECTION "Arithmetic", ROM0
 
+; DOES NOT SAVE wArythmeticVariable
 ; function calculating modulo (SHOULD be working)
 ; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the divisor goes into [wArithmeticModifier]
@@ -49,6 +50,7 @@ Modulo::
 
     ret
 
+; saves wArythmeticVariable
 ; function calculating multily (SHOULD be working)
 ; the multiplicand goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the multiplier goes into [wArithmeticModifier]
@@ -76,6 +78,7 @@ WhileMultiplier:
 
     ret
     
+; saves wArythmeticVariable
 ; function divides numbers (SHOULD work for any numbers)
 ; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the divisor goes into [wArithmeticModifier]

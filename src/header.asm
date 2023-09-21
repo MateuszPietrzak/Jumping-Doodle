@@ -17,7 +17,6 @@ EntryPoint:
     call Memcpy
 
     call InitializeWindow
-
     
     call ClearOam
     ld hl, _OAMRAM
@@ -28,12 +27,13 @@ EntryPoint:
     xor a
     ld [hl+], a         ; TILE ID _OAMRAM + 2
     ld [hl+], a         ; FLAGS   _OAMRAM + 3
-    
+
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
 
     call SwitchWindow
+
 
     ; Load palette for sprites
     ld a, %11100100
@@ -45,6 +45,19 @@ EntryPoint:
 
 MainLoop:
     call WaitForVBlank
+
+    ld de, $9C08
+    ld hl, 42069
+    call WriteNumberToWindow
+    ld de, $9C28
+    ld hl, 42069
+    call WriteNumberToWindow
+    ld de, $9C48
+    ld hl, 42069
+    call WriteNumberToWindow
+    ld de, $9C68
+    ld hl, 42069
+    call WriteNumberToWindow
 
     ; Frame counter
     ld a, [wFrameCounter]
