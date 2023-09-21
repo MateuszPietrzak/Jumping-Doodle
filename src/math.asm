@@ -157,6 +157,6 @@ whileBits:
 
 SECTION "ArithmeticVariables", WRAM0
 
-    wArithmeticVariable:: ds 2
-    wArithmeticResult:: ds 2
-    wArithmeticModifier:: ds 1
+wArithmeticVariable:: ds 2
+wArithmeticResult:: ds 2
+wArithmeticModifier:: ds 1
