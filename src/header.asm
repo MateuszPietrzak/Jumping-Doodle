@@ -11,22 +11,11 @@ EntryPoint:
     xor a
     ld [rLCDC], a
 
-    ld de, graphicTiles
-    ld hl, _VRAM8000
-    ld bc, graphicTiles.end - graphicTiles
-    call Memcpy
 
     call InitializeWindow
     
     call ClearOam
-    ld hl, _OAMRAM
-    ld a, 40+16
-    ld [hl+], a         ; Y       _OAMRAM + 0
-    ld a, 16+8 
-    ld [hl+], a         ; X       _OAMRAM + 1
-    xor a
-    ld [hl+], a         ; TILE ID _OAMRAM + 2
-    ld [hl+], a         ; FLAGS   _OAMRAM + 3
+    call InitPlayer
 
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
@@ -73,13 +62,6 @@ MainLoop:
     ; Update player inputs
     call UpdateKeys
 
+    call HandlePlayer
 
-    ; Test movement
-    ld a, [wKeysPressed]
-    and PADF_RIGHT
-    jp z, MainLoop
-    ld a, [_OAMRAM + 1]
-    inc a
-    ld [_OAMRAM+1], a
-
-    jp MainLoop 
+    jp MainLoop
