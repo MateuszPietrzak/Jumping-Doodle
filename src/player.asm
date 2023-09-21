@@ -144,11 +144,11 @@ HandlePlayer::
     ld [wArithmeticVariable], a
     ld a, c
     ld [wArithmeticVariable + 1], a
-    ld a, 8
+    ld a, 3
     ld [wArithmeticModifier], a
 
     ; Get pixel on-screen position from PlayerX
-    call Divide
+    call BitShiftRight
 
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
@@ -212,11 +212,11 @@ HandlePlayer::
     ld [wArithmeticVariable], a
     ld a, c
     ld [wArithmeticVariable + 1], a
-    ld a, 8
+    ld a, 3
     ld [wArithmeticModifier], a
 
     ; Get pixel on-screen position from PlayerY
-    call Divide
+    call BitShiftRight
 
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]

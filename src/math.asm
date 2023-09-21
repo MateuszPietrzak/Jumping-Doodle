@@ -78,7 +78,7 @@ WhileMultiplier:
 
     ret
     
-; saves wArythmeticVariable
+; saves wArithmeticVariable
 ; function divides numbers (SHOULD work for any numbers)
 ; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the divisor goes into [wArithmeticModifier]
@@ -157,6 +157,50 @@ WhileBits:
     
     ret
 
+; saves wArithmeticVariable
+; function bitshifts right (divides by 2^n) numbers (16-bit)
+; the number goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
+; the number of shifts goes into [wArithmeticModifier]
+; the result will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
+BitShiftRight:: 
+    xor a
+    ld [wArithmeticResult], a
+    ld [wArithmeticResult + 1], a
+
+    ld a, [wArithmeticVariable]
+    ld b, a
+    ld a, [wArithmeticVariable + 1]
+    ld c, a
+
+    ld a, [wArithmeticModifier]
+    ld d, a
+
+.loop:
+    xor a
+    cp a, d
+    jp z, .loopEnd 
+
+    srl c       ; Divide lower bits by 2
+    srl b       ; Divide higher bits by 2, this time caring for the carry
+    jp nc, .skipAddingCarry
+
+    ld a, $80   ; Set the mask to %10000000, the carrying bit from the higher byte
+    or a, c     ; apply the bit 
+    ld c, a     ; move the new value to c
+
+.skipAddingCarry
+
+    dec d
+    jp .loop
+.loopEnd:
+
+    ld a, b
+    ld [wArithmeticResult], a
+    ld a, c
+    ld [wArithmeticResult + 1], a
+
+    ret
+    
 
 SECTION "ArithmeticVariables", WRAM0
 
