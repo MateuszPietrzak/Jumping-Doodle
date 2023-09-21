@@ -46,7 +46,9 @@ switchWindow::
 
     ret
 
+; set 
 writeTextToWindow::
+
 
     ret
 
