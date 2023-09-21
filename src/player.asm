@@ -20,13 +20,13 @@ InitPlayer::
     ld [hl+], a         ; FLAGS   _OAMRAM + 3
 
     ;; Init position (which is in form pixels * 16)
-    ld a, 40+16
-    ld [wArithmeticVariable + 1], a
-    ld a, 8
-    ld [wArithmeticModifier], a
-    call Multiply
-    ld hl, [wArithmeticResult]
-    ld ld [wPlayerX], hl
+    ; ld a, 40+16
+    ; ld [wArithmeticVariable + 1], a
+    ; ld a, 8
+    ; ld [wArithmeticModifier], a
+    ; call Multiply
+    ; ld hl, [wArithmeticResult]
+    ; ld ld [wPlayerX], hl
 
 
     ret
