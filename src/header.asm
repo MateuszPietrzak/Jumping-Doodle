@@ -1,7 +1,4 @@
 INCLUDE "include/hardware.inc/hardware.inc"
-; INCLUDE "include/graphics.asm"
-; INCLUDE "include/utility.asm"
-; INCLUDE "include/window.asm"
 
 SECTION "entry", ROM0[$100]
   jp EntryPoint 
@@ -15,7 +12,7 @@ EntryPoint:
     ld [rLCDC], a
 
 
-    call initializeWindow
+    call InitializeWindow
 
     
     call ClearOam
@@ -25,7 +22,7 @@ EntryPoint:
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
 
-    call switchWindow
+    call SwitchWindow
 
     ; Load palette for sprites
     ld a, %11100100

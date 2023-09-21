@@ -4,9 +4,9 @@ SECTION "Arithmetic", ROM0
 ; the divident goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the divisor goes into [wArithmeticModifier]
 ; the quotient will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
-modulo::
+Modulo::
 
-    call divide
+    call Divide
 
     ; save variable for later
     ld a, [wArithmeticVariable]
@@ -20,7 +20,7 @@ modulo::
     ld a, [wArithmeticResult+1]
     ld [wArithmeticVariable+1], a
 
-    call multiply
+    call Multiply
 
     ; load multiplication result
     ld a, [wArithmeticResult]
@@ -32,7 +32,7 @@ modulo::
     ld a, c
     sub a, l
     ld c, a
-    jp nc, modulo.skipCarry
+    jp nc, Modulo.skipCarry
 
     dec b
 
@@ -53,7 +53,7 @@ modulo::
 ; the multiplicand goes into [wArithmeticVariable] (higher bits go first, max 2 bytes)
 ; the multiplier goes into [wArithmeticModifier]
 ; the product will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
-multiply::
+Multiply::
     ld hl, 0
     ld a, [wArithmeticVariable]
     ld d, a
@@ -61,13 +61,13 @@ multiply::
     ld e, a
     ld a, [wArithmeticModifier]
 
-whileMultiplier:
+WhileMultiplier:
     cp a, 0
-    jp z, whileMultiplier.end
+    jp z, WhileMultiplier.end
 
     add hl, de
     dec a
-    jp whileMultiplier
+    jp WhileMultiplier
 .end
     ld a, h
     ld [wArithmeticResult], a
@@ -82,7 +82,7 @@ whileMultiplier:
 ; the quotient will be in [wArithmeticResult] (higher bits go first, max 2 bytes)
 ; to change limit of bytes for Variable change number of reserved bytes for Variable and Result, 
 ; change number of repetitions near the end of divide function and clear more result positions
-divide::
+Divide::
     ld a, 0
     ld [wArithmeticResult], a
     ld [wArithmeticResult+1], a
@@ -93,16 +93,16 @@ divide::
     ld c, 0
     ld d, 0
 
-divideAfterInit:
+DivideAfterInit:
     ; set b to highest bit
     ld b, %10000000
     
     ; iterate over bits 
-whileBits:
+WhileBits:
     ; check if b is equal to zero
     xor a
     cp a, b
-    jp z, whileBits.end
+    jp z, WhileBits.end
 
     ; check if bit at position b is on
     ld hl, wArithmeticVariable
@@ -111,7 +111,7 @@ whileBits:
     and b
 
     ; skip if it's not
-    jp z, whileBits.noBit
+    jp z, WhileBits.noBit
 
     ; add one to c if it is
     inc c
@@ -124,7 +124,7 @@ whileBits:
     ; jump if a > c
     sub a, 1
     cp a, c
-    jp nc, whileBits.notBigger
+    jp nc, WhileBits.notBigger
 
     ld hl, wArithmeticResult
     add hl, de
@@ -142,7 +142,7 @@ whileBits:
     srl b           ; divide b by 2
     sla c           ; multiply c by 2
 
-    jp whileBits
+    jp WhileBits
 .end:
     ; add one to e
     inc e
@@ -150,13 +150,13 @@ whileBits:
     ; if 2 > e
     ld a, 1
     cp a, e
-    jp nc, divideAfterInit
+    jp nc, DivideAfterInit
     
     ret
 
 
 SECTION "ArithmeticVariables", WRAM0
 
-    wArithmeticVariable:: ds 2
-    wArithmeticResult:: ds 2
-    wArithmeticModifier:: ds 1
+wArithmeticVariable:: ds 2
+wArithmeticResult:: ds 2
+wArithmeticModifier:: ds 1
