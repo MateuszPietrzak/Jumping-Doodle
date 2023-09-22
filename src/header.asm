@@ -26,6 +26,9 @@ EntryPoint:
     ; turn on window displaying
     call SwitchWindow
 
+    ; initialize sound
+    call InitMusic
+
     ; clear wNumberBCD 
     ; TODO maybe move to standalone function
     xor a
@@ -49,11 +52,14 @@ ENDR
     ld de, wWindowTilemapCopy + 32 + 1
     call WriteTextToWindow
 
+    ; TODO figure out why writting doesn't work
+    call PlayMusic
 ; -------------------------------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------------------------------
 ; Main loop
 MainLoop:
     call WaitForVBlank
+
 
     ld bc, 32
     ld hl, $9c20                ; load second line
@@ -61,6 +67,7 @@ MainLoop:
     call Memcpy
 
     call HandlePlayer
+
 
     ; --------------------------------------------------
     ; Write number and increment it

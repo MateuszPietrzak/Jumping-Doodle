@@ -98,12 +98,37 @@ PlayChannel_1:
     ld h, a
     ld a, [wPositionChannel_1 + 1]
     ld l, a
+
+    ld a, [hl+]
     
     ; check which command it is
 .case01: ; Play note
     cp a, $01
     jp nz, .caseA1
     ; Do stuff here
+    ld a, [hl+] ; load note length
+
+    ; TODO actually make it work
+    ; set note length
+    ld [wNoteFrameChannel_1], a
+
+    ld a, [hl+] ; load volume and sweep
+
+    ; set volume and sweep
+    ld [rNR12], a
+
+    ld a, [hl+] ; frequency lower
+    ld c, a
+    ld a, [hl+] ; frequency higher
+    ld d, a
+
+    ; set frequency
+    ld a, c
+    ld [rNR13], a
+    ld a, d
+    or a, %1000000 ; trigger channel
+    ld [rNR14], a
+
     jp .endSwitch
 .caseA1: ; Vibrato
     cp a, $A1
@@ -123,6 +148,13 @@ PlayChannel_1:
     ld [wOnChannel_1], a            ; turn off channel in music engine
     ld [rNR12], a                   ; set volume to 0
 
+    ; rewind the music to the start
+    ld hl, Channel_1
+    ld a, h
+    ld [wPositionChannel_1], a
+    ld a, l
+    ld [wPositionChannel_1 + 1], a
+
 .endSwitch:
 
     ret
@@ -136,6 +168,8 @@ PlayChannel_2:
     ld h, a
     ld a, [wPositionChannel_2 + 1]
     ld l, a
+
+    ld a, [hl+]
     
     ; check which command it is
 .case01: ; Play note
@@ -161,6 +195,13 @@ PlayChannel_2:
     ld [wOnChannel_2], a            ; turn off channel in music engine
     ld [rNR22], a                   ; set volume to 0
 
+    ; rewind the music to the start
+    ld hl, Channel_2
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
 .endSwitch:
 
     ret
@@ -174,6 +215,8 @@ PlayChannel_3:
     ld h, a
     ld a, [wPositionChannel_3 + 1]
     ld l, a
+
+    ld a, [hl+]
     
     ; check which command it is
 .case01: ; Play note
@@ -199,6 +242,13 @@ PlayChannel_3:
     ld [wOnChannel_3], a            ; turn off channel in music engine
     ld [rNR30], a                   ; set volume to 0
 
+    ; rewind the music to the start
+    ld hl, Channel_3
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+
 .endSwitch:
 
     ret
@@ -212,6 +262,8 @@ PlayChannel_4:
     ld h, a
     ld a, [wPositionChannel_1 + 1]
     ld l, a
+
+    ld a, [hl+]
     
     ; check which command it is
 .case01: ; Play note
@@ -237,6 +289,13 @@ PlayChannel_4:
     ld [wOnChannel_1], a            ; turn off channel in music engine
     ld [rNR42], a                   ; set volume to 0
 
+    ; rewind the music to the start
+    ld hl, Channel_4
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
+
 .endSwitch:
 
     ret
@@ -247,34 +306,62 @@ SetVibratoChannel_1:
     ld b, a
     and a, %00000011
     ld [wVibratoChannel_1 + 3], a
+
     ld a, b
     and a, %00001100
+    srl a
+    srl a
     ld [wVibratoChannel_1 + 2], a
+
     ld a, b
     and a, %00110000
+    srl a
+    srl a
+    srl a
+    srl a
     ld [wVibratoChannel_1 + 1], a
+
     ld a, b
     and a, %11000000
+    srl a
+    srl a
+    srl a
+    srl a
+    srl a
+    srl a
     ld [wVibratoChannel_1 + 0], a
-    ld a, b
 
     ret
-; sets vibrato on channel 1
+; sets vibrato on channel 2
 ; vibrato - a
 SetVibratoChannel_2:
     ld b, a
     and a, %00000011
     ld [wVibratoChannel_2 + 3], a
+
     ld a, b
     and a, %00001100
+    srl a
+    srl a
     ld [wVibratoChannel_2 + 2], a
+
     ld a, b
     and a, %00110000
+    srl a
+    srl a
+    srl a
+    srl a
     ld [wVibratoChannel_2 + 1], a
+
     ld a, b
     and a, %11000000
+    srl a
+    srl a
+    srl a
+    srl a
+    srl a
+    srl a
     ld [wVibratoChannel_2 + 0], a
-    ld a, b
 
     ret
 
@@ -310,8 +397,9 @@ MUSIC SHEET GUIDE:
 commands: (1st byte)
     01 - play note
         1. number of frames to be played
-        2. note frequency lower
-        3. note frequency higher
+        2. volume and sweep control
+        3. note frequency lower
+        4. note frequency higher
         (low frequency = 0 will not play sound and just pause)
     A1 - set vibrato
         1. 4 sets of 2 bits for duty cycle
@@ -323,6 +411,7 @@ commands: (1st byte)
 */
 
 Channel_1:
+    db $01, $FF, $F0, $A4, $04
     db $FF
 
 Channel_2:
