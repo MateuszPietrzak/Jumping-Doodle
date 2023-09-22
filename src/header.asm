@@ -46,19 +46,26 @@ ENDR
     xor a
     ld [wFrameCounter], a
 
+    ld hl, ScoreText
+    ld de, wWindowTilemapCopy + 32 + 1
+    call WriteTextToWindow
+
+; -------------------------------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------------------------------
+; Main loop
 MainLoop:
     call WaitForVBlank
 
-    ld bc, 11
-    ld hl, $9c00
-    ld de, wWindowTilemapCopy
+    ld bc, 32
+    ld hl, $9c20                ; load second line
+    ld de, wWindowTilemapCopy + 32
     call Memcpy
 
     call HandlePlayer
 
     ; --------------------------------------------------
     ; Write number and increment it
-    ld bc, wWindowTilemapCopy + 10 ; tilemap address
+    ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
     call WriteBCDToWindow
 
     call AddNumbersBCD

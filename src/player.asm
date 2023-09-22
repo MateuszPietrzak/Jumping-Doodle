@@ -4,9 +4,9 @@ SECTION "Player", ROM0
 
 InitPlayer::
     ; Load player sprite into tiles
-    ld de, graphicTiles
+    ld de, GraphicTiles
     ld hl, _VRAM8000
-    ld bc, graphicTiles.end - graphicTiles
+    ld bc, GraphicTilesEnd - GraphicTiles
     call Memcpy
 
     ; Init position (which is in form pixels * 16)

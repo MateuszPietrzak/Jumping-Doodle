@@ -10,7 +10,7 @@ InitializeWindow::
     ld a, 7
     ld [rWX], a
     ; WY = 100
-    ld a, 100
+    ld a, 120
     ld [rWY], a
 
     ; turn on window displaying
@@ -19,9 +19,9 @@ InitializeWindow::
     ld [rLCDC], a       ; set it back
 
     ; do tiles for window
-    ld de, fontTiles
+    ld de, FontTiles
     ld hl, $9010
-    ld bc, fontTiles.end - fontTiles
+    ld bc, FontTilesEnd - FontTiles
     call Memcpy
 
     ; do tilemap for window
@@ -55,17 +55,27 @@ SwitchWindow::
 ; WriteTextToWindow
 ; writes text on window
 ; @param de First index of tile
-; @param hl Source in RAM
-; @param bc data size
+; @param hl Source
 WriteTextToWindow::
-    ld a, b
-    or a, c
-    jp z, WriteTextToWindow.end
+    ld a, [hl+]             ; load next char
 
-    ; A = 12 (vs 65)
-    ld a, [hl+]
+.caseEnd:
+    cp a, 0
+    jp z, .end
+
+.caseSpace:
+    cp a, 32
+    jp nz, .caseLetter
+
+    sub a, 32
+    ld [de], a
+
+    jp .switchEnd
+.caseLetter:
+    ; A = 12 (vs 65 in ASCII)
     sub a, 53
     ld [de], a
+.switchEnd:
 
     inc de
     dec bc
