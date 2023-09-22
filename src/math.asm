@@ -204,39 +204,28 @@ BitShiftRight::
 AddNumbersBCD::
     ld d, 0
     ld c, 0                 ; clear carry
-    ld e, 3
+    ld e, 7
     
 WhileDigits:
     ld hl, wNumberBCD_1      ; get number with offset
     add hl, de
     ld a, [hl]
 
-    ld b, a
-    ld a, %00001111
-    and a, b                ; get last digit of 1
-    ld b, a                 ; copy it
+    ld b, a                 ; make a copy
 
     ld hl, wNumberBCD_2
     add hl, de
     ld a, [hl]
 
-    ld d, b                 ; copy again
-
-    ld b, a
-    ld a, %00001111
-    and a, b                ; get last digit of 2
-
-    add a, d                ; add 2 digits together
+    add a, b                ; add 2 digits together
     add a, c                ; add carry
     ld c, 0
-
-    ld d, 0                 ; clear d
 
     cp a, 10
 
     jp c, .skipCarry_1
 
-    ld c, %00010000
+    ld c, 1
     sub a, 10
 
 .skipCarry_1:
@@ -245,60 +234,7 @@ WhileDigits:
     add hl, de
     ld [hl], a
 
-
-    ld hl, wNumberBCD_1      ; get number with offset
-    add hl, de
-    ld a, [hl]
-
-    ld b, a
-    ld a, %11110000
-    and a, b                ; get second last digit of 1
-    ld b, a                 ; copy it
-
-    ld hl, wNumberBCD_2      ; get number with offset
-    add hl, de
-    ld a, [hl]
-
-    ld d, b                 ; copy again
-
-    ld b, a
-    ld a, %11110000
-    and a, b                ; get second last digit of 2
-
-    ld h, a                 ; save a
-    ld a, c                 ; a = c
-    ld c, 0                 ; c = 0
-    add a, d                ; a = c + d
-    ld d, a                 ; d = a
-    ld a, h                 ; load a
-    
-    add a, d                ; add 2 digits together
-    jp c, .carry_2          ; a is already -16
-    
-    ld d, 0                 ; clear d
-
-    cp a, %10100000         ; 10 << 4              
-    jp c, .skipCarry_2      ; if a < 10
-
-    sub a, %10100000        ; 10 << 4
-    ld c, 1
-    jp .skipCarry_2
-
-.carry_2                    ; if a overflown and was -16
-
-    add a, %01100000        ; 6 << 4
-    ld c, 1
-
-.skipCarry_2:
-    ; set output
-    ld hl, wNumberBCD_3
-    add hl, de
-    ld b, a                 ; save a
-    ld a, [hl]              ; load from ram
-    or a, b                 ; [hl] or a
-    ld [hl], a              ; load back into ram
-
-    ld a, e                 ; check if already looped 4 times
+    ld a, e                 ; check if already looped 8 times
     cp a, 0
     jp z, .end              ; if so end
 
@@ -315,3 +251,9 @@ SECTION "ArithmeticVariables", WRAM0
 wArithmeticVariable:: ds 2
 wArithmeticResult:: ds 2
 wArithmeticModifier:: ds 1
+
+SECTION "NumbersBCD", WRAM0
+
+wNumberBCD_1:: ds 8
+wNumberBCD_2:: ds 8
+wNumberBCD_3:: ds 8

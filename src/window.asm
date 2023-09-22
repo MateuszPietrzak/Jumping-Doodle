@@ -138,28 +138,14 @@ UpdateWindow::
 ; writes number on window
 ; @param bc First index of tile
 WriteBCDToWindow::
-    ld e, 3
+    ld e, 7
+    ld d, 0             ; clear d
     
 WhileDigits:
-    ld d, 0             ; clear d
 
     ld hl, wNumberBCD_1 ; load number with offset
     add hl, de
     ld a, [hl]
-
-    ld d, a             ; save a to not load it again
-
-    and a, %00001111    ; lower digit
-
-    add a, 2            ; tile offset
-    ld [bc], a          ; write to tilemap
-    dec bc              ; move to next spot
-
-    ld a, d             ; load save a back
-
-REPT 4
-    srl a               ; get top 4 bits
-ENDR
 
     add a, 2            ; tile offset
     ld [bc], a          ; write to tilemap
@@ -173,13 +159,6 @@ ENDR
     jp WhileDigits
 .end
     ret
-
-SECTION "NumbersBCD", WRAM0
-
-wNumberBCD_1:: ds 4
-wNumberBCD_2:: ds 4
-wNumberBCD_3:: ds 4
-
 
 SECTION "WindowTilemapCopy", WRAM0
 

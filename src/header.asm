@@ -27,16 +27,13 @@ EntryPoint:
     ; PRE MAIN TESTING GORUNDS
 
     xor a
-    ld [wNumberBCD_1], a
-    ld [wNumberBCD_1+1], a
-    ld [wNumberBCD_1+2], a
-    ld [wNumberBCD_1+3], a
+FOR N, 8
+    ld [wNumberBCD_1 + N], a
+    ld [wNumberBCD_2 + N], a
+ENDR
     
-    ld [wNumberBCD_2], a
-    ld [wNumberBCD_2+1], a
-    ld [wNumberBCD_2+2], a
     ld a, 1
-    ld [wNumberBCD_2+3], a
+    ld [wNumberBCD_2 + 7], a
 
     ; END
     ; ---------------------------------------------------------------------------
@@ -66,17 +63,10 @@ MainLoop:
 
     call AddNumbersBCD
 
-    ld a, [wNumberBCD_3]
-    ld [wNumberBCD_1], a
-
-    ld a, [wNumberBCD_3+1]
-    ld [wNumberBCD_1+1], a
-
-    ld a, [wNumberBCD_3+2]
-    ld [wNumberBCD_1+2], a
-
-    ld a, [wNumberBCD_3+3]
-    ld [wNumberBCD_1+3], a
+FOR N, 8
+    ld a, [wNumberBCD_3 + N]
+    ld [wNumberBCD_1 + N], a
+ENDR
 
     ; --------------------------------------------------
 
