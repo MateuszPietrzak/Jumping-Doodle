@@ -4,7 +4,6 @@ INCLUDE "hardware.inc/hardware.inc"
 SECTION "windowFunctions", ROM0
 
 ; function initializing window position
-; it also turns window on
 InitializeWindow::
     ; WX = 7
     ld a, 7

@@ -11,21 +11,23 @@ EntryPoint:
     xor a
     ld [rLCDC], a
 
-
+    ; initialize window position and contents
     call InitializeWindow
     
+    ; initialize player
     call ClearOam
     call InitPlayer
 
+    ; turn on the LCD
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
 
+    ; turn on window displaying
     call SwitchWindow
 
-    ; ---------------------------------------------------------------------------
-    ; PRE MAIN TESTING GORUNDS
-
+    ; clear wNumberBCD 
+    ; TODO maybe move to standalone function
     xor a
 FOR N, 8
     ld [wNumberBCD_1 + N], a
@@ -34,9 +36,6 @@ ENDR
     
     ld a, 1
     ld [wNumberBCD_2 + 7], a
-
-    ; END
-    ; ---------------------------------------------------------------------------
 
     ; Load palette for sprites
     ld a, %11100100
