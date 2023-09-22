@@ -23,6 +23,24 @@ EntryPoint:
 
     call SwitchWindow
 
+    ; ---------------------------------------------------------------------------
+    ; PRE MAIN TESTING GORUNDS
+
+    xor a
+    ld [wNumberBCD_1], a
+    ld [wNumberBCD_1+1], a
+    ld [wNumberBCD_1+2], a
+    ld [wNumberBCD_1+3], a
+    
+    ld [wNumberBCD_2], a
+    ld [wNumberBCD_2+1], a
+    ld [wNumberBCD_2+2], a
+    ld a, 1
+    ld [wNumberBCD_2+3], a
+
+    ; END
+    ; ---------------------------------------------------------------------------
+
     ; Load palette for sprites
     ld a, %11100100
     ld [rOBP0], a
@@ -34,21 +52,35 @@ EntryPoint:
 MainLoop:
     call WaitForVBlank
 
-    ld bc, 10
+    ld bc, 11
     ld hl, $9c00
-    ld de, WindowTilemapCopy
+    ld de, wWindowTilemapCopy
     call Memcpy
-
-    ld de, $0008
-    ld hl, 42069
-    call WriteNumberToWindow
-
-    ; Update player inputs
-    call UpdateKeys
-
-    call WaitForVBlank
 
     call HandlePlayer
 
+    ; --------------------------------------------------
+    ; Write number and increment it
+    ld bc, wWindowTilemapCopy + 10 ; tilemap address
+    call WriteBCDToWindow
+
+    call AddNumbersBCD
+
+    ld a, [wNumberBCD_3]
+    ld [wNumberBCD_1], a
+
+    ld a, [wNumberBCD_3+1]
+    ld [wNumberBCD_1+1], a
+
+    ld a, [wNumberBCD_3+2]
+    ld [wNumberBCD_1+2], a
+
+    ld a, [wNumberBCD_3+3]
+    ld [wNumberBCD_1+3], a
+
+    ; --------------------------------------------------
+
+    ; Update player inputs
+    call UpdateKeys
 
     jp MainLoop

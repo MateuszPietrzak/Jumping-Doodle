@@ -32,7 +32,7 @@ InitializeWindow::
 
     ; do tilemap for window
     ld de, WindowInitialState
-    ld hl, WindowTilemapCopy
+    ld hl, wWindowTilemapCopy
     ld bc, WindowInitialState.end - WindowInitialState
     call Memcpy
 
@@ -106,7 +106,7 @@ WriteNumberToWindow::
     ; add 2 to a, because font tiles start from id 2
     add a, 2
     ; load tile id into tilemap copy
-    ld hl, WindowTilemapCopy
+    ld hl, wWindowTilemapCopy
     add hl, de
     ld [hl], a
 
@@ -128,16 +128,62 @@ WriteNumberToWindow::
 
 UpdateWindow::
     ld hl, $9c00
-    ld de, WindowTilemapCopy
-    ld bc, WindowTilemapCopy - WindowTilemapCopy.end
+    ld de, wWindowTilemapCopy
+    ld bc, wWindowTilemapCopy - wWindowTilemapCopy.end
     call Memcpy
 
     ret
 
+; WriteNumberToWindow
+; writes number on window
+; @param bc First index of tile
+WriteBCDToWindow::
+    ld e, 3
+    
+WhileDigits:
+    ld d, 0             ; clear d
+
+    ld hl, wNumberBCD_1 ; load number with offset
+    add hl, de
+    ld a, [hl]
+
+    ld d, a             ; save a to not load it again
+
+    and a, %00001111    ; lower digit
+
+    add a, 2            ; tile offset
+    ld [bc], a          ; write to tilemap
+    dec bc              ; move to next spot
+
+    ld a, d             ; load save a back
+
+REPT 4
+    srl a               ; get top 4 bits
+ENDR
+
+    add a, 2            ; tile offset
+    ld [bc], a          ; write to tilemap
+    dec bc              ; move to next spot
+
+    ld a, e
+    cp a, 0
+    jp z, .end
+
+    dec e
+    jp WhileDigits
+.end
+    ret
+
+SECTION "NumbersBCD", WRAM0
+
+wNumberBCD_1:: ds 4
+wNumberBCD_2:: ds 4
+wNumberBCD_3:: ds 4
+
 
 SECTION "WindowTilemapCopy", WRAM0
 
-WindowTilemapCopy:: 
+wWindowTilemapCopy:: 
     ds 32*32
 .end:
 
