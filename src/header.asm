@@ -26,6 +26,9 @@ EntryPoint:
     ; turn on window displaying
     call SwitchWindow
 
+    xor a
+    ld [rNR52], a
+
     ; initialize sound
     call InitMusic
 
@@ -52,14 +55,14 @@ ENDR
     ld de, wWindowTilemapCopy + 32 + 1
     call WriteTextToWindow
 
-    ; TODO figure out why writting doesn't work
-    call PlayMusic
 ; -------------------------------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------------------------------
 ; Main loop
 MainLoop:
     call WaitForVBlank
 
+    ; TODO figure out why writting doesn't work
+    call PlayMusic
 
     ld bc, 32
     ld hl, $9c20                ; load second line
