@@ -119,6 +119,17 @@ PlayChannel_1:
 .case01: ; Play note --------------------------------------------
     cp a, $01
     jp nz, .caseA1
+
+    ; apply vibrato
+    ld a, [wVibratoChannel_1]
+    ld b, a
+    and a, %1100_0000   ; get only top 2 bits
+    ld [rNR11], a
+    ld a, b ; load full vibrato
+    ; move to next vibrato
+    rlca
+    rlca
+    ld [wVibratoChannel_1], a
     
     ld a, [hl+] ; load note length (+1)
     ld c, a
@@ -179,7 +190,7 @@ PlayChannel_1:
     ld a, l
     ld [wPositionChannel_1 + 1], a
 
-    jp .endSwitch
+    jp PlayChannel_1
 .caseEE: ; Loop -----------------------------------------------------
     cp a, $EE
     jp nz, .caseFF
@@ -201,14 +212,14 @@ PlayChannel_1:
     ld a, l
     ld [wPositionChannel_1 + 1], a
 
-    jp .endSwitch
+    jp PlayChannel_1
 .noLoopEnd:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_1 + 1], a
     ld a, [hl+] ; add 2
     ld [wPositionChannel_1], a
 
-    jp .endSwitch
+    jp PlayChannel_1
 .initLoop:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_1 + 1], a
@@ -218,7 +229,7 @@ PlayChannel_1:
     dec a ; already did 1 time when coming here
     ld [wLoopTimesChannel_1], a
 
-    jp .endSwitch
+    jp PlayChannel_1
 .caseFF: ; music end command --------------------------------------
     cp a, $FF
     jp nz, .endSwitch
@@ -478,9 +489,8 @@ commands: (1st byte)
         2. volume and sweep control
         3. note frequency lower
         4. note frequency higher
-        ; TODO (low frequency = 0 will not play sound and just pause)
+        (volume = 0 will not play sound and just pause)
     A1 - set vibrato
-        ; TODO implement vibrato
         1. 4 sets of 2 bits for duty cycle
     EE - loop
         1. address to loop back to (high)
@@ -494,8 +504,10 @@ commands: (1st byte)
 ; TODO implement channel 4
 
 Channel_1:
+    db $A1, %1010_1010
 .start
     db $01, $26, $F0, $0A, $01
+    db $01, $26, $00, $00, $00
     db $01, $26, $F0, $0A, $04
     db $EE
     dw .start
