@@ -495,7 +495,7 @@ commands: (1st byte)
     EE - loop
         1. address to loop back to (high)
         2. address to loop back to (low)
-        3. number of times
+        3. number of times (1 makes infinite loop)
     FF - end of music
 */
 
