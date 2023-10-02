@@ -822,72 +822,72 @@ Channel_2:
 .start
     ; P1B1
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw F4
+    dw F3
     db $01, NL, $F0
-    dw A4
+    dw A3
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw A4
+    dw A3
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw F4
+    dw F3
     ; P1B2 -------------
     db $01, NL, $F0
-    dw D5
+    dw D4
     db $01, NL, $F0
-    dw D5
+    dw D4
     db $01, NL, $F0
-    dw G4
+    dw G3
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw D5
+    dw D4
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw D5
+    dw D4
     db $01, NL, $F0
-    dw G4
+    dw G3
     ; P1B3 -------------
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw E4
+    dw E3
     db $01, NL, $F0
-    dw G4
+    dw G3
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw G4
+    dw G3
     db $01, NL, $F0
-    dw B4
+    dw B3
     db $01, NL, $F0
-    dw E4
+    dw E3
     ; P1B4 -------------
     db $01, NL, $F0
-    dw E5
+    dw E4
     db $01, NL, $F0
-    dw E5
+    dw E4
     db $01, NL, $F0
-    dw A4
+    dw A3
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw E5
+    dw E4
     db $01, NL, $F0
-    dw C5
+    dw C4
     db $01, NL, $F0
-    dw E5
+    dw E4
     db $01, NL, $F0
-    dw A4
+    dw A3
     ; -------------
 
     db $EE 
