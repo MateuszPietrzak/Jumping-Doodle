@@ -127,7 +127,23 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerXend
 
-    inc bc ; Increment x position by 1/8 of a pixel
+    inc bc ; Increment x position by 1/16 of a pixel
+    ld a, b
+    cp a, $0A
+    jp c, .noPlusTorus
+    ld a, c
+    cp a, $80
+    jp c, .noPlusTorus
+
+    ld h, $F5
+    ld l, $7F
+    add hl, bc
+    ld b, h
+    ld c, l
+    jp .incPlayerXend
+
+
+.noPlusTorus
     dec d
     jp .incPlayerX
 .incPlayerXend:
@@ -145,7 +161,19 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerXend
 
-    dec bc ; Increment x position by 1/8 of a pixel
+    dec bc ; Decrement x position by 1/16 of a pixel
+    ld a, b
+    or a, c
+    jp nz, .noMinusTorus
+
+    ld h, $0A
+    ld l, $80
+    add hl, bc
+    ld b, h
+    ld c, l
+    jp .decPlayerXend
+
+.noMinusTorus
     dec d
     jp .decPlayerX
 .decPlayerXend:
@@ -182,7 +210,7 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerYend
 
-    inc bc ; Increment x position by 1/8 of a pixel
+    inc bc ; Increment x position by 1/16 of a pixel
     dec d
     jp .incPlayerY
 .incPlayerYend:
@@ -199,7 +227,7 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerYend
 
-    dec bc ; Increment y position by 1/8 of a pixel
+    dec bc ; Decrement y position by 1/16 of a pixel
     dec d
     jp .decPlayerY
 .decPlayerYend:
