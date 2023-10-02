@@ -14,7 +14,7 @@ CheckCollisions::
     ld d, a
     ;Check if mod 8 <= 4
 
-    and a, %00000110
+    and a, %00000100
     jp nz, .caseEnd
     
     ld a, d
