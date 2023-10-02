@@ -232,7 +232,7 @@ HandlePlayer::
     ld a, [_OAMRAM + 1] ; X coordinate
     ld b, a
     ld a, [_OAMRAM]     ; Y coordinate
-    sub a, 8
+    sub a, $8
     ld c, a
 
     call CheckCollisions

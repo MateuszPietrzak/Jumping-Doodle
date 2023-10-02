@@ -10,8 +10,15 @@ CheckCollisions::
     ; Unscroll
     ld a, [rSCY]
     add a, c
+
+    ld d, a
+    ;Check if mod 8 <= 4
+
+    and a, %00000110
+    jp nz, .caseEnd
     
-    
+    ld a, d
+
     ; Dividing by 8 -> tile point * 32 -> Y pos
     and a, %11111000    ; Y / 8 * 8
     ld l, a
