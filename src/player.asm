@@ -205,16 +205,16 @@ HandlePlayer::
     jp z, .incPlayerYend
 
     ld a, b
-    cp a, $09
-    jp c, .skipNoFall
+    cp a, $08
+    jp nz, .skipNoFall
     ld a, c
-    cp a, $00
-    jp z, .skipNoFall
+    cp a, $10
+    jp c, .skipNoFall
 
-    jp .incPlayerYend
+    jp EntryPoint
 
 .skipNoFall:
-    inc bc ; Increment x position by 1/16 of a pixel
+    inc bc ; Increment y position by 1/16 of a pixel
     dec d
     jp .incPlayerY
 .incPlayerYend:

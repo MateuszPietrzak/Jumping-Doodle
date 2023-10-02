@@ -4,7 +4,7 @@ SECTION "entry", ROM0[$100]
   jp EntryPoint 
   ds $150-@, 0 ; Space for the header
 
-EntryPoint:
+EntryPoint::
     call WaitForVBlank
 
     ;Disable LCD before writing to VRAM
