@@ -67,9 +67,6 @@ MainLoop:
     call WaitForVBlank
     ; TO DO WHILE VBLANK
     call PlayerBufferToOAM
-    ld a, [rSCY]
-    dec a
-    ld [rSCY], a
     ; TO DO WHILE VBLANK END
 
     ; TODO figure out why writting doesn't work

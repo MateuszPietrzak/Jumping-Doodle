@@ -210,6 +210,16 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerYend
 
+    ld a, b
+    cp a, $09
+    jp c, .skipNoFall
+    ld a, c
+    cp a, $00
+    jp z, .skipNoFall
+
+    jp .incPlayerYend
+
+.skipNoFall:
     inc bc ; Increment x position by 1/16 of a pixel
     dec d
     jp .incPlayerY
@@ -227,6 +237,19 @@ HandlePlayer::
     cp a, d
     jp z, .incPlayerYend
 
+    ld a, b
+    cp a, $03
+    jp nc, .skipNoRise
+    ld a, c
+    cp a, $00
+    jp z, .skipNoRise
+
+    inc bc ; I'm sorry...
+    ld a, [rSCY]
+    dec a
+    ld [rSCY], a
+
+.skipNoRise
     dec bc ; Decrement y position by 1/16 of a pixel
     dec d
     jp .decPlayerY
