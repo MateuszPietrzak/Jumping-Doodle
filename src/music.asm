@@ -823,11 +823,6 @@ Channel_3:
 
 Channel_4:
 .start
-    db $01, $26, $70, $A3
-    db $01, $F6, $00, $00
-    db $EE
-    dw .start
-    db 1
     db $FF
 
 SECTION "WavePatterns", ROM0
