@@ -816,13 +816,90 @@ Channel_1:
     db $FF
 
 Channel_2:
+    db $A1, %01010101
+    db $01, START_PAUSE, $00 
+    dw C4
+.start
+    ; P1B1
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw F4
+    db $01, NL, $F0
+    dw A4
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw A4
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw F4
+    ; P1B2 -------------
+    db $01, NL, $F0
+    dw D5
+    db $01, NL, $F0
+    dw D5
+    db $01, NL, $F0
+    dw G4
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw D5
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw D5
+    db $01, NL, $F0
+    dw G4
+    ; P1B3 -------------
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw E4
+    db $01, NL, $F0
+    dw G4
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw G4
+    db $01, NL, $F0
+    dw B4
+    db $01, NL, $F0
+    dw E4
+    ; P1B4 -------------
+    db $01, NL, $F0
+    dw E5
+    db $01, NL, $F0
+    dw E5
+    db $01, NL, $F0
+    dw A4
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw E5
+    db $01, NL, $F0
+    dw C5
+    db $01, NL, $F0
+    dw E5
+    db $01, NL, $F0
+    dw A4
+    ; -------------
+
+    db $EE 
+    dw .start 
+    db $01
+    
     db $FF
 
 Channel_3:
     db $FF
 
 Channel_4:
-.start
     db $FF
 
 SECTION "WavePatterns", ROM0
@@ -830,3 +907,46 @@ SECTION "WavePatterns", ROM0
 WavePatterns:
     db $02, $46, $8A, $CE, $FF, $FE, $ED, $DC, $CB, $A9, $87, $65, $44, $33, $22, $11
     db $01, $23, $45, $67, $8A, $CD, $EE, $F7, $7F, $EE, $DC, $A8, $76, $54, $32, $10
+
+SECTION "Notes", ROM0
+
+DEF C3  EQU 1046
+DEF C3# EQU 1102
+DEF D3  EQU 1155
+DEF D3# EQU 1205
+DEF E3  EQU 1253
+DEF F3  EQU 1297
+DEF F3# EQU 1339
+DEF G3  EQU 1379
+DEF G3# EQU 1417
+DEF A3  EQU 1452
+DEF A3# EQU 1486
+DEF B3  EQU 1517
+DEF C4  EQU 1547
+DEF C4# EQU 1575
+DEF D4  EQU 1602
+DEF D4# EQU 1627
+DEF E4  EQU 1650
+DEF F4  EQU 1673
+DEF F4# EQU 1694
+DEF G4  EQU 1714
+DEF G4# EQU 1732
+DEF A4  EQU 1750
+DEF A4# EQU 1767
+DEF B4  EQU 1783
+DEF C5  EQU 1798
+DEF C5# EQU 1812
+DEF D5  EQU 1825
+DEF D5# EQU 1837
+DEF E5  EQU 1849
+DEF F5  EQU 1860
+DEF F5# EQU 1871
+DEF G5  EQU 1881
+DEF G5# EQU 1890
+DEF A5  EQU 1899
+DEF A5# EQU 1907
+DEF B5  EQU 1915
+
+
+DEF NL  EQU 12
+DEF START_PAUSE EQU $20
