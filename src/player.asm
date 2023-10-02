@@ -11,13 +11,13 @@ InitPlayer::
 
     ; Init position (which is in form pixels * 16)
     ; Position X
-    ld a, $01
+    ld a, $05
     ld [wPlayerX], a
-    ld a, $C0
+    ld a, $40
     ld [wPlayerX + 1], a
 
     ; Position Y
-    ld a, $08
+    ld a, $06
     ld [wPlayerY], a
     ld a, $00
     ld [wPlayerY + 1], a
@@ -39,7 +39,7 @@ HandlePlayer::
     ; Fall
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
-    cp a, $20
+    cp a, $40
     jp nc, .skipAcceleratingDown
 
     ld a, [wPlayerVelocityY]
@@ -60,8 +60,8 @@ HandlePlayer::
     ld [wPlayerVelocityY], a
 
     ; Default to not moving
-    ld a, $00 
-    ld [wPlayerVelocityX], a
+    ; ld a, $00 
+    ; ld [wPlayerVelocityX], a
 
     ; Check for d-pad right
     ld a, [wKeysPressed]
@@ -92,17 +92,6 @@ HandlePlayer::
     ld [wPlayerFlags], a
 
 .pressedLeftEnd:
-
-    ; Check for B
-    ld a, [wKeysPressed]
-    ld b, PADF_B
-    and a, b
-
-    jp z, .pressedBeeEnd
-.pressedBee:
-   ld a, $90 
-   ld [wPlayerVelocityY], a
-.pressedBeeEnd:
 
     ; Update position
 
@@ -216,19 +205,65 @@ HandlePlayer::
     jp z, .incPlayerYend
 
     ld a, b
-    cp a, $09
-    jp c, .skipNoFall
+    cp a, $08
+    jp nz, .skipNoFall
     ld a, c
-    cp a, $00
-    jp z, .skipNoFall
+    cp a, $10
+    jp c, .skipNoFall
 
-    jp .incPlayerYend
+    jp EntryPoint
 
 .skipNoFall:
-    inc bc ; Increment x position by 1/16 of a pixel
+    inc bc ; Increment y position by 1/16 of a pixel
     dec d
     jp .incPlayerY
 .incPlayerYend:
+
+    ld a, [wPlayerVelocityY]
+    and a, $80
+    jp nz, .decPlayerYend
+
+    push af
+    push bc
+    push de
+    push hl
+
+    ; After falling down, check if colliding with anything
+    ld a, [_OAMRAM + 1] ; X coordinate
+    ld b, a
+    ld a, [_OAMRAM]     ; Y coordinate
+    sub a, $8
+    ld c, a
+
+    call CheckCollisions
+    cp a, $1
+    jp z, .bounce
+    
+    ld a, [_OAMRAM + 1] ; X coordinate
+    add a, $8
+    ld b, a
+    ld a, [_OAMRAM]     ; Y coordinate
+    sub a, $8
+    ld c, a
+
+    call CheckCollisions
+    cp a, $1
+    jp z, .bounce
+
+    jp .skipBounce
+
+.bounce:
+    ld a, $A0 
+    ld [wPlayerVelocityY], a
+
+    ; TODO PLAY BOING!
+
+.skipBounce:
+
+    pop hl
+    pop de
+    pop bc
+    pop af
 
     jp .decPlayerYend ; Skip decrementing
 
@@ -249,7 +284,6 @@ HandlePlayer::
     cp a, $00
     jp z, .skipNoRise
 
-    inc bc ; I'm sorry...
     ld a, [wScreenScrollY]
     ld h, a
     ld a, [wScreenScrollY+1]
@@ -260,8 +294,11 @@ HandlePlayer::
     ld a, l
     ld [wScreenScrollY+1], a
 
-.skipNoRise
+    jp .skipDecY
+
+.skipNoRise:
     dec bc ; Decrement y position by 1/16 of a pixel
+.skipDecY:
     dec d
     jp .decPlayerY
 .decPlayerYend:
