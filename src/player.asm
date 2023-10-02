@@ -28,6 +28,10 @@ InitPlayer::
     ld a, $00
     ld [wPlayerVelocityY], a
 
+    ; Init screen Y scroll
+    xor a
+    ld [wScreenScrollY], a
+
     ret
 
 HandlePlayer::
@@ -66,11 +70,12 @@ HandlePlayer::
 
     jp z, .pressedRightEnd
 .pressedRight:
-   ld a, $10
-   ld [wPlayerVelocityX], a
+    ld a, $10
+    ld [wPlayerVelocityX], a
     ; Since going right, flip the sprite right 
     xor a
-    ld [_OAMRAM + 3], a
+    ld [wPlayerFlags], a
+
 .pressedRightEnd:
 
     ; Check for d-pad left
@@ -80,11 +85,11 @@ HandlePlayer::
 
     jp z, .pressedLeftEnd
 .pressedLeft:
-   ld a, $90 
-   ld [wPlayerVelocityX], a
+    ld a, $90 
+    ld [wPlayerVelocityX], a
     ; Since going left, flip the sprite left
     ld a, $20
-    ld [_OAMRAM + 3], a
+    ld [wPlayerFlags], a
 
 .pressedLeftEnd:
 
@@ -238,16 +243,22 @@ HandlePlayer::
     jp z, .incPlayerYend
 
     ld a, b
-    cp a, $03
+    cp a, $06
     jp nc, .skipNoRise
     ld a, c
     cp a, $00
     jp z, .skipNoRise
 
     inc bc ; I'm sorry...
-    ld a, [rSCY]
-    dec a
-    ld [rSCY], a
+    ld a, [wScreenScrollY]
+    ld h, a
+    ld a, [wScreenScrollY+1]
+    ld l, a
+    dec hl
+    ld a, h
+    ld [wScreenScrollY], a
+    ld a, l
+    ld [wScreenScrollY+1], a
 
 .skipNoRise
     dec bc ; Decrement y position by 1/16 of a pixel
@@ -304,6 +315,26 @@ PlayerBufferToOAM::
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
     ld [_OAMRAM], a
+
+    ; Flip sprite
+    ld a, [wPlayerFlags]
+    ld [_OAMRAM + 3], a
+
+    ; ScreenScrollY
+    ld a, [wScreenScrollY]
+    ld [wArithmeticVariable], a
+    ld a, [wScreenScrollY + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, 4
+    ld [wArithmeticModifier], a
+
+    ; Get pixel position from PlayerScrollY
+    call BitShiftRight
+
+    ; Move bg to correct position (only lower byte needed since coords <= 255)
+    ld a, [wArithmeticResult + 1]
+    ld [rSCY], a
+
     
     ret
 
@@ -311,6 +342,9 @@ SECTION "PlayerData", WRAM0
 
 wPlayerX:: ds 2
 wPlayerY:: ds 2
+wPlayerFlags:: ds 1
 
 wPlayerVelocityX:: ds 1
 wPlayerVelocityY:: ds 1
+
+wScreenScrollY:: ds 2
