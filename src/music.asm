@@ -160,6 +160,7 @@ PlayChannel_1:
     jp .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
+    dec a
     ld [wNoteFrameChannel_1], a
 
     ld a, [hl+] ; load volume and sweep (+2)
@@ -306,6 +307,7 @@ PlayChannel_2:
     jp .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
+    dec a
     ld [wNoteFrameChannel_2], a
 
     ld a, [hl+] ; load volume and sweep (+2)
@@ -441,6 +443,7 @@ PlayChannel_3:
     jp .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
+    dec a
     ld [wNoteFrameChannel_3], a
 
     ld a, [hl+] ; load volume and sweep (+2)
@@ -601,6 +604,7 @@ PlayChannel_4:
     jp .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
+    dec a
     ld [wNoteFrameChannel_4], a
 
     ld a, [hl+] ; load volume and sweep (+2)
@@ -769,6 +773,8 @@ SECTION "MusicSheets", ROM0
 /*
 MUSIC SHEET GUIDE:
 
+NOTES must be at least of length 2 (to not make infinite loop lol)
+
 commands channel 1,2: (1st byte)
     01 - play note
         1. number of frames to be played
@@ -813,6 +819,100 @@ commands channel 4: (1st byte)
 */
 
 Channel_1:
+    db $A1, %01010101
+    db $01, START_PAUSE, $00 
+    dw $00
+.start
+    ; P1B1
+    db $01, NL * 2, $F0
+    dw A3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B2
+    db $01, NL * 2, $F0
+    dw B3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B3
+    db $01, NL * 2, $F0
+    dw G3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B4
+    db $01, NL * 2, $F0
+    dw C4
+    db $01, NL * 6, $00
+    dw $00
+
+    db $EE
+    dw .start
+    db $02
+
+    ; P2B1
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw A3
+    db $01, NL * 2, $00
+    dw $00
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL * 2, $00
+    dw $00
+    ; P2B3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL * 2, $00
+    dw $00
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw C4
+    db $01, NL * 2, $00
+    dw $00
+
+    ; P3B1
+    db $01, NL * 2, $F0
+    dw A3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B2
+    db $01, NL * 2, $F0
+    dw B3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B3
+    db $01, NL * 2, $F0
+    dw G3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B4
+    db $01, NL * 2, $F0
+    dw C4
+    db $01, NL * 6, $00
+    dw $00
+
+    ; P4B1
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B2
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B3
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B4
+    db $01, NL * 8, $00
+    dw $00
+
+    db $EE
+    dw .start
+    db $01
+
     db $FF
 
 Channel_2:
@@ -1076,6 +1176,100 @@ Channel_2:
     db $FF
 
 Channel_3:
+    db $25, $00
+    db $01, START_PAUSE, $00 
+    dw $00
+.start
+    ; P1B1
+    db $01, NL * 2, $20
+    dw F3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B2
+    db $01, NL * 2, $20
+    dw G3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B3
+    db $01, NL * 2, $20
+    dw E3
+    db $01, NL * 6, $00
+    dw $00
+    ; P1B4
+    db $01, NL * 2, $20
+    dw A3
+    db $01, NL * 6, $00
+    dw $00
+
+    db $EE
+    dw .start
+    db $02
+
+    ; P2B1
+    db $01, NL, $20
+    dw F3
+    db $01, NL, $20
+    dw F3
+    db $01, NL * 2, $00
+    dw $00
+    db $01, NL, $20
+    dw G3
+    db $01, NL, $20
+    dw G3
+    db $01, NL * 2, $00
+    dw $00
+    ; P2B3
+    db $01, NL, $20
+    dw E3
+    db $01, NL, $20
+    dw E3
+    db $01, NL * 2, $00
+    dw $00
+    db $01, NL, $20
+    dw A3
+    db $01, NL, $20
+    dw A3
+    db $01, NL * 2, $00
+    dw $00
+
+    ; P3B1
+    db $01, NL * 2, $20
+    dw F3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B2
+    db $01, NL * 2, $20
+    dw G3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B3
+    db $01, NL * 2, $20
+    dw E3
+    db $01, NL * 6, $00
+    dw $00
+    ; P3B4
+    db $01, NL * 2, $20
+    dw A3
+    db $01, NL * 6, $00
+    dw $00
+
+    ; P4B1
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B2
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B3
+    db $01, NL * 8, $00
+    dw $00
+    ; P4B4
+    db $01, NL * 8, $00
+    dw $00
+
+    db $EE
+    dw .start
+    db $01
+
     db $FF
 
 Channel_4:
