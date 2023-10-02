@@ -22,6 +22,10 @@ EntryPoint:
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
+    ; palette
+    ld a, %11100100
+    ld [rBGP], a
+
 
     ; turn on window displaying
     call SwitchWindow
@@ -61,7 +65,12 @@ ENDR
     call HandlePlayer
 MainLoop:
     call WaitForVBlank
+    ; TO DO WHILE VBLANK
     call PlayerBufferToOAM
+    ld a, [rSCY]
+    dec a
+    ld [rSCY], a
+    ; TO DO WHILE VBLANK END
 
     ; TODO figure out why writting doesn't work
     call PlayMusic

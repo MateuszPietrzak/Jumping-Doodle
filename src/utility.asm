@@ -17,6 +17,22 @@ Memcpy::
     jp nz, Memcpy
     ret
 
+; MemcpyOffset
+; Copies data from ROM to RAM and adds 64?
+; @param de Beginning of data in ROM
+; @param hl Deginning of target space in RAM
+; @param bc data size
+MemcpyOffset::
+    ld a, [de]
+    add a, $40
+    ld [hl+], a
+    inc de
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, MemcpyOffset
+    ret
+
 ; WaitPorVBlank
 ; Waits until VBlank (duh)
 WaitForVBlank::

@@ -23,6 +23,12 @@ InitializeWindow::
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
 
+    ; background tiles
+    ld de, BackgroundTiles
+    ld hl, $9400
+    ld bc, BackgroundTiles.end - BackgroundTiles
+    call Memcpy
+
     ; do tilemap for window
     ld de, WindowInitialState
     ld hl, $9C00
@@ -36,10 +42,10 @@ InitializeWindow::
     call Memcpy
 
     ; do tilemap for background
-    ld de, BackgroundInitialState
+    ld de, BackgroundTilemap
     ld hl, $9800
-    ld bc, BackgroundInitialState.end - BackgroundInitialState
-    call Memcpy
+    ld bc, BackgroundTilemap.end - BackgroundTilemap
+    call MemcpyOffset
 
     ret
 
@@ -185,8 +191,11 @@ ENDR
 
 SECTION "BackgroundTilemap", ROM0
 
-BackgroundInitialState:
-REPT 32
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-ENDR
+BackgroundTilemap:
+    incbin "assets/BackgroundTilemap.2bpp"
 .end:
+
+BackgroundTiles:
+    incbin "assets/BackgroundTiles.2bpp"
+.end:
+
