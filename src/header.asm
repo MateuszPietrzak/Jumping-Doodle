@@ -58,8 +58,10 @@ ENDR
 ; -------------------------------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------------------------------
 ; Main loop
+    call HandlePlayer
 MainLoop:
     call WaitForVBlank
+    call PlayerBufferToOAM
 
     ; TODO figure out why writting doesn't work
     call PlayMusic

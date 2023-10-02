@@ -155,20 +155,6 @@ HandlePlayer::
     ld a, c
     ld [wPlayerX + 1], a
 
-    ; Setup PlayerX for division
-    ld a, b
-    ld [wArithmeticVariable], a
-    ld a, c
-    ld [wArithmeticVariable + 1], a
-    ld a, 4
-    ld [wArithmeticModifier], a
-
-    ; Get pixel on-screen position from PlayerX
-    call BitShiftRight
-
-    ; Move sprite to correct position (only lower byte needed since coords <= 255)
-    ld a, [wArithmeticResult + 1]
-    ld [_OAMRAM + 1], a
 
     ; Y COORDINATE
 
@@ -223,6 +209,36 @@ HandlePlayer::
     ld a, c
     ld [wPlayerY + 1], a
 
+
+    ret
+
+PlayerBufferToOAM::
+
+    ld a, [wPlayerX]
+    ld b, a
+    ld a, [wPlayerX+1]
+    ld c, a
+
+    ; Setup PlayerX for division
+    ld a, b
+    ld [wArithmeticVariable], a
+    ld a, c
+    ld [wArithmeticVariable + 1], a
+    ld a, 4
+    ld [wArithmeticModifier], a
+
+    ; Get pixel on-screen position from PlayerX
+    call BitShiftRight
+
+    ; Move sprite to correct position (only lower byte needed since coords <= 255)
+    ld a, [wArithmeticResult + 1]
+    ld [_OAMRAM + 1], a
+
+    ld a, [wPlayerY]
+    ld b, a
+    ld a, [wPlayerY+1]
+    ld c, a
+
     ; Setup PlayerY for division
     ld a, b
     ld [wArithmeticVariable], a
@@ -237,9 +253,8 @@ HandlePlayer::
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
     ld [_OAMRAM], a
-
+    
     ret
-
 
 SECTION "PlayerData", WRAM0
 
