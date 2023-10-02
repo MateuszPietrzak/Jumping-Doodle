@@ -67,8 +67,10 @@ InitMusic::
     ld [rNR22], a
     ld [rNR42], a
 
-    ld a, %01100000
+    ld a, %00000000
     ld [rNR32], a
+    ld a, %10000000
+    ld [rNR30], a
 
     ret
 
@@ -259,25 +261,124 @@ PlayChannel_2:
     ld a, [wPositionChannel_2 + 1]
     ld l, a
 
-    ld a, [hl+]
+    ld a, [hl+] ; load command (+0)
     
     ; check which command it is
-.case01: ; Play note
+.case01: ; Play note --------------------------------------------
     cp a, $01
     jp nz, .caseA1
-    ; Do stuff here
+
+    ; apply vibrato
+    ld a, [wVibratoChannel_2]
+    ld b, a
+    and a, %1100_0000   ; get only top 2 bits
+    ld [rNR21], a
+    ld a, b ; load full vibrato
+    ; move to next vibrato
+    rlca
+    rlca
+    ld [wVibratoChannel_2], a
+    
+    ld a, [hl+] ; load note length (+1)
+    ld c, a
+
+    ld a, [wNoteFrameChannel_2]
+    ld b, a
+    xor a
+    cp a, b
+    ; if var == 0 set note length
+    jp z, .initNote
+.alreadySet:
+    ld a, [wNoteFrameChannel_2]
+    dec a
+    ld [wNoteFrameChannel_2], a
+
+    cp a, 0             ; if frame == 0
+    jp nz, .endSwitch
+
+    ld bc, 3            ; set it to next byte of music sheet
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
     jp .endSwitch
-.caseA1: ; Vibrato
+.initNote:
+    ld a, c                     ; set intital note length
+    ld [wNoteFrameChannel_2], a
+
+    ld a, [hl+] ; load volume and sweep (+2)
+
+    ; set volume and sweep
+    ld [rNR22], a
+
+    ld a, [hl+] ; frequency lower (+3)
+    ld c, a
+    ld a, [hl+] ; frequency higher (+4)
+    ld d, a
+
+    ; set frequency
+    ld a, c
+    ld [rNR23], a
+    ld a, d
+    or a, %10000000 ; trigger channel
+    ld [rNR24], a
+
+    jp .endSwitch
+.caseA1: ; Vibrato -------------------------------------------------
     cp a, $A1
     jp nz, .caseEE
-    ; Do stuff here
-    jp .endSwitch
-.caseEE: ; Loop
+
+    ld a, [hl+]
+    ld [wVibratoChannel_2], a
+
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
+    jp PlayChannel_2
+.caseEE: ; Loop -----------------------------------------------------
     cp a, $EE
     jp nz, .caseFF
-    ; Do stuff here
-    jp .endSwitch
-.caseFF: ; music end command
+
+    ld a, [wLoopTimesChannel_2]
+    cp a, 0
+    jp z, .initLoop
+    ; loop again
+    dec a
+    ld [wLoopTimesChannel_2], a
+    cp a, 0
+    jp nz, .noLoopEnd
+
+    ; move sheet pointer after loop command
+    ld bc, 3
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
+    jp PlayChannel_2
+.noLoopEnd:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_2 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_2], a
+
+    jp PlayChannel_2
+.initLoop:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_2 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_2], a
+    ld a, [hl+] ; times
+    dec a ; already did 1 time when coming here
+    ld [wLoopTimesChannel_2], a
+
+    jp PlayChannel_2
+.caseFF: ; music end command --------------------------------------
     cp a, $FF
     jp nz, .endSwitch
 
@@ -306,30 +407,143 @@ PlayChannel_3:
     ld a, [wPositionChannel_3 + 1]
     ld l, a
 
-    ld a, [hl+]
+    ld a, [hl+] ; load command (+0)
     
     ; check which command it is
-.case01: ; Play note
+.case01: ; Play note --------------------------------------------
     cp a, $01
-    jp nz, .caseA1
-    ; Do stuff here
+    jp nz, .case25
+    
+    ld a, [hl+] ; load note length (+1)
+    ld c, a
+
+    ld a, [wNoteFrameChannel_3]
+    ld b, a
+    xor a
+    cp a, b
+    ; if var == 0 set note length
+    jp z, .initNote
+.alreadySet:
+    ld a, [wNoteFrameChannel_3]
+    dec a
+    ld [wNoteFrameChannel_3], a
+
+    cp a, 0             ; if frame == 0
+    jp nz, .endSwitch
+
+    ld bc, 3            ; set it to next byte of music sheet
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+
     jp .endSwitch
-.caseA1: ; Vibrato
-    cp a, $A1
+.initNote:
+    ld a, c                     ; set intital note length
+    ld [wNoteFrameChannel_3], a
+
+    ld a, [hl+] ; load volume and sweep (+2)
+
+    ; set volume
+    ld [rNR32], a
+
+    ld a, [hl+] ; frequency lower (+3)
+    ld c, a
+    ld a, [hl+] ; frequency higher (+4)
+    ld d, a
+
+    ; set frequency
+    ld a, c
+    ld [rNR33], a
+    ld a, d
+    or a, %10000000 ; trigger channel
+    ld [rNR34], a
+
+    jp .endSwitch
+.case25: ; Set waveform ---------------------------------------------
+    cp a, $25
     jp nz, .caseEE
-    ; Do stuff here
-    jp .endSwitch
-.caseEE: ; Loop
+    
+    xor a
+    ld [rNR30], a ; turn off channel
+
+    ld a, [hl+] ; get waveform pattern
+    sla a       ; multiply by 16
+    sla a
+    sla a
+    sla a
+
+    push hl
+    
+    ld hl, WavePatterns ; get first wave pattern
+    ld c, a             ; move to the selected one
+    ld b, 0
+    add hl, bc
+    ld d, h
+    ld e, l             ; de = pattern + offset * 16
+
+    ld bc, $10          ; len = 16
+    ld hl, _AUD3WAVERAM ; destination
+    call Memcpy
+
+    pop hl
+
+    ld a, %10000000     ; turn channel back on
+    ld [rNR30], a
+
+    ld a, h
+    ld [wPositionChannel_3 + 1], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+
+    jp PlayChannel_3
+.caseEE: ; Loop -----------------------------------------------------
     cp a, $EE
     jp nz, .caseFF
-    ; Do stuff here
-    jp .endSwitch
-.caseFF: ; music end command
+
+    ld a, [wLoopTimesChannel_3]
+    cp a, 0
+    jp z, .initLoop
+    ; loop again
+    dec a
+    ld [wLoopTimesChannel_3], a
+    cp a, 0
+    jp nz, .noLoopEnd
+
+    ; move sheet pointer after loop command
+    ld bc, 3
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+
+    jp PlayChannel_2
+.noLoopEnd:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_3 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_3], a
+
+    jp PlayChannel_3
+.initLoop:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_3 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_3], a
+    ld a, [hl+] ; times
+    dec a ; already did 1 time when coming here
+    ld [wLoopTimesChannel_3], a
+
+    jp PlayChannel_3
+.caseFF: ; music end command --------------------------------------
     cp a, $FF
     jp nz, .endSwitch
 
     xor a
     ld [wOnChannel_3], a            ; turn off channel in music engine
+    ld [rNR32], a                   ; set volume to 0
     ld [rNR30], a                   ; set volume to 0
 
     ; rewind the music to the start
@@ -348,30 +562,102 @@ SECTION "EngineChannel4", ROM0
 
 PlayChannel_4:
     ; load position into hl
-    ld a, [wPositionChannel_1]
+    ld a, [wPositionChannel_4]
     ld h, a
-    ld a, [wPositionChannel_1 + 1]
+    ld a, [wPositionChannel_4 + 1]
     ld l, a
 
-    ld a, [hl+]
+    ld a, [hl+] ; load command (+0)
     
     ; check which command it is
-.case01: ; Play note
+.case01: ; Play note --------------------------------------------
     cp a, $01
-    jp nz, .caseA1
-    ; Do stuff here
-    jp .endSwitch
-.caseA1: ; Vibrato
-    cp a, $A1
     jp nz, .caseEE
-    ; Do stuff here
+    
+    ld a, [hl+] ; load note length (+1)
+    ld c, a
+
+    ld a, [wNoteFrameChannel_4]
+    ld b, a
+    xor a
+    cp a, b
+    ; if var == 0 set note length
+    jp z, .initNote
+.alreadySet:
+    ld a, [wNoteFrameChannel_4]
+    dec a
+    ld [wNoteFrameChannel_4], a
+
+    cp a, 0             ; if frame == 0
+    jp nz, .endSwitch
+
+    ld bc, 3            ; set it to next byte of music sheet
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
+
     jp .endSwitch
-.caseEE: ; Loop
+.initNote:
+    ld a, c                     ; set intital note length
+    ld [wNoteFrameChannel_4], a
+
+    ld a, [hl+] ; load volume and sweep (+2)
+
+    ; set volume and sweep
+    ld [rNR42], a
+
+    ld a, [hl+] ; frequency lower (+3)
+    ld c, a
+
+    ; set frequency
+    ld a, c
+    ld [rNR43], a
+    ld a, %10000000 ; trigger channel
+    ld [rNR44], a
+
+    jp .endSwitch
+.caseEE: ; Loop -----------------------------------------------------
     cp a, $EE
     jp nz, .caseFF
-    ; Do stuff here
-    jp .endSwitch
-.caseFF: ; music end command
+
+    ld a, [wLoopTimesChannel_4]
+    cp a, 0
+    jp z, .initLoop
+    ; loop again
+    dec a
+    ld [wLoopTimesChannel_4], a
+    cp a, 0
+    jp nz, .noLoopEnd
+
+    ; move sheet pointer after loop command
+    ld bc, 3
+    add hl, bc
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
+
+    jp PlayChannel_4
+.noLoopEnd:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_4 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_4], a
+
+    jp PlayChannel_4
+.initLoop:
+    ld a, [hl+] ; add 1
+    ld [wPositionChannel_4 + 1], a
+    ld a, [hl+] ; add 2
+    ld [wPositionChannel_4], a
+    ld a, [hl+] ; times
+    dec a ; already did 1 time when coming here
+    ld [wLoopTimesChannel_4], a
+
+    jp PlayChannel_4
+.caseFF: ; music end command --------------------------------------
     cp a, $FF
     jp nz, .endSwitch
 
@@ -483,7 +769,7 @@ SECTION "MusicSheets", ROM0
 /*
 MUSIC SHEET GUIDE:
 
-commands: (1st byte)
+commands channel 1,2: (1st byte)
     01 - play note
         1. number of frames to be played
         2. volume and sweep control
@@ -497,21 +783,36 @@ commands: (1st byte)
         2. address to loop back to (low)
         3. number of times (1 makes infinite loop)
     FF - end of music
+
+commands channel 3: (1st byte)
+    01 - play note
+        1. number of frames to be played
+        2. volume (%0000 %0110 %0100 %0010)
+        3. note frequency lower
+        4. note frequency higher
+        (volume = 0 will not play sound and just pause)
+    25 - change wave pattern
+        1. wave mode (sth from presets) (turns channel off and on causing an audio pop)
+    EE - loop
+        1. address to loop back to (high)
+        2. address to loop back to (low)
+        3. number of times (1 makes infinite loop)
+    FF - end of music
+
+commands channel 4: (1st byte)
+    01 - play note
+        1. number of frames to be played
+        2. volume (%0000 %0110 %0100 %0010)
+        3. note frequency (%11110111) and mode (%00001000)
+        (volume = 0 will not play sound and just pause)
+    EE - loop
+        1. address to loop back to (high)
+        2. address to loop back to (low)
+        3. number of times (1 makes infinite loop)
+    FF - end of music
 */
 
-; TODO Copy channel 1 over to 2
-; TODO implement channel 3
-; TODO implement channel 4
-
 Channel_1:
-    db $A1, %1010_1010
-.start
-    db $01, $26, $F0, $0A, $01
-    db $01, $26, $00, $00, $00
-    db $01, $26, $F0, $0A, $04
-    db $EE
-    dw .start
-    db 3
     db $FF
 
 Channel_2:
@@ -521,4 +822,16 @@ Channel_3:
     db $FF
 
 Channel_4:
+.start
+    db $01, $26, $70, $A3
+    db $01, $F6, $00, $00
+    db $EE
+    dw .start
+    db 1
     db $FF
+
+SECTION "WavePatterns", ROM0
+
+WavePatterns:
+    db $02, $46, $8A, $CE, $FF, $FE, $ED, $DC, $CB, $A9, $87, $65, $44, $33, $22, $11
+    db $01, $23, $45, $67, $8A, $CD, $EE, $F7, $7F, $EE, $DC, $A8, $76, $54, $32, $10
