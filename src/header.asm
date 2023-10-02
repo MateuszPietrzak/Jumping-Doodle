@@ -62,23 +62,23 @@ ENDR
 ; -------------------------------------------------------------------------------------------------------
 ; -------------------------------------------------------------------------------------------------------
 ; Main loop
-    call HandlePlayer
+    ; call HandlePlayer
 MainLoop:
     call WaitForVBlank
     ; TO DO WHILE VBLANK
     call PlayerBufferToOAM
-    ; TO DO WHILE VBLANK END
-
-    ; TODO figure out why writting doesn't work
-    call PlayMusic
 
     ld bc, 32
     ld hl, $9c20                ; load second line
     ld de, wWindowTilemapCopy + 32
     call Memcpy
+    ; TO DO WHILE VBLANK END
 
-    call HandlePlayer
+    ; play music
+    ; RIGHT AFTER ALL MEMCOPY
+    call PlayMusic
 
+    ; call HandlePlayer
 
     ; --------------------------------------------------
     ; Write number and increment it
