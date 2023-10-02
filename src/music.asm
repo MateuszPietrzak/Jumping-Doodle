@@ -818,13 +818,13 @@ Channel_1:
 Channel_2:
     db $A1, %01010101
     db $01, START_PAUSE, $00 
-    dw C4
+    dw $00
 .start
     ; P1B1
-    db $01, NL, $F0
+    db $01, NL * 2, $F0
     dw C4
-    db $01, NL, $F0
-    dw C4
+    ; db $01, NL, $F0
+    ; dw C4
     db $01, NL, $F0
     dw F3
     db $01, NL, $F0
@@ -838,11 +838,11 @@ Channel_2:
     db $01, NL, $F0
     dw F3
     ; P1B2 -------------
-    db $01, NL, $F0
+    db $01, NL * 2, $F0
     dw D4
     db $01, NL, $F0
-    dw D4
-    db $01, NL, $F0
+    ; dw D4
+    ; db $01, NL, $F0
     dw G3
     db $01, NL, $F0
     dw B3
@@ -855,10 +855,10 @@ Channel_2:
     db $01, NL, $F0
     dw G3
     ; P1B3 -------------
-    db $01, NL, $F0
+    db $01, NL * 2, $F0
     dw B3
-    db $01, NL, $F0
-    dw B3
+    ; db $01, NL, $F0
+    ; dw B3
     db $01, NL, $F0
     dw E3
     db $01, NL, $F0
@@ -872,10 +872,10 @@ Channel_2:
     db $01, NL, $F0
     dw E3
     ; P1B4 -------------
-    db $01, NL, $F0
+    db $01, NL * 2, $F0
     dw E4
-    db $01, NL, $F0
-    dw E4
+    ; db $01, NL, $F0
+    ; dw E4
     db $01, NL, $F0
     dw A3
     db $01, NL, $F0
@@ -892,8 +892,187 @@ Channel_2:
 
     db $EE 
     dw .start 
+    db $02
+    ; --------------------------------------------------
+    ; P2B1 -----------
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $F0
+    dw D4
+    db $01, NL, $F0
+    dw D4
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $00
+    dw $00
+    ; P2B2 -----------
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $F0
+    dw E4
+    db $01, NL, $F0
+    dw E4
+    db $01, NL, $00
+    dw $00
+    db $01, NL, $00
+    dw $00
+    ; --------------------------------------------
+    ; P3B1
+    db $01, NL * 2, $F0
+    dw C4
+    ; db $01, NL, $F0
+    ; dw C4
+    db $01, NL, $F0
+    dw F3
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw F3
+    ; P3B2 -------------
+    db $01, NL * 2, $F0
+    dw D4
+    db $01, NL, $F0
+    ; dw D4
+    ; db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw D4
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw D4
+    db $01, NL, $F0
+    dw G3
+    ; P3B3 -------------
+    db $01, NL * 2, $F0
+    dw B3
+    ; db $01, NL, $F0
+    ; dw B3
+    db $01, NL, $F0
+    dw E3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw E3
+    ; P3B4 -------------
+    db $01, NL * 2, $F0
+    dw E4
+    ; db $01, NL, $F0
+    ; dw E4
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw E4
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw E4
+    db $01, NL, $F0
+    dw A3
+    ; -------------
+    ; --------------------------------------------------------
+    ; P4B1
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw F3
+    db $01, NL, $F0
+    dw D3
+    db $01, NL, $F0
+    dw F3
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw F3
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw D3
+    ; P4B2 -------------
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw E3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw B3
+    db $01, NL, $F0
+    dw E3
+    ; P4B3 -------------
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw E3
+    db $01, NL, $F0
+    dw C3
+    db $01, NL, $F0
+    dw E3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw E3
+    db $01, NL, $F0
+    dw G3
+    db $01, NL, $F0
+    dw C3
+    ; P4B4 -------------
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw F3
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw A3
+    db $01, NL, $F0
+    dw C4
+    db $01, NL, $F0
+    dw F3
+    ; -------------
+
+    db $EE 
+    dw .start 
     db $01
-    
+
     db $FF
 
 Channel_3:
