@@ -109,5 +109,4 @@ PollKeys::
 
 SECTION "VariablesMovement", WRAM0
 
-wFrameCounter:: db
 wKeysPressed:: db
