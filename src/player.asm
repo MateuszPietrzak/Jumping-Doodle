@@ -8,6 +8,9 @@ InitPlayer::
     ld hl, _VRAM8000
     ld bc, GraphicTilesEnd - GraphicTiles
     call Memcpy
+    ret
+
+ResetPlayerState:: 
 
     ; Init position (which is in form pixels * 16)
     ; Position X
@@ -211,7 +214,7 @@ HandlePlayer::
     cp a, $10
     jp c, .skipNoFall
 
-    jp EntryPoint
+    jp StateMenu ; When dies, go back to main menu
 
 .skipNoFall:
     inc bc ; Increment y position by 1/16 of a pixel
