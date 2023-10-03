@@ -38,25 +38,13 @@ StateInit::
 
     xor a
     ld [rNR52], a
+    ld [rSCY], a
 
     ; initialize sound
     call InitMusic
 
     ; clear wNumberBCD 
     ; TODO maybe move to standalone function
-    xor a
-FOR N, 8
-    ld [wNumberBCD_1 + N], a
-    ld [wNumberBCD_2 + N], a
-ENDR
-    
-    ld a, 1
-    ld [wNumberBCD_2 + 7], a
-
-
-    ld hl, ScoreText
-    ld de, wWindowTilemapCopy + 32 + 1
-    call WriteTextToWindow
 
     ; After initialization, the game should enter the main menu
     call StateMenu

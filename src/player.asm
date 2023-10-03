@@ -12,6 +12,8 @@ InitPlayer::
 
 ResetPlayerState:: 
 
+    call WaitForVBlank
+    call LoadGameBackground
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -34,6 +36,8 @@ ResetPlayerState::
     ; Init screen Y scroll
     xor a
     ld [wScreenScrollY], a
+    ld [wScreenScrollY + 1], a
+    ld [rSCY], a
 
     ret
 

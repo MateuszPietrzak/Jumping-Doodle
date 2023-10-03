@@ -17,12 +17,12 @@ Memcpy::
     jp nz, Memcpy
     ret
 
-; MemcpyOffset
-; Copies data from ROM to RAM and adds 64?
+; MemcpyOffsetGame
+; Copies data from ROM to RAM and adds $40 (Game Assets)
 ; @param de Beginning of data in ROM
 ; @param hl Deginning of target space in RAM
 ; @param bc data size
-MemcpyOffset::
+MemcpyOffsetGame::
     ld a, [de]
     add a, $40
     ld [hl+], a
@@ -30,8 +30,52 @@ MemcpyOffset::
     dec bc
     ld a, b
     or a, c
-    jp nz, MemcpyOffset
+    jp nz, MemcpyOffsetGame
     ret
+
+; MemcpyOffsetMenu
+; Copies data from ROM to RAM and adds $50 (Game Assets)
+; @param de Beginning of data in ROM
+; @param hl Deginning of target space in RAM
+; @param bc data size
+MemcpyOffsetMenu::
+    ld a, [de]
+    add a, $4F
+    ld [hl+], a
+    inc de
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, MemcpyOffsetMenu
+    ret
+
+; Sub16
+; Decreases all values at a given range by $10
+; @param hl Beginning of data
+; @param b length
+Sub16::
+    ld a, b
+    cp a, $0
+    ret z
+    ld a, [hl]
+    sub a, $10     
+    ld [hl+], a
+    dec b
+    jp Sub16
+
+; Add16
+; Increases all values at a given range by $10
+; @param hl Beginning of data
+; @param b length
+Add16::
+    ld a, b
+    cp a, $0
+    ret z
+    ld a, [hl]
+    add a, $10     
+    ld [hl+], a
+    dec b
+    jp Add16
 
 ; WaitPorVBlank
 ; Waits until VBlank (duh)

@@ -29,6 +29,12 @@ InitializeWindow::
     ld bc, BackgroundTiles.end - BackgroundTiles
     call Memcpy
 
+    ; menu buttons tiles
+    ld de, MenuTiles
+    ld hl, $9500
+    ld bc, MenuTiles.end - MenuTiles
+    call Memcpy
+
     ; do tilemap for window
     ld de, WindowInitialState
     ld hl, $9C00
@@ -41,11 +47,6 @@ InitializeWindow::
     ld bc, WindowInitialState.end - WindowInitialState
     call Memcpy
 
-    ; do tilemap for background
-    ld de, BackgroundTilemap
-    ld hl, $9800
-    ld bc, BackgroundTilemap.end - BackgroundTilemap
-    call MemcpyOffset
 
     ret
 
@@ -54,6 +55,84 @@ SwitchWindow::
     ld a, [rLCDC]       ; get current LCDC state
     or a, LCDCF_WINON   ; or it with LCD WINON
     ld [rLCDC], a       ; set it back
+
+    ret
+
+LoadGameBackground::
+
+    ;Disable LCD before writing to VRAM
+    xor a
+    ld [rLCDC], a
+
+    ; do tilemap for background
+    ld de, BackgroundTilemap
+    ld hl, $9800
+    ld bc, BackgroundTilemap.end - BackgroundTilemap
+    call MemcpyOffsetGame
+
+    ; numbers
+    xor a
+FOR N, 8
+    ld [wNumberBCD_1 + N], a
+    ld [wNumberBCD_2 + N], a
+ENDR
+    
+    ld a, 1
+    ld [wNumberBCD_2 + 7], a
+
+
+    ld hl, ScoreText
+    ld de, wWindowTilemapCopy + 32 + 1
+    call WriteTextToWindow
+
+    ; turn on the LCD
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON | LCDCF_WINON | LCDCF_WIN9C00
+    ld [rLCDC], a
+
+    ret 
+
+LoadMenuBackground::
+
+    ;Disable LCD before writing to VRAM
+    xor a
+    ld [rLCDC], a
+
+    ; do tilemap for background
+    ld de, MenuTilemap
+    ld hl, $9800
+    ld bc, MenuTilemap.end - MenuTilemap
+    call MemcpyOffsetMenu
+
+
+    ; turn on the LCD
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
+
+    ret
+
+LoadScoresBackground::
+
+    ;Disable LCD before writing to VRAM
+    xor a
+    ld [rLCDC], a
+
+    ld bc, $03FF
+    ld hl, $9800
+
+.cleanBG:
+    xor a
+    ld [hl+], a
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, .cleanBG
+
+    ; turn on the LCD
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
 
     ret
 
@@ -199,3 +278,10 @@ BackgroundTiles:
     incbin "assets/BackgroundTiles.2bpp"
 .end:
 
+MenuTiles:
+    incbin "assets/ButtonsTiles.2bpp"
+.end:
+
+MenuTilemap:
+    incbin "assets/MainMenuTilemap.2bpp"
+.end:
