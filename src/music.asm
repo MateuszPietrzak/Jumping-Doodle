@@ -823,9 +823,6 @@ commands channel 4: (1st byte)
     FF - end of music
 */
 
-; TODO manage volume
-; TODO fix bug with wave ram changing???
-
 Channel_1:
     db VIB, %01010101
     db NOTE, START_PAUSE, VOL_MUTE 
