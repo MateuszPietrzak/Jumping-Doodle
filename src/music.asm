@@ -34,6 +34,11 @@ InitMusic::
     ld [wOnChannel_2], a
     ld [wOnChannel_3], a
     ld [wOnChannel_4], a
+    xor a
+    ;ld [wOnChannel_1], a
+    ;ld [wOnChannel_2], a
+    ;ld [wOnChannel_3], a
+    ;ld [wOnChannel_4], a
 
     ; prepare for the first note
     xor a
@@ -119,7 +124,7 @@ PlayChannel_1:
     
     ; check which command it is
 .case01: ; Play note --------------------------------------------
-    cp a, $01
+    cp a, NOTE
     jp nz, .caseA1
 
     ; apply vibrato
@@ -182,7 +187,7 @@ PlayChannel_1:
 
     jp .endSwitch
 .caseA1: ; Vibrato -------------------------------------------------
-    cp a, $A1
+    cp a, VIB
     jp nz, .caseEE
 
     ld a, [hl+]
@@ -195,7 +200,7 @@ PlayChannel_1:
 
     jp PlayChannel_1
 .caseEE: ; Loop -----------------------------------------------------
-    cp a, $EE
+    cp a, LOP
     jp nz, .caseFF
 
     ld a, [wLoopTimesChannel_1]
@@ -234,7 +239,7 @@ PlayChannel_1:
 
     jp PlayChannel_1
 .caseFF: ; music end command --------------------------------------
-    cp a, $FF
+    cp a, END
     jp nz, .endSwitch
 
     xor a
@@ -266,7 +271,7 @@ PlayChannel_2:
     
     ; check which command it is
 .case01: ; Play note --------------------------------------------
-    cp a, $01
+    cp a, NOTE
     jp nz, .caseA1
 
     ; apply vibrato
@@ -329,7 +334,7 @@ PlayChannel_2:
 
     jp .endSwitch
 .caseA1: ; Vibrato -------------------------------------------------
-    cp a, $A1
+    cp a, VIB
     jp nz, .caseEE
 
     ld a, [hl+]
@@ -342,7 +347,7 @@ PlayChannel_2:
 
     jp PlayChannel_2
 .caseEE: ; Loop -----------------------------------------------------
-    cp a, $EE
+    cp a, LOP
     jp nz, .caseFF
 
     ld a, [wLoopTimesChannel_2]
@@ -381,7 +386,7 @@ PlayChannel_2:
 
     jp PlayChannel_2
 .caseFF: ; music end command --------------------------------------
-    cp a, $FF
+    cp a, END
     jp nz, .endSwitch
 
     xor a
@@ -413,7 +418,7 @@ PlayChannel_3:
     
     ; check which command it is
 .case01: ; Play note --------------------------------------------
-    cp a, $01
+    cp a, NOTE
     jp nz, .case25
     
     ld a, [hl+] ; load note length (+1)
@@ -502,7 +507,7 @@ PlayChannel_3:
 
     jp PlayChannel_3
 .caseEE: ; Loop -----------------------------------------------------
-    cp a, $EE
+    cp a, LOP
     jp nz, .caseFF
 
     ld a, [wLoopTimesChannel_3]
@@ -541,7 +546,7 @@ PlayChannel_3:
 
     jp PlayChannel_3
 .caseFF: ; music end command --------------------------------------
-    cp a, $FF
+    cp a, END
     jp nz, .endSwitch
 
     xor a
@@ -574,7 +579,7 @@ PlayChannel_4:
     
     ; check which command it is
 .case01: ; Play note --------------------------------------------
-    cp a, $01
+    cp a, NOTE
     jp nz, .caseEE
     
     ld a, [hl+] ; load note length (+1)
@@ -623,7 +628,7 @@ PlayChannel_4:
 
     jp .endSwitch
 .caseEE: ; Loop -----------------------------------------------------
-    cp a, $EE
+    cp a, LOP
     jp nz, .caseFF
 
     ld a, [wLoopTimesChannel_4]
@@ -662,7 +667,7 @@ PlayChannel_4:
 
     jp PlayChannel_4
 .caseFF: ; music end command --------------------------------------
-    cp a, $FF
+    cp a, END
     jp nz, .endSwitch
 
     xor a
@@ -818,591 +823,580 @@ commands channel 4: (1st byte)
     FF - end of music
 */
 
+; TODO manage volume
+; TODO fix bug with wave ram changing???
+
 Channel_1:
-    db $A1, %01010101
-    db $01, START_PAUSE, $08 
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
     dw $00
 .start
     ; P1B1
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw A3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B2
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw B3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B3
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw G3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B4
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw C4
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
 
-    db $EE
+    db LOP
     dw .start
     db $02
 
     ; P2B1
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw A3
-    db $01, NL * 2, $08
+    db NOTE, NL * 2, VOL_MUTE
     dw $00
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw B3
-    db $01, NL * 2, $08
+    db NOTE, NL * 2, VOL_MUTE
     dw $00
     ; P2B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw G3
-    db $01, NL * 2, $08
+    db NOTE, NL * 2, VOL_MUTE
     dw $00
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw C4
-    db $01, NL * 2, $08
+    db NOTE, NL * 2, VOL_MUTE
     dw $00
 
     ; P3B1
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw A3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B2
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw B3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B3
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw G3
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B4
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw C4
-    db $01, NL * 6, $08
+    db NOTE, NL * 6, VOL_MUTE
     dw $00
 
     ; P4B1
-    db $01, NL * 8, $08
+    db NOTE, NL * 8, VOL_MUTE
     dw $00
     ; P4B2
-    db $01, NL * 8, $08
+    db NOTE, NL * 8, VOL_MUTE
     dw $00
     ; P4B3
-    db $01, NL * 8, $08
+    db NOTE, NL * 8, VOL_MUTE
     dw $00
     ; P4B4
-    db $01, NL * 8, $08
+    db NOTE, NL * 8, VOL_MUTE
     dw $00
 
-    db $EE
+    db LOP
     dw .start
-    db $01
+    db NOTE
 
-    db $FF
+    db END
 
 Channel_2:
-    db $A1, %01010101
-    db $01, START_PAUSE, $08 
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
     dw $00
 .start
     ; P1B1
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw C4
-    ; db $01, NL, $F8
-    ; dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
     ; P1B2 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw D4
-    db $01, NL, $F8
-    ; dw D4
-    ; db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
     ; P1B3 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw B3
-    ; db $01, NL, $F8
-    ; dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
     ; P1B4 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw E4
-    ; db $01, NL, $F8
-    ; dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
     ; -------------
 
-    db $EE 
+    db LOP 
     dw .start 
     db $02
     ; --------------------------------------------------
     ; P2B1 -----------
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw C4
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw D4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw D4
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
     ; P2B2 -----------
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw B3
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_13
     dw E4
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
-    db $01, NL, $08
+    db NOTE, NL, VOL_MUTE
     dw $00
     ; --------------------------------------------
     ; P3B1
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_23
     dw C4
-    ; db $01, NL, $F8
-    ; dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
     ; P3B2 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw D4
-    db $01, NL, $F8
-    ; dw D4
-    ; db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
     ; P3B3 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw B3
-    ; db $01, NL, $F8
-    ; dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
     ; P3B4 -------------
-    db $01, NL * 2, $F8
+    db NOTE, NL * 2, VOL_MAX
     dw E4
-    ; db $01, NL, $F8
-    ; dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
     ; -------------
     ; --------------------------------------------------------
     ; P4B1
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw D3
     ; P4B2 -------------
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw B3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
     ; P4B3 -------------
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw E3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw G3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C3
     ; P4B4 -------------
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw A3
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw C4
-    db $01, NL, $F8
+    db NOTE, NL, VOL_23
     dw F3
     ; -------------
 
-    db $EE 
+    db LOP 
     dw .start 
-    db $01
+    db NOTE
 
-    db $FF
+    db END
 
 Channel_3:
-    db $25, $08
-    db $01, START_PAUSE, $00 
+    db $25, $00
+    db NOTE, START_PAUSE, VOL3_MUTE 
     dw $00
 .start
     ; P1B1
-    db $01, NL * 2, $20
-    dw F3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw F4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P1B2
-    db $01, NL * 2, $20
-    dw G3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw G4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P1B3
-    db $01, NL * 2, $20
-    dw E3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw E4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P1B4
-    db $01, NL * 2, $20
-    dw A3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw A4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
 
-    db $EE
+    db LOP
     dw .start
     db $02
 
     ; P2B1
-    db $01, NL, $20
-    dw F3
-    db $01, NL, $20
-    dw F3
-    db $01, NL * 2, $00
+    db NOTE, NL, VOL3_12
+    dw F4
+    db NOTE, NL, VOL3_12
+    dw F4
+    db NOTE, NL * 2, VOL3_MUTE
     dw $00
-    db $01, NL, $20
-    dw G3
-    db $01, NL, $20
-    dw G3
-    db $01, NL * 2, $00
+    ; P2B2
+    db NOTE, NL, VOL3_12
+    dw G4
+    db NOTE, NL, VOL3_12
+    dw G4
+    db NOTE, NL * 2, VOL3_MUTE
     dw $00
     ; P2B3
-    db $01, NL, $20
-    dw E3
-    db $01, NL, $20
-    dw E3
-    db $01, NL * 2, $00
+    db NOTE, NL, VOL3_12
+    dw E4
+    db NOTE, NL, VOL3_12
+    dw E4
+    db NOTE, NL * 2, VOL3_MUTE
     dw $00
-    db $01, NL, $20
-    dw A3
-    db $01, NL, $20
-    dw A3
-    db $01, NL * 2, $00
+    ; P2B4
+    db NOTE, NL, VOL3_12
+    dw A4
+    db NOTE, NL, VOL3_12
+    dw A4
+    db NOTE, NL * 2, VOL3_MUTE
     dw $00
 
     ; P3B1
-    db $01, NL * 2, $20
-    dw F3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw F4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P3B2
-    db $01, NL * 2, $20
-    dw G3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw G4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P3B3
-    db $01, NL * 2, $20
-    dw E3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw E4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
     ; P3B4
-    db $01, NL * 2, $20
-    dw A3
-    db $01, NL * 6, $00
+    db NOTE, NL * 2, VOL3_12
+    dw A4
+    db NOTE, NL * 6, VOL3_MUTE
     dw $00
 
     ; P4B1
-    db $01, NL * 8, $00
+    db NOTE, NL * 8, VOL3_MUTE
     dw $00
     ; P4B2
-    db $01, NL * 8, $00
+    db NOTE, NL * 8, VOL3_MUTE
     dw $00
     ; P4B3
-    db $01, NL * 8, $00
+    db NOTE, NL * 8, VOL3_MUTE
     dw $00
     ; P4B4
-    db $01, NL * 8, $00
+    db NOTE, NL * 8, VOL3_MUTE
     dw $00
 
-    db $EE
+    db LOP
     dw .start
-    db $01
+    db NOTE
 
-    db $FF
+    db END
 
 Channel_4:
-    db $01, START_PAUSE, $00
+    db NOTE, START_PAUSE, $00
     dw $00
 .start
     ; P1B1 ----------------
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dG7s
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MID_L
     dw dD7
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MID_S
     dw dG7s
-    db $01, hNL, $00
+    db NOTE, hNL, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MID_S
     dw dG8s
-    db $01, hNL * 3, $00
+    db NOTE, hNL * 3, VOLD_MUTE
     dw $00
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dD7
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
     
-    db $EE
+    db LOP
     dw .start
     db $08
     ; --------------------
     ; P2B1-3 -------------
 .part21
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MAX_S
     dw dG7s
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MAX_S
     dw dD7
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MAX_S
     dw dG7s
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
-    db $01, hNL - 2, $F1
+    db NOTE, hNL - 2, VOLD_MAX_S
     dw dG8s
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
     
-    db $EE
+    db LOP
     dw .part21
     db $03
 
     ; P2B4 ---------------
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MAX_S
     dw dG7s
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MAX_S
     dw dD7
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MAX_S
     dw dG7s
-    db $01, hNL, $00
+    db NOTE, hNL, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MAX_S
     dw dG8s
-    db $01, hNL, $00
+    db NOTE, hNL, VOLD_MUTE
     dw $00
     ; -----------------
     ; P3B1 ------------
 .part3
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dG7s
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F2
+    db NOTE, NL - 2, VOLD_MID_L
     dw dD7
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MID_S
     dw dG7s
-    db $01, hNL, $00
+    db NOTE, hNL, VOLD_MUTE
     dw $00
-    db $01, hNL, $F1
+    db NOTE, hNL, VOLD_MID_S
     dw dG8s
-    db $01, hNL * 3, $00
+    db NOTE, hNL * 3, VOLD_MUTE
     dw $00
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dD7
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
     
-    db $EE
+    db LOP
     dw .part3
     db $04
     ; ----------------
     ; P4B1 -----------
 .part4
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dG7s
-    db $01, NL * 2, $00
+    db NOTE, NL * 2, VOLD_MUTE
     dw $00
-    db $01, NL, $F2
+    db NOTE, NL, VOLD_MID_L
     dw dD7
-    db $01, NL, $00
+    db NOTE, NL, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F1
+    db NOTE, NL - 2, VOLD_MID_S
     dw dD8
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, NL - 2, $F1
+    db NOTE, NL - 2, VOLD_MID_S
     dw dD7
-    db $01, 2, $00
+    db NOTE, 2, VOLD_MUTE
     dw $00
-    db $01, hNL, $00
-    dw dD8
-    db $01, hNL, $00
+    db NOTE, hNL, VOLD_MID_S
+    dw dG8s
+    db NOTE, hNL, VOLD_MUTE
     dw $00
 
-    db $EE
+    db LOP
     dw .part4
     db $04
     ; ---------------
 
-    db $EE
+    db LOP
     dw .start
-    db $01
+    db NOTE
 
-    db $FF
+    db END
 
 SECTION "WavePatterns", ROM0
 
@@ -1487,6 +1481,24 @@ DrumNotes:
     DEF dD2  EQU $97
     DEF dC2  EQU $A4
 
-DEF NL  EQU 12
-DEF hNL  EQU 6
-DEF START_PAUSE EQU $20
+
+DEF NOTE            EQU $01
+DEF VIB             EQU $A1
+DEF LOP             EQU $EE
+DEF END             EQU $FF
+DEF VOL_MAX         EQU $F8
+DEF VOL_23          EQU $A8
+DEF VOL_13          EQU $58
+DEF VOL_MUTE        EQU $08
+DEF VOL3_MAX        EQU $20
+DEF VOL3_12         EQU $40
+DEF VOL3_14         EQU $60
+DEF VOL3_MUTE       EQU $00
+DEF VOLD_MAX_S      EQU $F1
+DEF VOLD_MAX_L      EQU $F2
+DEF VOLD_MID_S      EQU $C1
+DEF VOLD_MID_L      EQU $C2
+DEF VOLD_MUTE       EQU $00
+DEF NL              EQU 12
+DEF hNL             EQU 6
+DEF START_PAUSE     EQU $30
