@@ -214,7 +214,7 @@ HandlePlayer::
     cp a, $10
     jp c, .skipNoFall
 
-    jp StateMenu ; When dies, go back to main menu
+    jp GameFinish ; When dies, go back to main menu
 
 .skipNoFall:
     inc bc ; Increment y position by 1/16 of a pixel

@@ -44,5 +44,7 @@ ENDR
 
     jp GameLoop
 
-GameFinish:
-    ret
+GameFinish::
+    ; Everything to do after dying, for example saving score
+
+    jp StateMenu
