@@ -820,28 +820,28 @@ commands channel 4: (1st byte)
 
 Channel_1:
     db $A1, %01010101
-    db $01, START_PAUSE, $00 
+    db $01, START_PAUSE, $08 
     dw $00
 .start
     ; P1B1
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw A3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P1B2
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw B3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P1B3
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw G3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P1B4
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw C4
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
 
     db $EE
@@ -849,64 +849,64 @@ Channel_1:
     db $02
 
     ; P2B1
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL * 2, $00
+    db $01, NL * 2, $08
     dw $00
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL * 2, $00
+    db $01, NL * 2, $08
     dw $00
     ; P2B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL * 2, $00
+    db $01, NL * 2, $08
     dw $00
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL * 2, $00
+    db $01, NL * 2, $08
     dw $00
 
     ; P3B1
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw A3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P3B2
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw B3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P3B3
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw G3
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
     ; P3B4
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw C4
-    db $01, NL * 6, $00
+    db $01, NL * 6, $08
     dw $00
 
     ; P4B1
-    db $01, NL * 8, $00
+    db $01, NL * 8, $08
     dw $00
     ; P4B2
-    db $01, NL * 8, $00
+    db $01, NL * 8, $08
     dw $00
     ; P4B3
-    db $01, NL * 8, $00
+    db $01, NL * 8, $08
     dw $00
     ; P4B4
-    db $01, NL * 8, $00
+    db $01, NL * 8, $08
     dw $00
 
     db $EE
@@ -917,76 +917,76 @@ Channel_1:
 
 Channel_2:
     db $A1, %01010101
-    db $01, START_PAUSE, $00 
+    db $01, START_PAUSE, $08 
     dw $00
 .start
     ; P1B1
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw C4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
     ; P1B2 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     ; dw D4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
     ; P1B3 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw B3
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
     ; P1B4 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw E4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
     ; -------------
 
@@ -995,177 +995,177 @@ Channel_2:
     db $02
     ; --------------------------------------------------
     ; P2B1 -----------
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
     ; P2B2 -----------
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
-    db $01, NL, $00
+    db $01, NL, $08
     dw $00
     ; --------------------------------------------
     ; P3B1
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw C4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
     ; P3B2 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     ; dw D4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
     ; P3B3 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw B3
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
     ; P3B4 -------------
-    db $01, NL * 2, $F0
+    db $01, NL * 2, $F8
     dw E4
-    ; db $01, NL, $F0
+    ; db $01, NL, $F8
     ; dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
     ; -------------
     ; --------------------------------------------------------
     ; P4B1
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw D3
     ; P4B2 -------------
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw B3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
     ; P4B3 -------------
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw E3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw G3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C3
     ; P4B4 -------------
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw A3
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw C4
-    db $01, NL, $F0
+    db $01, NL, $F8
     dw F3
     ; -------------
 
@@ -1176,7 +1176,7 @@ Channel_2:
     db $FF
 
 Channel_3:
-    db $25, $00
+    db $25, $08
     db $01, START_PAUSE, $00 
     dw $00
 .start
@@ -1273,6 +1273,135 @@ Channel_3:
     db $FF
 
 Channel_4:
+    db $01, START_PAUSE, $00
+    dw $00
+.start
+    ; P1B1 ----------------
+    db $01, NL, $F2
+    dw dG7s
+    db $01, NL, $00
+    dw $00
+    db $01, NL - 2, $F2
+    dw dD7
+    db $01, 2, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG7s
+    db $01, hNL, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG8s
+    db $01, hNL * 3, $00
+    dw $00
+    db $01, NL, $F2
+    dw dD7
+    db $01, NL, $00
+    dw $00
+    
+    db $EE
+    dw .start
+    db $08
+    ; --------------------
+    ; P2B1-3 -------------
+.part21
+    db $01, NL - 2, $F2
+    dw dG7s
+    db $01, 2, $00
+    dw $00
+    db $01, NL - 2, $F2
+    dw dD7
+    db $01, 2, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG7s
+    db $01, NL, $00
+    dw $00
+    db $01, hNL - 2, $F1
+    dw dG8s
+    db $01, 2, $00
+    dw $00
+    
+    db $EE
+    dw .part21
+    db $03
+
+    ; P2B4 ---------------
+    db $01, NL - 2, $F2
+    dw dG7s
+    db $01, 2, $00
+    dw $00
+    db $01, NL - 2, $F2
+    dw dD7
+    db $01, 2, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG7s
+    db $01, hNL, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG8s
+    db $01, hNL, $00
+    dw $00
+    ; -----------------
+    ; P3B1 ------------
+.part3
+    db $01, NL, $F2
+    dw dG7s
+    db $01, NL, $00
+    dw $00
+    db $01, NL - 2, $F2
+    dw dD7
+    db $01, 2, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG7s
+    db $01, hNL, $00
+    dw $00
+    db $01, hNL, $F1
+    dw dG8s
+    db $01, hNL * 3, $00
+    dw $00
+    db $01, NL, $F2
+    dw dD7
+    db $01, NL, $00
+    dw $00
+    
+    db $EE
+    dw .part3
+    db $04
+    ; ----------------
+    ; P4B1 -----------
+.part4
+    db $01, NL, $F2
+    dw dG7s
+    db $01, NL * 2, $00
+    dw $00
+    db $01, NL, $F2
+    dw dD7
+    db $01, NL, $00
+    dw $00
+    db $01, NL - 2, $F1
+    dw dD8
+    db $01, 2, $00
+    dw $00
+    db $01, NL - 2, $F1
+    dw dD7
+    db $01, 2, $00
+    dw $00
+    db $01, hNL, $00
+    dw dD8
+    db $01, hNL, $00
+    dw $00
+
+    db $EE
+    dw .part4
+    db $04
+    ; ---------------
+
+    db $EE
+    dw .start
+    db $01
+
     db $FF
 
 SECTION "WavePatterns", ROM0
@@ -1283,43 +1412,81 @@ WavePatterns:
 
 SECTION "Notes", ROM0
 
-DEF C3  EQU 1046
-DEF C3# EQU 1102
-DEF D3  EQU 1155
-DEF D3# EQU 1205
-DEF E3  EQU 1253
-DEF F3  EQU 1297
-DEF F3# EQU 1339
-DEF G3  EQU 1379
-DEF G3# EQU 1417
-DEF A3  EQU 1452
-DEF A3# EQU 1486
-DEF B3  EQU 1517
-DEF C4  EQU 1547
-DEF C4# EQU 1575
-DEF D4  EQU 1602
-DEF D4# EQU 1627
-DEF E4  EQU 1650
-DEF F4  EQU 1673
-DEF F4# EQU 1694
-DEF G4  EQU 1714
-DEF G4# EQU 1732
-DEF A4  EQU 1750
-DEF A4# EQU 1767
-DEF B4  EQU 1783
-DEF C5  EQU 1798
-DEF C5# EQU 1812
-DEF D5  EQU 1825
-DEF D5# EQU 1837
-DEF E5  EQU 1849
-DEF F5  EQU 1860
-DEF F5# EQU 1871
-DEF G5  EQU 1881
-DEF G5# EQU 1890
-DEF A5  EQU 1899
-DEF A5# EQU 1907
-DEF B5  EQU 1915
+ChannelNotes:
+    DEF C3  EQU 1046
+    DEF C3s EQU 1102
+    DEF D3  EQU 1155
+    DEF D3s EQU 1205
+    DEF E3  EQU 1253
+    DEF F3  EQU 1297
+    DEF F3s EQU 1339
+    DEF G3  EQU 1379
+    DEF G3s EQU 1417
+    DEF A3  EQU 1452
+    DEF A3s EQU 1486
+    DEF B3  EQU 1517
+    DEF C4  EQU 1547
+    DEF C4s EQU 1575
+    DEF D4  EQU 1602
+    DEF D4s EQU 1627
+    DEF E4  EQU 1650
+    DEF F4  EQU 1673
+    DEF F4s EQU 1694
+    DEF G4  EQU 1714
+    DEF G4s EQU 1732
+    DEF A4  EQU 1750
+    DEF A4s EQU 1767
+    DEF B4  EQU 1783
+    DEF C5  EQU 1798
+    DEF C5s EQU 1812
+    DEF D5  EQU 1825
+    DEF D5s EQU 1837
+    DEF E5  EQU 1849
+    DEF F5  EQU 1860
+    DEF F5s EQU 1871
+    DEF G5  EQU 1881
+    DEF G5s EQU 1890
+    DEF A5  EQU 1899
+    DEF A5s EQU 1907
+    DEF B5  EQU 1915
 
+DrumNotes:
+    DEF dB8  EQU $34
+    DEF dG8s EQU $35 ;
+    DEF dF8  EQU $36 
+    DEF dD8  EQU $37 ;
+    DEF dC8  EQU $44 
+
+    DEF dG7s EQU $45 ;
+    DEF dF7  EQU $46 
+    DEF dD7  EQU $47 ;
+    DEF dC7  EQU $54 
+
+    DEF dG6s EQU $55 
+    DEF dF6  EQU $56 
+    DEF dD6  EQU $57 
+    DEF dC6  EQU $64 
+
+    DEF dG5s EQU $65
+    DEF dF5  EQU $66
+    DEF dD5  EQU $67
+    DEF dC5  EQU $74
+
+    DEF dG4s EQU $75
+    DEF dF4  EQU $76
+    DEF dD4  EQU $77
+    DEF dC4  EQU $84
+
+    DEF dG3s EQU $85
+    DEF dF3  EQU $86
+    DEF dD3  EQU $87
+    DEF dC3  EQU $94
+
+    DEF dG2s EQU $95
+    DEF dF2  EQU $96
+    DEF dD2  EQU $97
+    DEF dC2  EQU $A4
 
 DEF NL  EQU 12
+DEF hNL  EQU 6
 DEF START_PAUSE EQU $20
