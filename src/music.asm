@@ -527,7 +527,7 @@ PlayChannel_3:
     ld a, l
     ld [wPositionChannel_3 + 1], a
 
-    jp PlayChannel_2
+    jp PlayChannel_3
 .noLoopEnd:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_3 + 1], a
@@ -822,9 +822,6 @@ commands channel 4: (1st byte)
         3. number of times (1 makes infinite loop)
     FF - end of music
 */
-
-; TODO manage volume
-; TODO fix bug with wave ram changing???
 
 Channel_1:
     db VIB, %01010101
