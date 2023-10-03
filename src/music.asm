@@ -527,7 +527,7 @@ PlayChannel_3:
     ld a, l
     ld [wPositionChannel_3 + 1], a
 
-    jp PlayChannel_2
+    jp PlayChannel_3
 .noLoopEnd:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_3 + 1], a
