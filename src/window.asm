@@ -76,6 +76,11 @@ LoadGameBackground::
     ld bc, BackgroundTilemap.end - BackgroundTilemap
     call MemcpyOffsetGame
 
+    ; write text to window
+    ld hl, ScoreText
+    ld de, $9c00 + $20 + $1
+    call WriteTextToWindow
+
     ; numbers
     xor a
 FOR N, 8
@@ -85,11 +90,6 @@ ENDR
     
     ld a, 1
     ld [wNumberBCD_2 + 7], a
-
-
-    ld hl, ScoreText
-    ld de, wWindowTilemapCopy + 32 + 1
-    call WriteTextToWindow
 
     ; turn on the LCD
     ld a, [rLCDC]
