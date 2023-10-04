@@ -22,11 +22,17 @@ ResetPlayerState::
     ld a, $40
     ld [wPlayerX + 1], a
 
+    ld a, $54
+    ld [wActualX], a
+
     ; Position Y
     ld a, $06
     ld [wPlayerY], a
     ld a, $00
     ld [wPlayerY + 1], a
+
+    ld a, $60
+    ld [wActualY], a
     
     ; Init velocity
     ld a, $00
