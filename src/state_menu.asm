@@ -1,5 +1,12 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
+SECTION "MenuText", ROM0
+
+GameTitle1::
+    db "JUMPING", 0
+GameTitle2::
+    db "DOODLE", 0
+
 SECTION "statemenu", ROM0
 
 StateMenu::

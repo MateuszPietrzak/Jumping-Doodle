@@ -4,6 +4,15 @@ SECTION "statescores", ROM0
 
 LeaderboardText::
     db "LEADERBOARD", 0
+LeaderboardNumbers::
+    db "0[", 0
+    db "1[", 0
+    db "2[", 0
+    db "3[", 0
+    db "4[", 0
+    db "5[", 0
+    db "6[", 0
+    db "7[", 0
 
 StateScores::
     ; For now, return to Main Menu after 2s
@@ -11,7 +20,7 @@ StateScores::
 
 .scoresLoop:
     call UpdateKeys
-    call WaitForVBlank
+    call WaitForVBlankStart
 
     call PlayMusic
     ; Check for d-pad down

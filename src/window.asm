@@ -111,6 +111,13 @@ LoadMenuBackground::
     ld bc, MenuTilemap.end - MenuTilemap
     call MemcpyOffsetMenu
 
+    ld de, $9800 + $60 + $6
+    ld hl, GameTitle1
+    call WriteTextToWindow
+
+    ld de, $9800 + $A0 + $8
+    ld hl, GameTitle2
+    call WriteTextToWindow
 
     ; turn on the LCD
     ld a, [rLCDC]
@@ -140,6 +147,12 @@ LoadScoresBackground::
     ld hl, LeaderboardText
     call WriteTextToWindow
 
+FOR N, 8
+    ld de, $9800 + $60 + $4 + N * $20
+    ld hl, LeaderboardNumbers + N * 3
+    call WriteTextToWindow
+ENDR
+
     ; turn on the LCD
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON
@@ -160,9 +173,17 @@ WriteTextToWindow::
 
 .caseSpace:
     cp a, 32
-    jp nz, .caseLetter
+    jp nz, .caseNumber
 
     sub a, 32
+    ld [de], a
+
+    jp .switchEnd
+.caseNumber:
+    cp a, 65
+    jp nc, .caseLetter
+
+    sub a, 46
     ld [de], a
 
     jp .switchEnd
