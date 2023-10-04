@@ -53,7 +53,7 @@ ResetPlayerState::
 
     ret
 
-HandlePlayer::
+HandlePlayerVBlank::
 
     ld a, [wPlayerVelocityY]
     and a, $80
@@ -98,8 +98,6 @@ HandlePlayer::
     ld a, $1
     ld [wBounceFlag], a
 
-    ; TODO PLAY BOING!
-
 .skipBounce:
 
     pop hl
@@ -108,6 +106,9 @@ HandlePlayer::
     pop af
 .endBounce:
 
+    ret
+
+HandlePlayer::
     ; Fall
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
@@ -302,6 +303,8 @@ HandlePlayer::
     ld [wBounceFlag], a
     ld a, $A0 
     ld [wPlayerVelocityY], a
+
+    ; TODO PLAY BOING!
 
 .noUpdateBounce
 

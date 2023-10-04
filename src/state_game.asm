@@ -21,13 +21,15 @@ GameLoop:
     ; ld hl, $9c00 + $20 + $1              ; load second line
     ; ld de, wWindowTilemapCopy + 32 + 1
     ; call Memcpy
+    call HandlePlayerVBlank
     ; TO DO WHILE VBLANK END
 
     ; play music
     ; RIGHT AFTER ALL MEMCOPY
 
-    call HandlePlayer
     call PlayMusic
+
+    call HandlePlayer
 
     ; --------------------------------------------------
     ; Write number and increment it
