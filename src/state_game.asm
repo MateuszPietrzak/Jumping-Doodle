@@ -7,6 +7,9 @@ StateGame::
 
     call ResetPlayerState
     call HandlePlayer
+
+    ld a, $1
+    ld [wIsAlive], a
 GameLoop:
     call WaitForVBlank
 
@@ -42,9 +45,17 @@ ENDR
     ; Update player inputs
     call UpdateKeys
 
+    ld a, [wIsAlive]
+    cp a, $0
+    jp z, GameFinish
+
     jp GameLoop
 
 GameFinish::
     ; Everything to do after dying, for example saving score
 
-    jp StateMenu
+    ret
+
+SECTION "gamedata", WRAM0
+
+wIsAlive:: ds 1

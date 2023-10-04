@@ -9,10 +9,6 @@ StateScores::
 .scoresLoop:
     call WaitForVBlank
 
-FOR N, 1000
-    dec bc
-    inc bc
-ENDR
     dec bc
     ld a, b
     or a, c

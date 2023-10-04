@@ -218,7 +218,10 @@ HandlePlayer::
     cp a, $10
     jp c, .skipNoFall
 
-    jp GameFinish ; When dies, go back to main menu
+    ; When dies, set isAlive to 0
+    xor a
+    ld [wIsAlive], a
+    ret
 
 .skipNoFall:
     inc bc ; Increment y position by 1/16 of a pixel

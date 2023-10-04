@@ -64,6 +64,8 @@ LoadGameBackground::
     xor a
     ld [rLCDC], a
 
+    call ClearOam
+
     ; do tilemap for background
     ld de, BackgroundTilemap
     ld hl, $9800

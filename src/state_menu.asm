@@ -9,6 +9,7 @@ StateMenu::
     ld [rSCY], a
     xor a
     ld [wButtonSelected], a
+    ld [wRefreshButtonsFlag], a
 
 .menuLoop:
     call UpdateKeys
@@ -128,7 +129,7 @@ StateMenu::
     ld a, [wButtonSelected]
     cp a, $0
     ; If "PLAY" selected
-    jp z, StateGame
+    call z, StateGame
     ; Else, "SCORES must be selected
     jp StateScores
 .pressedAEnd
