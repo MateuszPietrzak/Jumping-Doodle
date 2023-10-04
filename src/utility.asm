@@ -159,6 +159,12 @@ PollKeys::
     ldh a, [rP1]
     ret
 
+; Rng
+; @return a the random number
+Rng::
+    ld a, [rTIMA] ; xD
+    ret
+
 SECTION "VariablesMovement", WRAM0
 
 wKeysPressed:: db

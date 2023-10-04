@@ -43,6 +43,10 @@ StateInit::
     ; initialize sound
     call InitMusic
 
+    ; Enable timer
+    ld a, %00000100
+    ld [rTAC], a
+
     ; After initialization, the game should enter the main menu
     call StateMenu
 

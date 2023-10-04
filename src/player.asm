@@ -55,6 +55,10 @@ ResetPlayerState::
     ld [wPlayerFlags], a
     ld [wBounceFlag], a
 
+    ld [wGenerateLine], a
+    ld [wGenerateLinePositionX], a
+    ld [wGenerateLinePositionY], a
+
     ret
 
 HandlePlayerVBlank::
@@ -109,6 +113,78 @@ HandlePlayerVBlank::
     pop bc
     pop af
 .endBounce:
+
+    ; Generate new line
+    ld a, [wGenerateLine]
+    cp a, $0
+    ret z
+
+    ; Setting the flag back to 0
+    xor a
+    ld [wGenerateLine], a
+    ld h, a
+
+    ld a, [wGenerateLinePositionY]
+    ld l, a
+
+    add hl, hl ; hl*2
+    add hl, hl ; hl*4
+    add hl, hl ; hl*8
+    add hl, hl ; hl*16
+    add hl, hl ; hl*32
+
+    push hl
+
+    ld a, h
+    add a, $98
+    ld h, a
+    ; Clear the stripe
+    ld a, $14
+.clearStripe:
+    cp a, $0
+    jp z, .clearStripeEnd
+
+    ld [hl], $00
+    inc hl
+    dec a
+
+    jp .clearStripe
+.clearStripeEnd:
+
+    pop hl
+
+    xor a    
+    ld b, a
+    ld a, [wGenerateLinePositionX]
+    ld c, a
+    add hl, bc
+    ld a, h
+    add a, $98
+    ld h, a
+
+    ld [hl], $41
+    inc hl
+    ld [hl], $42
+
+    call Rng
+    and a, $01
+    cp a, $0
+    ret z
+
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    ld [hl], $41
+    inc hl
+    ld [hl], $42
+
 
     ret
 
@@ -344,6 +420,17 @@ HandlePlayer::
     ld a, l
     ld [wScreenScrollY+1], a
 
+    ; If we have reached new line, generate next obstacle (not always detecting but whatever)
+    ld a, l
+    and a, %01111111
+    cp a, $00
+    jp nz, .noGenerateNew
+
+    ; Only marking the GenerateLine as a flag
+    ld a, $01
+    ld [wGenerateLine], a
+.noGenerateNew:
+
     jp .skipDecY
 
 .skipNoRise:
@@ -379,6 +466,28 @@ HandlePlayer::
     ; Move bg to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
     ld [wActualSCY], a
+
+    ld a, [wGenerateLine]
+    cp a, $00
+    jp z, .noGenerateNewSet
+
+    ; Here, we know to generate new platform
+
+    ld a, [wActualSCY]
+    add a, $A0
+    srl a
+    srl a
+    srl a
+    ; a now contains a position of a line to change
+    ld [wGenerateLinePositionY], a
+    ; Not doing it here, because of VRAM
+
+    ; Now also calculate where to put the platform x-position capped at 16
+    call Rng
+    and a, %00001111
+    ld [wGenerateLinePositionX], a
+
+.noGenerateNewSet:
     
     ; Player's on-screen position
 
@@ -461,3 +570,7 @@ wBounceFlag:: ds 1
 wActualSCY:: ds 1
 wActualX:: ds 1
 wActualY:: ds 1
+
+wGenerateLine:: ds 1
+wGenerateLinePositionX:: ds 1
+wGenerateLinePositionY:: ds 1
