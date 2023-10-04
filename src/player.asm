@@ -14,6 +14,7 @@ ResetPlayerState::
 
     call WaitForVBlank
     call LoadGameBackground
+
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -38,6 +39,10 @@ ResetPlayerState::
     ld [wScreenScrollY], a
     ld [wScreenScrollY + 1], a
     ld [rSCY], a
+
+    ; Clear player flags
+    xor a
+    ld [wPlayerFlags], a
 
     ret
 
@@ -239,9 +244,29 @@ HandlePlayer::
     push hl
 
     ; After falling down, check if colliding with anything
-    ld a, [_OAMRAM + 1] ; X coordinate
-    ld b, a
-    ld a, [_OAMRAM]     ; Y coordinate
+    ; X coordinate
+    ld a, [wPlayerX]
+    ld [wArithmeticVariable], a
+    ld a, [wPlayerX + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, $4
+    ld [wArithmeticModifier], a
+    call BitShiftRight
+    ld a, [wArithmeticResult + 1]
+    push af
+
+    ; Y coordinate
+    ld a, [wPlayerY]
+    ld [wArithmeticVariable], a
+    ld a, [wPlayerY + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, $4
+    ld [wArithmeticModifier], a
+    call BitShiftRight
+    ld a, [wArithmeticResult + 1]
+
+    ; Set them into appropriate arguments
+    pop bc
     sub a, $8
     ld c, a
 
@@ -249,10 +274,30 @@ HandlePlayer::
     cp a, $1
     jp z, .bounce
     
-    ld a, [_OAMRAM + 1] ; X coordinate
+    ; X coordinate
+    ld a, [wPlayerX]
+    ld [wArithmeticVariable], a
+    ld a, [wPlayerX + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, $4
+    ld [wArithmeticModifier], a
+    call BitShiftRight
+    ld a, [wArithmeticResult + 1]
     add a, $8
-    ld b, a
-    ld a, [_OAMRAM]     ; Y coordinate
+    push af
+
+    ; Y coordinate
+    ld a, [wPlayerY]
+    ld [wArithmeticVariable], a
+    ld a, [wPlayerY + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, $4
+    ld [wArithmeticModifier], a
+    call BitShiftRight
+    ld a, [wArithmeticResult + 1]
+
+    ; Set them into appropriate arguments
+    pop bc
     sub a, $8
     ld c, a
 

@@ -59,6 +59,7 @@ SwitchWindow::
     ret
 
 LoadGameBackground::
+    call WaitForVBlank
 
     ;Disable LCD before writing to VRAM
     xor a
@@ -95,6 +96,7 @@ ENDR
     ret 
 
 LoadMenuBackground::
+    call WaitForVBlank
 
     ;Disable LCD before writing to VRAM
     xor a
