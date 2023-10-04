@@ -43,9 +43,6 @@ StateInit::
     ; initialize sound
     call InitMusic
 
-    ; clear wNumberBCD 
-    ; TODO maybe move to standalone function
-
     ; After initialization, the game should enter the main menu
     call StateMenu
 

@@ -12,11 +12,9 @@ InitializeWindow::
     ld a, 120
     ld [rWY], a
 
-    ; turn on window displaying
-    ld a, [rLCDC]       ; get current LCDC state
-    or a, LCDCF_WIN9C00 ; or it with LCD WINON
-    ld [rLCDC], a       ; set it back
-
+    ld a, [rLCDC]
+    push af
+    
     ; do tiles for window
     ld de, FontTiles
     ld hl, $9010
@@ -28,31 +26,36 @@ InitializeWindow::
     ld hl, $9400
     ld bc, BackgroundTiles.end - BackgroundTiles
     call Memcpy
-
+    
     ; menu buttons tiles
     ld de, MenuTiles
     ld hl, $9500
     ld bc, MenuTiles.end - MenuTiles
     call Memcpy
-
+    
     ; do tilemap for window
     ld de, WindowInitialState
     ld hl, $9C00
     ld bc, WindowInitialState.end - WindowInitialState
     call Memcpy
-
+    
     ; do tilemap for window
     ld de, WindowInitialState
     ld hl, wWindowTilemapCopy
     ld bc, WindowInitialState.end - WindowInitialState
     call Memcpy
-
+    
+    pop af
+    ; turn on window displaying
+    or a, LCDCF_WIN9C00 ; or it with LCD WINON
+    ld [rLCDC], a       ; set it back
 
     ret
 
 SwitchWindow::
     ; turn on window displaying
     ld a, [rLCDC]       ; get current LCDC state
+    or a, LCDCF_WIN9C00 ; or it with LCD WINON
     or a, LCDCF_WINON   ; or it with LCD WINON
     ld [rLCDC], a       ; set it back
 
@@ -172,6 +175,7 @@ WriteTextToWindow::
 .end:
     ret
 
+; DEPRECATED
 ; WriteNumberToWindow
 ; writes number on window
 ; @param de First index of tile
