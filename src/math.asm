@@ -245,6 +245,47 @@ WhileDigits:
 
     ret
     
+; param @a - value to be inputed to wNumberBCD_2
+CharToBCD::
+    ld b, 0
+    ld c, 0
+    ld d, 0
+
+.while100:
+    cp a, 100
+    jp c, .while10
+
+    inc b
+    sub a, 100
+
+    jp .while100
+.while10:
+    cp a, 10
+    jp c, .while1
+
+    inc c
+    sub a, 10
+
+    jp .while10
+.while1:
+    cp a, 1
+    jp c, .whileEnd
+
+    inc d
+    dec a
+
+    jp .while1
+.whileEnd:
+
+    ld a, b
+    ld [wNumberBCD_2 + 5], a
+    ld a, c
+    ld [wNumberBCD_2 + 6], a
+    ld a, d
+    ld [wNumberBCD_2 + 7], a
+
+    ret
+
 
 SECTION "ArithmeticVariables", WRAM0
 
@@ -257,3 +298,7 @@ SECTION "NumbersBCD", WRAM0
 wNumberBCD_1:: ds 8
 wNumberBCD_2:: ds 8
 wNumberBCD_3:: ds 8
+
+SECTION "ScoreSection", WRAM0
+
+wScoreToAdd:: ds 1

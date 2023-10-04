@@ -32,20 +32,24 @@ GameLoop:
 
     call HandlePlayer
 
-    ; --------------------------------------------------
+    ld a, [wScoreToAdd]         ; number of subpixels that screen was lowered
+    cp a, 0
+    jp z, .skipScoreChange      ; don't change score if it wasn't modified
+
+    call CharToBCD              ; convert a to BCD_2
+    call AddNumbersBCD          ; add BCD_1 and BCD_2
+
+    ; copy result to score
+    FOR N, 8
+        ld a, [wNumberBCD_3 + N]
+        ld [wNumberBCD_1 + N], a
+    ENDR
+
     ; Write number and increment it
     ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
     call WriteBCDToWindow
 
-    call AddNumbersBCD
-
-FOR N, 8
-    ld a, [wNumberBCD_3 + N]
-    ld [wNumberBCD_1 + N], a
-ENDR
-
-    ; --------------------------------------------------
-
+.skipScoreChange
     ; Update player inputs
     call UpdateKeys
 

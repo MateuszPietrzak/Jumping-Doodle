@@ -15,6 +15,10 @@ ResetPlayerState::
     call WaitForVBlank
     call LoadGameBackground
 
+    ; write initial score
+    ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
+    call WriteBCDToWindow
+
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -252,6 +256,8 @@ HandlePlayer::
 
 
     ; Y COORDINATE
+    ; counter for the total bg shift
+    ld e, 0
 
     ; Read PlayerY
     ld a, [wPlayerY] 
@@ -332,6 +338,7 @@ HandlePlayer::
     ld a, [wScreenScrollY+1]
     ld l, a
     dec hl
+    inc e          ; add one to movement
     ld a, h
     ld [wScreenScrollY], a
     ld a, l
@@ -345,6 +352,9 @@ HandlePlayer::
     dec d
     jp .decPlayerY
 .decPlayerYend:
+    ; I believe this is where decrementing screenScroll ends lol - drabart
+    ld a, e
+    ld [wScoreToAdd], a
 
     ld a, b
     ld [wPlayerY], a
