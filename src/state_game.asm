@@ -17,10 +17,11 @@ GameLoop:
     ; TO DO WHILE VBLANK
     call PlayerBufferToOAM
 
-    ; ld bc, 14
-    ; ld hl, $9c00 + $20 + $1              ; load second line
-    ; ld de, wWindowTilemapCopy + 32 + 1
-    ; call Memcpy
+    ld bc, 8
+    ld hl, $9c00 + $20 + $7              ; load second line
+    ld de, wWindowTilemapCopy + 32 + 7
+    call Memcpy
+
     call HandlePlayerVBlank
     ; TO DO WHILE VBLANK END
 

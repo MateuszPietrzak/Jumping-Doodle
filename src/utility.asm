@@ -8,14 +8,14 @@ SECTION "Utility", ROM0
 ; @param hl Deginning of target space in RAM
 ; @param bc data size
 Memcpy::
-    ld a, [de]
-    ld [hl+], a
-    inc de
-    dec bc
-    ld a, b
-    or a, c
-    jp nz, Memcpy
-    ret
+    ld a, [de]      ; 2
+    ld [hl+], a     ; 2
+    inc de          ; 1
+    dec bc          ; 1
+    ld a, b         ; 1
+    or a, c         ; 1
+    jp nz, Memcpy   ; 4
+    ret             ; 4
 
 ; MemcpyOffsetGame
 ; Copies data from ROM to RAM and adds $40 (Game Assets)
