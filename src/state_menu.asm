@@ -66,13 +66,6 @@ StateMenu::
     call Add16
 
 .noRefreshButtons:
-
-    ld bc, 32
-    ld hl, $9c20                ; load second line
-    ld de, wWindowTilemapCopy + 32
-    call Memcpy
-    ; TO do while VBlank end
-
     ; play music
     ; RIGHT AFTER ALL MEMCOPY
     call PlayMusic
@@ -131,7 +124,7 @@ StateMenu::
     ; If "PLAY" selected
     call z, StateGame
     ; Else, "SCORES must be selected
-    jp StateScores
+    call StateScores
 .pressedAEnd
 
 
