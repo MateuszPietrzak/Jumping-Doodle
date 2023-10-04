@@ -13,7 +13,7 @@ StateMenu::
 
 .menuLoop:
     call UpdateKeys
-    call WaitForVBlank
+    call WaitForVBlankStart
     ; To do while VBlank
 
     ; If we need to reload buttons

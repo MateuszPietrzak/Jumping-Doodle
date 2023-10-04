@@ -85,6 +85,14 @@ WaitForVBlank::
     jp c, WaitForVBlank
     ret
 
+; WaitPorVBlankStart
+; Wait for the start of the VBlank
+WaitForVBlankStart::
+    ld a, [rLY]
+    cp 144
+    jp nz, WaitForVBlankStart
+    ret
+
 
 ; ClearOam
 ; Resets all OAM values to 0
