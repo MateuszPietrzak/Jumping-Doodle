@@ -136,6 +136,10 @@ LoadScoresBackground::
     or a, c
     jp nz, .cleanBG
 
+    ld de, $9800 + $20 + $3
+    ld hl, LeaderboardText
+    call WriteTextToWindow
+
     ; turn on the LCD
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON

@@ -121,10 +121,14 @@ StateMenu::
 .pressedA
     ld a, [wButtonSelected]
     cp a, $0
+    jp nz, .scoreSelected
     ; If "PLAY" selected
-    call z, StateGame
+    call StateGame
+    jp StateMenu
+.scoreSelected
     ; Else, "SCORES must be selected
     call StateScores
+    jp StateMenu
 .pressedAEnd
 
 
