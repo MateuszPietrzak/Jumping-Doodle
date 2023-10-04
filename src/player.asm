@@ -161,6 +161,12 @@ HandlePlayerVBlank::
     ld [hl], $41
     inc hl
     ld [hl], $42
+
+    call Rng
+    and a, $01
+    cp a, $0
+    ret z
+
     inc hl
     inc hl
     inc hl
