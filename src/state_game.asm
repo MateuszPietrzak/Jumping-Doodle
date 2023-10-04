@@ -6,6 +6,7 @@ StateGame::
     ; All initialization neede before a game is tarted, shuch as resetting player, should go here
 
     call ResetPlayerState
+    call WaitForVBlank
     call HandlePlayer
 
     ld a, $1
@@ -16,17 +17,17 @@ GameLoop:
     ; TO DO WHILE VBLANK
     call PlayerBufferToOAM
 
-    ld bc, 14
-    ld hl, $9c00 + $20 + $1              ; load second line
-    ld de, wWindowTilemapCopy + 32 + 1
-    call Memcpy
+    ; ld bc, 14
+    ; ld hl, $9c00 + $20 + $1              ; load second line
+    ; ld de, wWindowTilemapCopy + 32 + 1
+    ; call Memcpy
     ; TO DO WHILE VBLANK END
 
     ; play music
     ; RIGHT AFTER ALL MEMCOPY
-    call PlayMusic
 
     call HandlePlayer
+    call PlayMusic
 
     ; --------------------------------------------------
     ; Write number and increment it

@@ -43,10 +43,64 @@ ResetPlayerState::
     ; Clear player flags
     xor a
     ld [wPlayerFlags], a
+    ld [wBounceFlag], a
 
     ret
 
 HandlePlayer::
+
+    ld a, [wPlayerVelocityY]
+    and a, $80
+    jp nz, .endBounce
+
+    push af
+    push bc
+    push de
+    push hl
+
+    ; Check if colliding with anything
+    ; X coordinate
+    ld a, [wActualX]
+    ld b, a
+
+    ; Y coordinate
+    ld a, [wActualY]
+    sub a, $8
+    ld c, a
+
+    call CheckCollisions
+    cp a, $1
+    jp z, .bounce
+    
+    ; X coordinate
+    ld a, [wActualX]
+    add a, $8
+    ld b, a
+
+    ; Y coordinate
+    ld a, [wActualY]
+    sub a, $8
+    ld c, a
+
+    call CheckCollisions
+    cp a, $1
+    jp z, .bounce
+
+    jp .skipBounce
+
+.bounce:
+    ld a, $1
+    ld [wBounceFlag], a
+
+    ; TODO PLAY BOING!
+
+.skipBounce:
+
+    pop hl
+    pop de
+    pop bc
+    pop af
+.endBounce:
 
     ; Fall
     ld a, [wPlayerVelocityY]
@@ -234,91 +288,16 @@ HandlePlayer::
     jp .incPlayerY
 .incPlayerYend:
 
-    ld a, [wPlayerVelocityY]
-    and a, $80
-    jp nz, .decPlayerYend
-
-    push af
-    push bc
-    push de
-    push hl
-
-    ; After falling down, check if colliding with anything
-    ; X coordinate
-    ld a, [wPlayerX]
-    ld [wArithmeticVariable], a
-    ld a, [wPlayerX + 1]
-    ld [wArithmeticVariable + 1], a
-    ld a, $4
-    ld [wArithmeticModifier], a
-    call BitShiftRight
-    ld a, [wArithmeticResult + 1]
-    push af
-
-    ; Y coordinate
-    ld a, [wPlayerY]
-    ld [wArithmeticVariable], a
-    ld a, [wPlayerY + 1]
-    ld [wArithmeticVariable + 1], a
-    ld a, $4
-    ld [wArithmeticModifier], a
-    call BitShiftRight
-    ld a, [wArithmeticResult + 1]
-
-    ; Set them into appropriate arguments
-    pop bc
-    sub a, $8
-    ld c, a
-
-    call CheckCollisions
+    ld a, [wBounceFlag]
     cp a, $1
-    jp z, .bounce
-    
-    ; X coordinate
-    ld a, [wPlayerX]
-    ld [wArithmeticVariable], a
-    ld a, [wPlayerX + 1]
-    ld [wArithmeticVariable + 1], a
-    ld a, $4
-    ld [wArithmeticModifier], a
-    call BitShiftRight
-    ld a, [wArithmeticResult + 1]
-    add a, $8
-    push af
+    jp nz, .noUpdateBounce
 
-    ; Y coordinate
-    ld a, [wPlayerY]
-    ld [wArithmeticVariable], a
-    ld a, [wPlayerY + 1]
-    ld [wArithmeticVariable + 1], a
-    ld a, $4
-    ld [wArithmeticModifier], a
-    call BitShiftRight
-    ld a, [wArithmeticResult + 1]
-
-    ; Set them into appropriate arguments
-    pop bc
-    sub a, $8
-    ld c, a
-
-    call CheckCollisions
-    cp a, $1
-    jp z, .bounce
-
-    jp .skipBounce
-
-.bounce:
+    xor a
+    ld [wBounceFlag], a
     ld a, $A0 
     ld [wPlayerVelocityY], a
 
-    ; TODO PLAY BOING!
-
-.skipBounce:
-
-    pop hl
-    pop de
-    pop bc
-    pop af
+.noUpdateBounce
 
     jp .decPlayerYend ; Skip decrementing
 
@@ -363,10 +342,26 @@ HandlePlayer::
     ld a, c
     ld [wPlayerY + 1], a
 
+    ; --------------------- ;
+    ; Setup for BufferToOAM ;
+    ; --------------------- ;
 
-    ret
+    ; ScreenScrollY
+    ld a, [wScreenScrollY]
+    ld [wArithmeticVariable], a
+    ld a, [wScreenScrollY + 1]
+    ld [wArithmeticVariable + 1], a
+    ld a, 4
+    ld [wArithmeticModifier], a
 
-PlayerBufferToOAM::
+    ; Get pixel position from PlayerScrollY
+    call BitShiftRight
+
+    ; Move bg to correct position (only lower byte needed since coords <= 255)
+    ld a, [wArithmeticResult + 1]
+    ld [wActualSCY], a
+    
+    ; Player's on-screen position
 
     ld a, [wPlayerX]
     ld b, a
@@ -386,7 +381,7 @@ PlayerBufferToOAM::
 
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
-    ld [_OAMRAM + 1], a
+    ld [wActualX], a
 
     ld a, [wPlayerY]
     ld b, a
@@ -406,26 +401,28 @@ PlayerBufferToOAM::
 
     ; Move sprite to correct position (only lower byte needed since coords <= 255)
     ld a, [wArithmeticResult + 1]
-    ld [_OAMRAM], a
+    ld [wActualY], a
+
+    ret
+
+PlayerBufferToOAM::
+
 
     ; Flip sprite
     ld a, [wPlayerFlags]
     ld [_OAMRAM + 3], a
 
-    ; ScreenScrollY
-    ld a, [wScreenScrollY]
-    ld [wArithmeticVariable], a
-    ld a, [wScreenScrollY + 1]
-    ld [wArithmeticVariable + 1], a
-    ld a, 4
-    ld [wArithmeticModifier], a
-
-    ; Get pixel position from PlayerScrollY
-    call BitShiftRight
-
-    ; Move bg to correct position (only lower byte needed since coords <= 255)
-    ld a, [wArithmeticResult + 1]
+    ; Move bg to correct position
+    ld a, [wActualSCY]
     ld [rSCY], a
+
+    ; X position
+    ld a, [wActualX]
+    ld [_OAMRAM + 1], a
+
+    ; Y position
+    ld a, [wActualY]
+    ld [_OAMRAM], a
 
     
     ret
@@ -440,3 +437,8 @@ wPlayerVelocityX:: ds 1
 wPlayerVelocityY:: ds 1
 
 wScreenScrollY:: ds 2
+wBounceFlag:: ds 1
+
+wActualSCY:: ds 1
+wActualX:: ds 1
+wActualY:: ds 1
