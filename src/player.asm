@@ -413,7 +413,13 @@ HandlePlayer::
     ld h, a
     ld a, [wScreenScrollY+1]
     ld l, a
-    dec hl
+
+    cp a, 0
+    jr nz, .skipDecH
+    dec h
+.skipDecH
+    dec l
+
     inc e          ; add one to movement
     ld a, h
     ld [wScreenScrollY], a
