@@ -15,6 +15,10 @@ GameLoop:
     call WaitForVBlank
 
     ; TO DO WHILE VBLANK
+    ; Set bg and window layers palette
+    ld a, %11100100
+    ld [rBGP], a
+
     call PlayerBufferToOAM
 
     ld bc, 8
@@ -56,6 +60,15 @@ GameLoop:
     ld a, [wIsAlive]
     cp a, $0
     jp z, GameFinish
+
+.waitForPaletteSwap:
+    ld a, [rLY]
+    cp $78
+    jp c, .waitForPaletteSwap
+
+    ; Set bg and window layers palette
+    ld a, %00011011
+    ld [rBGP], a
 
     jp GameLoop
 

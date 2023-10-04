@@ -126,6 +126,9 @@ HandlePlayerVBlank::
 
     ld a, [wGenerateLinePositionY]
     ld l, a
+    and a, $01
+    cp a, $0
+    ret z
 
     add hl, hl ; hl*2
     add hl, hl ; hl*4
@@ -152,6 +155,10 @@ HandlePlayerVBlank::
 .clearStripeEnd:
 
     pop hl
+    ld a, l
+    and a, $20
+    cp a, $0
+    ret z
 
     xor a    
     ld b, a
@@ -165,22 +172,22 @@ HandlePlayerVBlank::
     ld [hl], $41
     inc hl
     ld [hl], $42
-
+    inc hl
+    inc hl
+    
+    ; Randomize offset between them
     call Rng
-    and a, $01
+    and a, %00000111
+.offsetLoop:
     cp a, $0
-    ret z
+    jp z, .offsetLoopEnd
 
+    dec a
     inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
-    inc hl
+
+    jp .offsetLoop
+.offsetLoopEnd:
+
     ld [hl], $41
     inc hl
     ld [hl], $42
