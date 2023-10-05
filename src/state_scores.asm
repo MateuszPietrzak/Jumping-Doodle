@@ -1,5 +1,13 @@
 INCLUDE "hardware.inc/hardware.inc"
 
+SECTION "HighscoresSave", SRAM, BANK[0]
+    sScoresInBCD:: 
+        ds 8 * 8
+
+SECTION "Highscores", WRAM0
+    wScoresInBCD:: 
+        ds 8 * 8
+
 SECTION "statescores", ROM0
 
 LeaderboardText::
@@ -14,8 +22,29 @@ LeaderboardNumbers::
     db "6[", 0
     db "7[", 0
 
+DEF MBC1SRamEnable      EQU $0000
+DEF MBC1SRamBank        EQU $4000
+
 StateScores::
-    ; For now, return to Main Menu after 2s
+    ; TODO move this to init (for highscore compares)
+    ; load scores
+    ; enable reading from sram
+    ld a, $0A
+    ld [MBC1SRamEnable], a
+    ld a, $0
+    ld [MBC1SRamBank], a
+
+    ; copy sram to wram
+    ld de, sScoresInBCD
+    ld hl, wScoresInBCD
+    ld bc, 8 * 8
+    call Memcpy
+
+    ; disable reading from sram
+    ld a, $00
+	ld [MBC1SRamEnable], a
+
+    ; load background
     call LoadScoresBackground
 
 .scoresLoop:
