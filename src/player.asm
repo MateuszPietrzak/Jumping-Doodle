@@ -15,10 +15,6 @@ ResetPlayerState::
     call WaitForVBlank
     call LoadGameBackground
 
-    ; write initial score
-    ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
-    call WriteBCDToWindow
-
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05

@@ -51,6 +51,7 @@ GameLoop:
 
     ; Write number and increment it
     ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
+    ld hl, wNumberBCD_1
     call WriteBCDToWindow
 
 .skipScoreChange

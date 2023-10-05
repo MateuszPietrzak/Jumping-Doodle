@@ -91,6 +91,11 @@ ENDR
     ld a, 1
     ld [wNumberBCD_2 + 7], a
 
+    ; write initial score
+    ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
+    ld hl, wNumberBCD_1
+    call WriteBCDToWindow
+
     ; turn on the LCD
     ld a, [rLCDC]
     or a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON | LCDCF_WINON | LCDCF_WIN9C00
@@ -127,6 +132,7 @@ LoadMenuBackground::
     ret
 
 LoadScoresBackground::
+    call WaitForVBlank
 
     ;Disable LCD before writing to VRAM
     xor a
@@ -151,6 +157,10 @@ FOR N, 8
     ld de, $9800 + $60 + $4 + N * $20
     ld hl, LeaderboardNumbers + N * 3
     call WriteTextToWindow
+
+    ld bc, $9800 + $60 + $5 + $8 + N * $20
+    ld hl, wScoresInBCD + N * 8
+    call WriteBCDToWindow
 ENDR
 
     ; turn on the LCD
@@ -264,15 +274,15 @@ UpdateWindow::
 ; WriteNumberToWindow
 ; writes number on window
 ; @param bc First index of tile
+; @param hl address of first digit
 WriteBCDToWindow::
     ld e, 7
-    ld d, 0             ; clear d
+    ld d, 0
+    add hl, de
     
 WhileDigits:
 
-    ld hl, wNumberBCD_1 ; load number with offset
-    add hl, de
-    ld a, [hl]
+    ld a, [hl-]
 
     add a, 2            ; tile offset
     ld [bc], a          ; write to tilemap
