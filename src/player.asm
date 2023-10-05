@@ -126,9 +126,6 @@ HandlePlayerVBlank::
 
     ld a, [wGenerateLinePositionY]
     ld l, a
-    and a, $01
-    cp a, $0
-    ret z
 
     add hl, hl ; hl*2
     add hl, hl ; hl*4
@@ -147,7 +144,7 @@ HandlePlayerVBlank::
     cp a, $0
     jp z, .clearStripeEnd
 
-    ld [hl], $00
+    ld [hl], $0
     inc hl
     dec a
 
@@ -169,9 +166,9 @@ HandlePlayerVBlank::
     add a, $98
     ld h, a
 
-    ld [hl], $41
+    ld [hl], $40
     inc hl
-    ld [hl], $42
+    ld [hl], $41
     inc hl
     inc hl
     
@@ -188,9 +185,9 @@ HandlePlayerVBlank::
     jp .offsetLoop
 .offsetLoopEnd:
 
-    ld [hl], $41
+    ld [hl], $40
     inc hl
-    ld [hl], $42
+    ld [hl], $41
 
 
     ret
@@ -439,9 +436,10 @@ HandlePlayer::
     cp a, $00
     jp nz, .noGenerateNew
 
-    ; Only marking the GenerateLine as a flag
     ld a, $01
     ld [wGenerateLine], a
+
+
 .noGenerateNew:
 
     jp .skipDecY
@@ -484,18 +482,16 @@ HandlePlayer::
     cp a, $00
     jp z, .noGenerateNewSet
 
-    ; Here, we know to generate new platform
-
     ld a, [wActualSCY]
-    add a, $A0
+    dec a
     srl a
     srl a
     srl a
+    ; add a, $14
     ; a now contains a position of a line to change
     ld [wGenerateLinePositionY], a
-    ; Not doing it here, because of VRAM
 
-    ; Now also calculate where to put the platform x-position capped at 16
+    ; Calculate where to put the platform x-position capped at 16
     call Rng
     and a, %00001111
     ld [wGenerateLinePositionX], a
