@@ -33,7 +33,7 @@ Modulo::
     ld a, c
     sub a, l
     ld c, a
-    jp nc, Modulo.skipCarry
+    jr nc, Modulo.skipCarry
 
     dec b
 
@@ -65,11 +65,11 @@ Multiply::
 
 WhileMultiplier:
     cp a, 0
-    jp z, WhileMultiplier.end
+    jr z, WhileMultiplier.end
 
     add hl, de
     dec a
-    jp WhileMultiplier
+    jr WhileMultiplier
 .end
     ld a, h
     ld [wArithmeticResult], a
@@ -105,7 +105,7 @@ WhileBits:
     ; check if b is equal to zero
     xor a
     cp a, b
-    jp z, WhileBits.end
+    jr z, WhileBits.end
 
     ; check if bit at position b is on
     ld hl, wArithmeticVariable
@@ -114,7 +114,7 @@ WhileBits:
     and b
 
     ; skip if it's not
-    jp z, WhileBits.noBit
+    jr z, WhileBits.noBit
 
     ; add one to c if it is
     inc c
@@ -127,7 +127,7 @@ WhileBits:
     ; jump if a > c
     sub a, 1
     cp a, c
-    jp nc, WhileBits.notBigger
+    jr nc, WhileBits.notBigger
 
     ld hl, wArithmeticResult
     add hl, de
@@ -145,7 +145,7 @@ WhileBits:
     srl b           ; divide b by 2
     sla c           ; multiply c by 2
 
-    jp WhileBits
+    jr WhileBits
 .end:
     ; add one to e
     inc e
@@ -153,7 +153,7 @@ WhileBits:
     ; if 2 > e
     ld a, 1
     cp a, e
-    jp nc, DivideAfterInit
+    jr nc, DivideAfterInit
     
     ret
 
@@ -178,11 +178,11 @@ BitShiftRight::
 .loop:
     xor a
     cp a, d
-    jp z, .loopEnd 
+    jr z, .loopEnd 
 
     srl c       ; Divide lower bits by 2
     srl b       ; Divide higher bits by 2, this time caring for the carry
-    jp nc, .skipAddingCarry
+    jr nc, .skipAddingCarry
 
     ld a, $80   ; Set the mask to %10000000, the carrying bit from the higher byte
     or a, c     ; apply the bit 
@@ -191,7 +191,7 @@ BitShiftRight::
 .skipAddingCarry
 
     dec d
-    jp .loop
+    jr .loop
 .loopEnd:
 
     ld a, b
@@ -223,7 +223,7 @@ WhileDigits:
 
     cp a, 10
 
-    jp c, .skipCarry_1
+    jr c, .skipCarry_1
 
     ld c, 1
     sub a, 10
@@ -236,10 +236,10 @@ WhileDigits:
 
     ld a, e                 ; check if already looped 8 times
     cp a, 0
-    jp z, .end              ; if so end
+    jr z, .end              ; if so end
 
     dec e
-    jp WhileDigits
+    jr WhileDigits
 
 .end
 
@@ -253,28 +253,28 @@ CharToBCD::
 
 .while100:
     cp a, 100
-    jp c, .while10
+    jr c, .while10
 
     inc b
     sub a, 100
 
-    jp .while100
+    jr .while100
 .while10:
     cp a, 10
-    jp c, .while1
+    jr c, .while1
 
     inc c
     sub a, 10
 
-    jp .while10
+    jr .while10
 .while1:
     cp a, 1
-    jp c, .whileEnd
+    jr c, .whileEnd
 
     inc d
     dec a
 
-    jp .while1
+    jr .while1
 .whileEnd:
 
     ld a, b
@@ -284,6 +284,35 @@ CharToBCD::
     ld a, d
     ld [wNumberBCD_2 + 7], a
 
+    ret
+
+; param @bc BCD1
+; param @de BCD2
+GreaterBCD::
+    ld h, 8
+
+.whileSame
+    ld a, [bc]
+    ld l, a
+    ld a, [de]
+    cp a, l
+    jr z, .same
+    jr c, .firstGreater
+    ; second greater
+    ld a, 0
+    ret
+
+.firstGreater
+    ld a, 1
+    ret
+
+.same
+    dec h
+    ld a, h
+    cp a, 0
+    jr nz, .whileSame
+
+    xor a
     ret
 
 

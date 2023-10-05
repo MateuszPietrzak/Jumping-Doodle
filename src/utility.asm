@@ -3,9 +3,9 @@ INCLUDE "hardware.inc/hardware.inc"
 SECTION "Utility", ROM0
 
 ; Memcpy
-; Copies data from ROM to RAM
-; @param de Beginning of data in ROM
-; @param hl Deginning of target space in RAM
+; Copies data
+; @param de Beginning of source data
+; @param hl Deginning of target space
 ; @param bc data size
 Memcpy::
     ld a, [de]      ; 2
@@ -14,7 +14,7 @@ Memcpy::
     dec bc          ; 1
     ld a, b         ; 1
     or a, c         ; 1
-    jp nz, Memcpy   ; 4
+    jr nz, Memcpy   ; 3
     ret             ; 4
 
 ; MemcpyOffsetGame
@@ -30,7 +30,7 @@ MemcpyOffsetGame::
     dec bc
     ld a, b
     or a, c
-    jp nz, MemcpyOffsetGame
+    jr nz, MemcpyOffsetGame
     ret
 
 ; MemcpyOffsetMenu
@@ -46,7 +46,7 @@ MemcpyOffsetMenu::
     dec bc
     ld a, b
     or a, c
-    jp nz, MemcpyOffsetMenu
+    jr nz, MemcpyOffsetMenu
     ret
 
 ; Sub16
@@ -61,7 +61,7 @@ Sub16::
     sub a, $10     
     ld [hl+], a
     dec b
-    jp Sub16
+    jr Sub16
 
 ; Add16
 ; Increases all values at a given range by $10
@@ -75,14 +75,14 @@ Add16::
     add a, $10     
     ld [hl+], a
     dec b
-    jp Add16
+    jr Add16
 
 ; WaitPorVBlank
 ; Waits until VBlank (duh)
 WaitForVBlank::
     ld a, [rLY]
     cp 144
-    jp c, WaitForVBlank
+    jr c, WaitForVBlank
     ret
 
 ; WaitPorVBlankStart
@@ -90,7 +90,7 @@ WaitForVBlank::
 WaitForVBlankStart::
     ld a, [rLY]
     cp 144
-    jp nz, WaitForVBlankStart
+    jr nz, WaitForVBlankStart
     ret
 
 
@@ -103,7 +103,7 @@ ClearOam::
 .clearOamLoop:
     ld [hl+], a
     dec b
-    jp nz, ClearOam.clearOamLoop
+    jr nz, ClearOam.clearOamLoop
     ret
 
 
