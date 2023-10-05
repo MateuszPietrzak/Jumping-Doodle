@@ -85,6 +85,9 @@ LoadGameBackground::
     dec b
     jp .generateStripesLoop
 .generateStripesLoopEnd:
+    ld a, $1F
+    ld [wGenerateLinePositionY], a
+    call GenerateStripe
 
     ld bc, $0014
     ld hl, $99C0

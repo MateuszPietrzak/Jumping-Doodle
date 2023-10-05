@@ -418,10 +418,11 @@ HandlePlayer::
     jp z, .noGenerateNewSet
 
     ld a, [wActualSCY]
+    srl a
+    srl a
+    srl a
     dec a
-    srl a
-    srl a
-    srl a
+    and a, %00011111
     ; add a, $14
     ; a now contains a position of a line to change
     ld [wGenerateLinePositionY], a
