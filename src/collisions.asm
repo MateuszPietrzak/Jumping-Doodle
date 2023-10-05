@@ -74,10 +74,37 @@ CheckCollisions::
 .caseFloor:
     ld a, [hl]
     cp a, $44
-    jp nz, .caseEnd
+    jp nz, .caseFragileLeft
 
     ld a, $1
     ret
+
+.caseFragileLeft:
+    ld a, [hl]
+    cp a, $42
+    jp nz, .caseFragileRight
+
+    xor a
+    ld [hl], a
+    inc hl
+    ld [hl], a
+
+    ld a, $1
+    ret
+
+.caseFragileRight:
+    ld a, [hl]
+    cp a, $43
+    jp nz, .caseEnd
+
+    xor a
+    ld [hl], a
+    dec hl
+    ld [hl], a
+
+    ld a, $1
+    ret
+
 
 .caseEnd:
     ld a, $0
