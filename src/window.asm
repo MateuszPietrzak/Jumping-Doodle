@@ -70,60 +70,21 @@ LoadGameBackground::
 
     call ClearOam
 
-    ld bc, $0400
-    ld hl, $9800
-
-.randomLine:
-    ; Randomize offset between them
-    call Rng
-    and a, %00001111
-    ld d, a
-.offsetLoop:
+    ld b, $20
+.generateStripesLoop:
     ld a, b
-    or a, c
-    jp z, .randomLineEnd
-
-    ld a, d
     cp a, $0
-    jp z, .offsetLoopEnd
+    jp z, .generateStripesLoopEnd
 
-    dec d
-    inc hl
-    ld [hl], 0
+    ld a, b
+    ld [wGenerateLinePositionY], a
+    push bc
+    call GenerateStripe
+    pop bc
 
-    dec bc
-    jp .offsetLoop
-.offsetLoopEnd:
-
-    ld [hl], $40
-    inc hl
-    dec bc
-    ld a, b
-    or a, c
-    jp z, .randomLineEnd
-    ld [hl], $41
-    inc hl
-    dec bc
-    ld a, b
-    or a, c
-    jp z, .randomLineEnd
-    xor a
-    ld [hl], a
-    inc hl
-    dec bc
-    ld a, b
-    or a, c
-    jp z, .randomLineEnd
-    xor a
-    ld [hl], a
-    inc hl
-    dec bc
-    ld a, b
-    or a, c
-    jp z, .randomLineEnd
-
-    jp .randomLine
-.randomLineEnd:
+    dec b
+    jp .generateStripesLoop
+.generateStripesLoopEnd:
 
     ld bc, $0014
     ld hl, $99C0

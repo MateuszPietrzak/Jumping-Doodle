@@ -122,73 +122,8 @@ HandlePlayerVBlank::
     ; Setting the flag back to 0
     xor a
     ld [wGenerateLine], a
-    ld h, a
 
-    ld a, [wGenerateLinePositionY]
-    ld l, a
-
-    add hl, hl ; hl*2
-    add hl, hl ; hl*4
-    add hl, hl ; hl*8
-    add hl, hl ; hl*16
-    add hl, hl ; hl*32
-
-    push hl
-
-    ld a, h
-    add a, $98
-    ld h, a
-    ; Clear the stripe
-    ld a, $14
-.clearStripe:
-    cp a, $0
-    jp z, .clearStripeEnd
-
-    ld [hl], $0
-    inc hl
-    dec a
-
-    jp .clearStripe
-.clearStripeEnd:
-
-    pop hl
-    ld a, l
-    and a, $20
-    cp a, $0
-    ret z
-
-    xor a    
-    ld b, a
-    ld a, [wGenerateLinePositionX]
-    ld c, a
-    add hl, bc
-    ld a, h
-    add a, $98
-    ld h, a
-
-    ld [hl], $40
-    inc hl
-    ld [hl], $41
-    inc hl
-    inc hl
-    
-    ; Randomize offset between them
-    call Rng
-    and a, %00000111
-.offsetLoop:
-    cp a, $0
-    jp z, .offsetLoopEnd
-
-    dec a
-    inc hl
-
-    jp .offsetLoop
-.offsetLoopEnd:
-
-    ld [hl], $40
-    inc hl
-    ld [hl], $41
-
+    call GenerateStripe
 
     ret
 
@@ -491,10 +426,6 @@ HandlePlayer::
     ; a now contains a position of a line to change
     ld [wGenerateLinePositionY], a
 
-    ; Calculate where to put the platform x-position capped at 16
-    call Rng
-    and a, %00001111
-    ld [wGenerateLinePositionX], a
 
 .noGenerateNewSet:
     
