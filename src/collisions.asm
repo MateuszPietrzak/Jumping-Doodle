@@ -47,17 +47,35 @@ CheckCollisions::
 
 .caseLeft:
     ld a, [hl]
-    cp a, $41
+    cp a, $40
     jp nz, .caseRight
 
-    jp .caseTrue
+    ; xor a
+    ; ld [hl], a
+    ; inc hl
+    ; ld [hl], a
+
+    ld a, $1
+    ret
 
 .caseRight:
     ld a, [hl]
-    cp a, $42
+    cp a, $41
+    jp nz, .caseFloor
+
+    ; xor a
+    ; ld [hl], a
+    ; dec hl
+    ; ld [hl], a
+
+    ld a, $1
+    ret
+
+.caseFloor:
+    ld a, [hl]
+    cp a, $44
     jp nz, .caseEnd
 
-.caseTrue:
     ld a, $1
     ret
 
