@@ -129,13 +129,7 @@ PlayMusic::
     jp .channel_1_off
 
 .interruptChannel_1:
-    ; load real position
-    ld a, [wPositionChannelCopy_1]
-    ld [wPositionChannel_1], a
-    ld a, [wPositionChannelCopy_1 + 1]
-    ld [wPositionChannel_1 + 1], a
-    ld a, [wNoteFrameChannelCopy_1]
-    ld [wNoteFrameChannel_1], a
+    ; real position should be loaded
     ; play default with skip
     ld a, 1
     ld [wSkipMusicChannel_1], a
@@ -166,6 +160,13 @@ PlayMusic::
     ld [wInterruptPositionChannel_1 + 1], a
     ld a, [wNoteFrameChannel_1]
     ld [wInterruptNoteFrameChannel_1], a
+    ; load real position (necessary here because of interrupting interrupt)
+    ld a, [wPositionChannelCopy_1]
+    ld [wPositionChannel_1], a
+    ld a, [wPositionChannelCopy_1 + 1]
+    ld [wPositionChannel_1 + 1], a
+    ld a, [wNoteFrameChannelCopy_1]
+    ld [wNoteFrameChannel_1], a
 
 .channel_1_off
 

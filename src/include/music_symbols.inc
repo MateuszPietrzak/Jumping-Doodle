@@ -78,17 +78,18 @@ DEF VIB             EQU $A1
 DEF LOOP            EQU $EE
 DEF END             EQU $FF
 DEF VOL_MAX         EQU $F8
-DEF VOL_23          EQU $88
-DEF VOL_13          EQU $58
+DEF VOL_34          EQU $C8
+DEF VOL_24          EQU $88
+DEF VOL_14          EQU $58
 DEF VOL_MUTE        EQU $08
 DEF VOL3_MAX        EQU $20
 DEF VOL3_12         EQU $40
 DEF VOL3_14         EQU $60
 DEF VOL3_MUTE       EQU $00
-DEF VOLD_MAX_S      EQU $F1
-DEF VOLD_MAX_L      EQU $F2
-DEF VOLD_MID_S      EQU $C1
-DEF VOLD_MID_L      EQU $C2
+DEF VOLD_MAX_S      EQU $D1
+DEF VOLD_MAX_L      EQU $D2
+DEF VOLD_MID_S      EQU $A1
+DEF VOLD_MID_L      EQU $A2
 DEF VOLD_MUTE       EQU $00
 
 DEF NL              EQU 12      ; note length

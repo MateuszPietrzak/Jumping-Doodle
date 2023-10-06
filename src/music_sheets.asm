@@ -56,22 +56,22 @@ MainThemeChannel_1::
     dw $00
 .start
     ; P1B1
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw A3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B2
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw B3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B3
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw G3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P1B4
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw C4
     db NOTE, NL * 6, VOL_MUTE
     dw $00
@@ -81,49 +81,49 @@ MainThemeChannel_1::
     db $02
 
     ; P2B1
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw A3
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw A3
     db NOTE, NL * 2, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw B3
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw B3
     db NOTE, NL * 2, VOL_MUTE
     dw $00
     ; P2B3
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw G3
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw G3
     db NOTE, NL * 2, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw C4
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw C4
     db NOTE, NL * 2, VOL_MUTE
     dw $00
 
     ; P3B1
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw A3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B2
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw B3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B3
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw G3
     db NOTE, NL * 6, VOL_MUTE
     dw $00
     ; P3B4
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw C4
     db NOTE, NL * 6, VOL_MUTE
     dw $00
@@ -153,64 +153,64 @@ MainThemeChannel_2::
     dw $00
 .start
     ; P1B1
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
     ; P1B2 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
     ; P1B3 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
     ; P1B4 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
     ; -------------
 
@@ -219,34 +219,34 @@ MainThemeChannel_2::
     db $02
     ; --------------------------------------------------
     ; P2B1 -----------
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw C4
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw C4
     db NOTE, NL, VOL_MUTE
     dw $00
     db NOTE, NL, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw D4
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw D4
     db NOTE, NL, VOL_MUTE
     dw $00
     db NOTE, NL, VOL_MUTE
     dw $00
     ; P2B2 -----------
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw B3
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw B3
     db NOTE, NL, VOL_MUTE
     dw $00
     db NOTE, NL, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw E4
-    db NOTE, NL, VOL_13
+    db NOTE, NL, VOL_14
     dw E4
     db NOTE, NL, VOL_MUTE
     dw $00
@@ -254,134 +254,134 @@ MainThemeChannel_2::
     dw $00
     ; --------------------------------------------
     ; P3B1
-    db NOTE, NL * 2, VOL_23
+    db NOTE, NL * 2, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
     ; P3B2 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
     ; P3B3 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
     ; P3B4 -------------
-    db NOTE, NL * 2, VOL_MAX
+    db NOTE, NL * 2, VOL_34
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
     ; -------------
     ; --------------------------------------------------------
     ; P4B1
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw D3
     ; P4B2 -------------
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw B3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
     ; P4B3 -------------
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw E3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw G3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C3
     ; P4B4 -------------
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw A3
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw C4
-    db NOTE, NL, VOL_23
+    db NOTE, NL, VOL_24
     dw F3
     ; -------------
 
