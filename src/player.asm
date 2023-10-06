@@ -369,7 +369,7 @@ HandlePlayer::
 
     ; If we have reached new line, generate next obstacle (not always detecting but whatever)
     ld a, l
-    and a, %01111111
+    and a, %00111111
     cp a, $00
     jp nz, .noGenerateNew
 

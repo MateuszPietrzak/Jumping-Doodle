@@ -198,6 +198,51 @@ ENDR
 
     ret
 
+LoadDeathscreenBackground::
+    call WaitForVBlank
+
+    ;Disable LCD before writing to VRAM
+    xor a
+    ld [rLCDC], a
+
+    ; Clear screen
+    ld bc, $03FF
+    ld hl, $9800
+
+.cleanBG:
+    xor a
+    ld [hl+], a
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, .cleanBG
+
+    ld de, $9800 + $20 + $1
+    ld hl, DeathscreenText1
+    call WriteTextToWindow
+
+    ld de, $9800 + $40 + $1
+    ld hl, DeathscreenText2
+    call WriteTextToWindow
+
+    ld de, $9800 + $60 + $1
+    ld hl, DeathscreenText3
+    call WriteTextToWindow
+
+    ; ld de, $9800 + $A0 + $8
+    ; ld hl, GameTitle2
+    ; call WriteTextToWindow
+
+    xor a
+    ld [rSCY], a
+
+    ; turn on the LCD
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
+
+    ret
+
 ; WriteTextToWindow
 ; writes text on window
 ; @param de First index of tile

@@ -178,6 +178,9 @@ GameFinish::
 	ld [rRAMG], a
 .skipSaving
 
+    ; Switch to deathscreen
+    call StateDeathscreen
+
     ret
 
 SECTION "gamedata", WRAM0
