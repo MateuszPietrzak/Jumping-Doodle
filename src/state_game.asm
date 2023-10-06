@@ -153,6 +153,25 @@ GameFinish::
     ld hl, sScoresInBCD
     ld bc, 8 * 8
     call Memcpy
+
+    ; add 0 to first checksum
+    xor a
+    ld [sCheckSum], a
+
+    ; add sum of all digits to the second checksum
+    ld c, 64
+    ld d, 0
+    ld hl, sScoresInBCD
+.whileC
+    ld a, [hl+]
+    add a, d
+    ld d, a
+    
+    dec c
+    jp nz, .whileC
+
+    ld a, d
+    ld [sCheckSum + 1], a
     
     ; disable reading from sram
     ld a, $00

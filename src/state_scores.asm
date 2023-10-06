@@ -3,6 +3,8 @@ INCLUDE "hardware.inc/hardware.inc"
 SECTION "HighscoresSave", SRAM, BANK[0]
     sScoresInBCD:: 
         ds 8 * 8
+    sCheckSum::
+        ds 2
 
 SECTION "Highscores", WRAM0
     wScoresInBCD:: 
@@ -22,6 +24,50 @@ LeaderboardNumbers::
     db "6[", 0
     db "7[", 0
 
+ClearScores:
+    ld c, 64
+    xor a
+    ld hl, sScoresInBCD
+.whileC
+    ld [hl+], a
+    
+    dec c
+    jp nz, .whileC
+
+    ld [sCheckSum], a
+    ld [sCheckSum + 1], a
+
+    ret
+
+CheckSum:
+    ld a, [sCheckSum]
+    cp a, 0
+    jp z, .checkCorrect
+
+    call ClearScores
+    ret
+
+.checkCorrect:
+    ld a, [sCheckSum + 1]
+    ld b, a
+
+    ld c, 64
+    ld d, 0
+    ld hl, sScoresInBCD
+.whileC
+    ld a, [hl+]
+    add a, d
+    ld d, a
+    
+    dec c
+    jp nz, .whileC
+
+    ld a, b
+    cp a, d
+    call nz, ClearScores
+
+    ret
+
 LoadScores::
     ; load scores
     ; enable reading from sram
@@ -29,6 +75,8 @@ LoadScores::
     ld [rRAMG], a
     ld a, $0
     ld [rRAMB], a
+
+    call CheckSum
 
     ; copy sram to wram
     ld de, sScoresInBCD
