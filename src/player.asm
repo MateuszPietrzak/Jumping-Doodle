@@ -321,7 +321,13 @@ HandlePlayer::
     ld a, $A0 
     ld [wPlayerVelocityY], a
 
-    ; TODO PLAY BOING!
+    push bc
+
+    ; PLAY BOING!
+    ld bc, JumpSoundChannel_1
+    call StartSoundEffect
+
+    pop bc
 
 .noUpdateBounce
 

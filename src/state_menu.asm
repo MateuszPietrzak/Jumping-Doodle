@@ -95,6 +95,9 @@ StateMenu::
 
     ld a, $1
     ld [wRefreshButtonsFlag], a
+
+    ld bc, SwitchButtonSoundChannel_1
+    call StartSoundEffect
     
 .pressedDownEnd
 
@@ -116,6 +119,9 @@ StateMenu::
     
     ld a, $1
     ld [wRefreshButtonsFlag], a
+
+    ld bc, SwitchButtonSoundChannel_1
+    call StartSoundEffect
 
 .pressedUpEnd
 
