@@ -22,17 +22,13 @@ LeaderboardNumbers::
     db "6[", 0
     db "7[", 0
 
-DEF MBC1SRamEnable      EQU $0000
-DEF MBC1SRamBank        EQU $4000
-
-StateScores::
-    ; TODO move this to init (for highscore compares)
+LoadScores::
     ; load scores
     ; enable reading from sram
     ld a, $0A
-    ld [MBC1SRamEnable], a
+    ld [rRAMG], a
     ld a, $0
-    ld [MBC1SRamBank], a
+    ld [rRAMB], a
 
     ; copy sram to wram
     ld de, sScoresInBCD
@@ -42,8 +38,11 @@ StateScores::
 
     ; disable reading from sram
     ld a, $00
-	ld [MBC1SRamEnable], a
+	ld [rRAMG], a
 
+    ret
+
+StateScores::
     ; load background
     call LoadScoresBackground
 

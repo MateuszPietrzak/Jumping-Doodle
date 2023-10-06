@@ -19,6 +19,7 @@ StateInit::
     ; initialize player
     call ClearOam
     call InitPlayer
+    call LoadScores
 
     ; turn on the LCD
     ld a, [rLCDC]

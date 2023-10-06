@@ -75,6 +75,89 @@ GameLoop:
 
 GameFinish::
     ; Everything to do after dying, for example saving score
+    
+    ld bc, wNumberBCD_1             ; compare final score
+    ld de, wScoresInBCD + 7 * 8     ; with last (8th) highscore
+    call GreaterBCD
+
+    cp a, 0
+    jp z, .skipSaving               ; if score lower then just skip
+
+    ld de, wNumberBCD_1             ; if new score is greater
+    ld hl, wScoresInBCD + 7 * 8     ; set it to last highscore
+    ld bc, 8
+    call Memcpy
+
+    ld bc, 7
+.whileBetter:
+    ; check if this it the top score
+    ld a, c                    
+    cp a, 0
+    jp z, .scoreSave
+
+    ; compare score at wScoreInBCD + c * 8 with (c-1) * 8
+    ld hl, wScoresInBCD
+    ; (c-1) * 8
+    dec c
+    sla c
+    sla c
+    sla c
+    add hl, bc
+    ld d, h
+    ld e, l ; wScoresInBCD + (c - 1) * 8
+    push de
+
+    push bc
+
+    ld bc, 8
+    add hl, bc
+    ld b, h
+    ld c, l ; wScoresInBCD + c * 8
+
+    call GreaterBCD
+
+    pop bc
+
+    pop de
+
+    cp a, 0
+    jp z, .scoreSave    ; no swap
+
+    push bc
+
+    ld h, d
+    ld l, e
+    ld bc, 8
+    add hl, bc
+
+    call Memswap
+
+    pop bc
+
+    srl c
+    srl c
+    srl c
+
+    jp .whileBetter
+
+.scoreSave
+    ; save scores
+    ; enable reading from sram
+    ld a, $0A
+    ld [rRAMG], a
+    ld a, $0
+    ld [rRAMB], a
+    
+    ; copy sram to wram
+    ld de, wScoresInBCD
+    ld hl, sScoresInBCD
+    ld bc, 8 * 8
+    call Memcpy
+    
+    ; disable reading from sram
+    ld a, $00
+	ld [rRAMG], a
+.skipSaving
 
     ret
 
