@@ -5,22 +5,46 @@ SECTION "Utility", ROM0
 ; Memcpy
 ; Copies data
 ; @param de Beginning of source data
-; @param hl Deginning of target space
+; @param hl Beginning of target space
 ; @param bc data size
 Memcpy::
     ld a, [de]      ; 2
     ld [hl+], a     ; 2
-    inc de          ; 1
-    dec bc          ; 1
+    inc de          ; 2
+    dec bc          ; 2
     ld a, b         ; 1
     or a, c         ; 1
     jr nz, Memcpy   ; 3
     ret             ; 4
 
+
+; Memswap
+; Swaps data
+; @param de Beginning of source data
+; @param hl Beginning of target space
+; @param bc data size
+Memswap::
+    push bc         ; 4
+    ld a, [de]      ; 2
+    ld b, a         ; 1
+    ld a, [hl]      ; 2
+    ld [de], a      ; 2
+    ld a, b         ; 1
+    ld [hl+], a     ; 2
+    pop bc          ; 3
+
+    dec bc          ; 2
+    inc de          ; 2
+
+    ld a, b         ; 1
+    or a, c         ; 1
+    jr nz, Memswap  ; 3
+    ret             ; 4
+
 ; MemcpyOffsetGame
 ; Copies data from ROM to RAM and adds $40 (Game Assets)
 ; @param de Beginning of data in ROM
-; @param hl Deginning of target space in RAM
+; @param hl Beginning of target space in RAM
 ; @param bc data size
 MemcpyOffsetGame::
     ld a, [de]
