@@ -308,6 +308,8 @@ GreaterBCD::
 
 .same
     dec h
+    inc bc
+    inc de
     ld a, h
     cp a, 0
     jr nz, .whileSame
