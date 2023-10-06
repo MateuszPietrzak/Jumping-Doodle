@@ -47,19 +47,64 @@ CheckCollisions::
 
 .caseLeft:
     ld a, [hl]
-    cp a, $41
+    cp a, $40
     jp nz, .caseRight
 
-    jp .caseTrue
+    ; xor a
+    ; ld [hl], a
+    ; inc hl
+    ; ld [hl], a
+
+    ld a, $1
+    ret
 
 .caseRight:
     ld a, [hl]
-    cp a, $42
-    jp nz, .caseEnd
+    cp a, $41
+    jp nz, .caseFloor
 
-.caseTrue:
+    ; xor a
+    ; ld [hl], a
+    ; dec hl
+    ; ld [hl], a
+
     ld a, $1
     ret
+
+.caseFloor:
+    ld a, [hl]
+    cp a, $44
+    jp nz, .caseFragileLeft
+
+    ld a, $1
+    ret
+
+.caseFragileLeft:
+    ld a, [hl]
+    cp a, $42
+    jp nz, .caseFragileRight
+
+    xor a
+    ld [hl], a
+    inc hl
+    ld [hl], a
+
+    ld a, $1
+    ret
+
+.caseFragileRight:
+    ld a, [hl]
+    cp a, $43
+    jp nz, .caseEnd
+
+    xor a
+    ld [hl], a
+    dec hl
+    ld [hl], a
+
+    ld a, $1
+    ret
+
 
 .caseEnd:
     ld a, $0

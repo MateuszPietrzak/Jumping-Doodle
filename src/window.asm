@@ -70,11 +70,36 @@ LoadGameBackground::
 
     call ClearOam
 
-    ; do tilemap for background
-    ld de, BackgroundTilemap
-    ld hl, $9800
-    ld bc, BackgroundTilemap.end - BackgroundTilemap
-    call MemcpyOffsetGame
+    ld b, $20
+.generateStripesLoop:
+    ld a, b
+    cp a, $0
+    jp z, .generateStripesLoopEnd
+
+    ld a, b
+    ld [wGenerateLinePositionY], a
+    push bc
+    call GenerateStripe
+    pop bc
+
+    dec b
+    jp .generateStripesLoop
+.generateStripesLoopEnd:
+    ld a, $1F
+    ld [wGenerateLinePositionY], a
+    call GenerateStripe
+
+    ld bc, $0014
+    ld hl, $99C0
+
+.floorTiles:
+    ld a, $44
+    ld [hl+], a
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, .floorTiles
+
 
     ; write text to window
     ld hl, ScoreText
@@ -313,12 +338,8 @@ ENDR
 
 SECTION "BackgroundTilemap", ROM0
 
-BackgroundTilemap:
-    incbin "assets/BackgroundTilemap.2bpp"
-.end:
-
 BackgroundTiles:
-    incbin "assets/BackgroundTiles.2bpp"
+    incbin "assets/Platforms.2bpp"
 .end:
 
 MenuTiles:
