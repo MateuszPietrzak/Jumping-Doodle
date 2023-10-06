@@ -7,7 +7,7 @@
 - Custom music
 - Custom font rendering
 - Menu
-# Roadmap
 - Random platform generation
+- Scoring system
+# Roadmap
 - Leaderboard saving
-- Actual scoring system
