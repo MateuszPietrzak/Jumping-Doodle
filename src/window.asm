@@ -138,6 +138,9 @@ LoadScoresBackground::
     xor a
     ld [rLCDC], a
 
+    ld a, %1111_0101
+    ld [rBGP], a
+
     ld bc, $03FF
     ld hl, $9800
 

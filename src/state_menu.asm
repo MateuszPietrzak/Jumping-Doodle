@@ -135,6 +135,10 @@ StateMenu::
 .scoreSelected
     ; Else, "SCORES must be selected
     call StateScores
+
+    ld a, %1110_0100
+    ld [rBGP], a
+
     jp StateMenu
 .pressedAEnd
 
