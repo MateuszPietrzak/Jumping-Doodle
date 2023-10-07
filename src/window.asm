@@ -182,11 +182,15 @@ LoadScoresBackground::
     call WriteTextToWindow
 
 FOR N, 8
-    ld de, $9800 + $60 + $4 + N * $20
+    ld de, $9800 + $60 + $2 + N * $20
     ld hl, LeaderboardNumbers + N * 3
     call WriteTextToWindow
 
-    ld bc, $9800 + $60 + $5 + $8 + N * $20
+    ld de, $9800 + $60 + $4 + N * $20
+    ld hl, wLeaderboardNames + N * 4
+    call WriteTextToWindow
+
+    ld bc, $9800 + $60 + $7 + $8 + N * $20
     ld hl, wScoresInBCD + N * 8
     call WriteBCDToWindow
 ENDR
@@ -198,7 +202,7 @@ ENDR
 
     ret
 
-LoadDeathscreenBackground::
+LoadDeathScreenBackground::
     call WaitForVBlank
 
     ;Disable LCD before writing to VRAM
@@ -217,16 +221,49 @@ LoadDeathscreenBackground::
     or a, c
     jp nz, .cleanBG
 
-    ld de, $9800 + $20 + $1
+    ld de, $9800 + $20 + $5
     ld hl, DeathscreenText1
     call WriteTextToWindow
 
-    ld de, $9800 + $40 + $1
+    ld de, $9800 + $80 + $3
     ld hl, DeathscreenText2
     call WriteTextToWindow
 
-    ld de, $9800 + $60 + $1
+    ld bc, $9800 + $C0 + $D
+    ld hl, wNumberBCD_1
+    call WriteBCDToWindow
+
+    ld de, $9800 + $1E0
     ld hl, DeathscreenText3
+    call WriteTextToWindow
+
+    ld de, $9800 + $200
+    ld hl, DeathscreenText4
+    call WriteTextToWindow
+
+    xor a
+    ld [rSCY], a
+
+    ; turn on the LCD
+    ld a, [rLCDC]
+    or a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
+
+    ret
+
+LoadHighscoreScreenBackground::
+    call WaitForVBlank
+
+    ;Disable LCD before writing to VRAM
+    xor a
+    ld [rLCDC], a
+
+    ld de, $9800 + $100 + $3
+    ld hl, DeathscreenText5
+    call WriteTextToWindow
+
+    ld de, $9800 + $120 + $3
+    ld hl, DeathscreenText6
     call WriteTextToWindow
 
     xor a

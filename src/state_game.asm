@@ -3,7 +3,7 @@ INCLUDE "include/hardware.inc/hardware.inc"
 SECTION "stategame", ROM0
 
 StateGame::
-    ; All initialization neede before a game is tarted, shuch as resetting player, should go here
+    ; All initialization needed before a game is started, such as resetting player, should go here
 
     call ResetPlayerState
     call WaitForVBlank
@@ -81,8 +81,10 @@ GameFinish::
     call GreaterBCD
 
     cp a, 0
-    jp z, .skipSaving               ; if score lower then just skip
+    jp z, .deathscreenJump          ; if score lower then just skip
 
+    ld a, 8
+    ld [wAchievedHighscore], a
     ld de, wNumberBCD_1             ; if new score is greater
     ld hl, wScoresInBCD + 7 * 8     ; set it to last highscore
     ld bc, 8
@@ -93,7 +95,7 @@ GameFinish::
     ; check if this it the top score
     ld a, c                    
     cp a, 0
-    jp z, .scoreSave
+    jp z, .deathscreenJump
 
     ; compare score at wScoreInBCD + c * 8 with (c-1) * 8
     ld hl, wScoresInBCD
@@ -121,8 +123,15 @@ GameFinish::
     pop de
 
     cp a, 0
-    jp z, .scoreSave    ; no swap
+    jp z, .deathscreenJump    ; no swap
 
+    ; indicate getting higher score
+    ld a, [wAchievedHighscore]
+    dec a
+    ld [wAchievedHighscore], a
+
+    ; we need to preserve c
+    push bc
     push bc
 
     ld h, d
@@ -135,54 +144,34 @@ GameFinish::
     pop bc
 
     srl c
+    ld hl, wLeaderboardNames
+    add hl, bc
+    ld d, h
+    ld e, l ; de = wLeaderboardNames + (c-1)*4
+    ld bc, 4
+    add hl, bc ; hl = wLeaderboardNames + c*4
+
+    call Memswap
+
+    ; restore c
+    pop bc
+
+    srl c
     srl c
     srl c
 
     jp .whileBetter
 
-.scoreSave
-    ; save scores
-    ; enable reading from sram
-    ld a, $0A
-    ld [rRAMG], a
-    ld a, $0
-    ld [rRAMB], a
-    
-    ; copy sram to wram
-    ld de, wScoresInBCD
-    ld hl, sScoresInBCD
-    ld bc, 8 * 8
-    call Memcpy
-
-    ; add 0 to first checksum
-    xor a
-    ld [sCheckSum], a
-
-    ; add sum of all digits to the second checksum
-    ld c, 64
-    ld d, 0
-    ld hl, sScoresInBCD
-.whileC
-    ld a, [hl+]
-    add a, d
-    ld d, a
-    
-    dec c
-    jp nz, .whileC
-
-    ld a, d
-    ld [sCheckSum + 1], a
-    
-    ; disable reading from sram
-    ld a, $00
-	ld [rRAMG], a
-.skipSaving
-
+.deathscreenJump:
     ; Switch to deathscreen
+    ; score is saved after deathscreen
     call StateDeathscreen
 
     ret
 
 SECTION "gamedata", WRAM0
 
-wIsAlive:: ds 1
+wIsAlive:: 
+    ds 1
+wAchievedHighscore:: 
+    ds 1

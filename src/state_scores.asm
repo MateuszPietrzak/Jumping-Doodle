@@ -1,10 +1,14 @@
 INCLUDE "hardware.inc/hardware.inc"
 
 SECTION "HighscoresSave", SRAM, BANK[0]
-    sScoresInBCD:: 
-        ds 8 * 8
-    sCheckSum::
-        ds 2
+sSRAMStart::
+sScoresInBCD:: 
+    ds 8 * 8
+sLeaderboardNames::
+    ds 4 * 8
+sSRAMEnd::
+sCheckSum::
+    ds 2
 
 SECTION "Highscores", WRAM0
     wScoresInBCD:: 
@@ -25,7 +29,7 @@ LeaderboardNumbers::
     db "7[", 0
 
 ClearScores:
-    ld c, 64
+    ld c, sLeaderboardNames - sScoresInBCD ; sScoresInBCD length
     xor a
     ld hl, sScoresInBCD
 .whileC
@@ -34,7 +38,22 @@ ClearScores:
     dec c
     jp nz, .whileC
 
+    ld c, 8
+    ld hl, sLeaderboardNames
+.whileC2
+    ld a, 65
+    ld [hl+], a
+    ld [hl+], a
+    ld [hl+], a
+    xor a
+    ld [hl+], a
+    
+    dec c
+    jp nz, .whileC2
+
+    xor a
     ld [sCheckSum], a
+    ld a, 24 ; (65 * 3 * 8) % 256
     ld [sCheckSum + 1], a
 
     ret
@@ -51,9 +70,9 @@ CheckSum:
     ld a, [sCheckSum + 1]
     ld b, a
 
-    ld c, 64
+    ld c, sSRAMEnd - sSRAMStart
     ld d, 0
-    ld hl, sScoresInBCD
+    ld hl, sSRAMStart
 .whileC
     ld a, [hl+]
     add a, d
@@ -82,6 +101,12 @@ LoadScores::
     ld de, sScoresInBCD
     ld hl, wScoresInBCD
     ld bc, 8 * 8
+    call Memcpy
+
+    ; copy sram to wram
+    ld de, sLeaderboardNames
+    ld hl, wLeaderboardNames
+    ld bc, 4 * 8
     call Memcpy
 
     ; disable reading from sram

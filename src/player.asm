@@ -15,6 +15,9 @@ ResetPlayerState::
     call WaitForVBlank
     call LoadGameBackground
 
+    xor a
+    ld [wAchievedHighscore], a
+
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
