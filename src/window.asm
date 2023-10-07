@@ -229,10 +229,6 @@ LoadDeathscreenBackground::
     ld hl, DeathscreenText3
     call WriteTextToWindow
 
-    ; ld de, $9800 + $A0 + $8
-    ; ld hl, GameTitle2
-    ; call WriteTextToWindow
-
     xor a
     ld [rSCY], a
 

@@ -298,7 +298,7 @@ HandlePlayer::
     cp a, $08
     jp nz, .skipNoFall
     ld a, c
-    cp a, $10
+    cp a, $40
     jp c, .skipNoFall
 
     ; When dies, set isAlive to 0
