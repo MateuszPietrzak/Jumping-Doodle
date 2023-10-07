@@ -663,3 +663,13 @@ SwitchButtonSoundChannel_1::
     dw G3s
 
     db END
+
+SwitchLetterSoundChannel_1::
+    db NOTE, 1, VOL_MAX
+    dw C3
+    db NOTE, 1, VOL_MAX
+    dw C3s
+    db NOTE, 1, VOL_MAX
+    dw D3
+
+    db END

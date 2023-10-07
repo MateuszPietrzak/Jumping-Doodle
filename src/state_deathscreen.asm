@@ -78,7 +78,7 @@ StateDeathscreen::
     call SaveScore
 
 .noHighscore:
-    
+
     xor a
     ld [wAchievedHighscore], a
     ret
@@ -100,6 +100,9 @@ StateDeathscreen::
     and a, b
     jp z, .pressedUpEnd
 .pressedUp:
+
+    ld bc, SwitchLetterSoundChannel_1
+    call StartSoundEffect
 
     xor a
     ld [wFramesFromButton], a
@@ -133,6 +136,9 @@ StateDeathscreen::
     jp z, .pressedDownEnd
 .pressedDown:
 
+    ld bc, SwitchLetterSoundChannel_1
+    call StartSoundEffect
+
     xor a
     ld [wFramesFromButton], a
 
@@ -164,6 +170,9 @@ StateDeathscreen::
 
     jp z, .pressedRightEnd
 .pressedRight:
+
+    ld bc, SwitchLetterSoundChannel_1
+    call StartSoundEffect
 
     xor a
     ld [wFramesFromButton], a
