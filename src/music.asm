@@ -93,7 +93,7 @@ InitMusic::
 
     ret
 
-; param @bc
+; param @bc address of sound's music sheet
 StartSoundEffect::
     ld a, [wPositionChannel_1]
     ld [wPositionChannelCopy_1], a
@@ -207,6 +207,7 @@ RestoreSoundChannel_1:
     cp a, NOTE  ; check if a note is played
     ret nz      ; if not return
 
+    ld a, [hl+] ; load note length
     ld a, [hl+] ; load volume and sweep (+2)
 
     ; set volume and sweep
