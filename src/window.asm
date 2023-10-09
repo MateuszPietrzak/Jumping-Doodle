@@ -209,6 +209,10 @@ LoadDeathScreenBackground::
     xor a
     ld [rLCDC], a
 
+    ; load darker palette
+    ld a, %1111_0101
+    ld [rBGP], a
+
     ; Clear screen
     ld bc, $03FF
     ld hl, $9800
