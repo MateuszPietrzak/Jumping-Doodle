@@ -182,15 +182,15 @@ LoadScoresBackground::
     call WriteTextToWindow
 
 FOR N, 8
-    ld de, $9800 + $60 + $2 + N * $20
+    ld de, $9800 + $80 + $3 + N * $20
     ld hl, LeaderboardNumbers + N * 3
     call WriteTextToWindow
 
-    ld de, $9800 + $60 + $4 + N * $20
+    ld de, $9800 + $80 + $5 + N * $20
     ld hl, wLeaderboardNames + N * 4
     call WriteTextToWindow
 
-    ld bc, $9800 + $60 + $7 + $8 + N * $20
+    ld bc, $9800 + $80 + $8 + $8 + N * $20
     ld hl, wScoresInBCD + N * 8
     call WriteBCDToWindow
 ENDR
