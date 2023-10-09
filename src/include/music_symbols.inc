@@ -1,16 +1,16 @@
 ; Channel Notes
 
 DEF C2	EQU 44
-DEF C2#	EQU 157
+DEF C2s	EQU 157
 DEF D2	EQU 263
-DEF D2#	EQU 363
+DEF D2s	EQU 363
 DEF E2	EQU 457
 DEF F2	EQU 547
-DEF F2#	EQU 631
+DEF F2s	EQU 631
 DEF G2	EQU 711
-DEF G2#	EQU 786
+DEF G2s	EQU 786
 DEF A2	EQU 856
-DEF A2#	EQU 923
+DEF A2s	EQU 923
 DEF B2	EQU 986
 DEF C3  EQU 1046
 DEF C3s EQU 1102
@@ -83,15 +83,20 @@ DEF dD2  EQU $97
 DEF dC2  EQU $A4
 
 
-; Music shee commands
+; Music sheet commands
 
 DEF NOTE            EQU $01
 DEF VIB             EQU $A1
 DEF LOOP            EQU $EE
 DEF END             EQU $FF
+
+DEF INFINITE        EQU $01
+
+; different volume settings
 DEF VOL_MAX         EQU $F8
 DEF VOL_34          EQU $C8
 DEF VOL_24          EQU $88
+DEF VOL_24F         EQU $84
 DEF VOL_14          EQU $58
 DEF VOL_MUTE        EQU $08
 DEF VOL3_MAX        EQU $20
@@ -102,8 +107,43 @@ DEF VOLD_MAX_S      EQU $D1
 DEF VOLD_MAX_L      EQU $D2
 DEF VOLD_MID_S      EQU $A1
 DEF VOLD_MID_L      EQU $A2
+DEF VOLD_LOW_S      EQU $81
+DEF VOLD_LOW_L      EQU $82
 DEF VOLD_MUTE       EQU $00
 
-DEF NL              EQU 12      ; note length
-DEF hNL             EQU 6       ; half note length
-DEF START_PAUSE     EQU $30     ; pause for the music chip to initialize
+; note lengths for different tempos
+DEF NL300	        EQU	6
+DEF hNL300	        EQU	3
+DEF NL257	        EQU	7
+DEF NL225	        EQU	8
+DEF hNL225	        EQU	4
+DEF NL200	        EQU	9
+DEF NL180	        EQU	10
+DEF hNL180	        EQU	5
+DEF NL164	        EQU	11
+DEF NL150	        EQU	12
+DEF hNL150	        EQU	6
+DEF NL138	        EQU	13
+DEF NL129	        EQU	14
+DEF hNL129	        EQU	7
+DEF NL120	        EQU	15
+
+DEF NL113	        EQU	32
+DEF hNL113	        EQU 16
+
+DEF NL106	        EQU	17
+DEF NL100	        EQU	18
+DEF hNL100	        EQU	9
+DEF NL95	        EQU	19
+DEF NL90	        EQU	20
+DEF hNL90	        EQU	10
+DEF NL86	        EQU	21
+DEF NL82	        EQU	22
+DEF hNL82	        EQU	11
+DEF NL78	        EQU	23
+DEF NL75	        EQU	24
+DEF hNL75	        EQU	12
+DEF NL72	        EQU	25
+DEF NL69	        EQU	26
+DEF hNL69	        EQU	13
+DEF START_PAUSE     EQU $20     ; pause for the music chip to initialize

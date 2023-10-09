@@ -12,14 +12,6 @@ InitMusic::
     ld a, l
     ld [wPositionChannel_1 + 1], a
 
-    /*
-    ld hl, JumpSoundChannel_1
-    ld a, h
-    ld [wPositionChannel_1], a
-    ld a, l
-    ld [wPositionChannel_1 + 1], a
-    */
-
     ld hl, MainThemeChannel_2
     ld a, h
     ld [wPositionChannel_2], a
@@ -90,6 +82,88 @@ InitMusic::
     ld [rNR32], a
     ld a, %10000000
     ld [rNR30], a
+
+    ret
+
+; TODO make this work with interrupts
+
+SwitchToMainTheme::
+    xor a
+    ld [wNoteFrameChannel_1], a
+    ld [wNoteFrameChannelCopy_1], a
+    ld [wNoteFrameChannel_2], a
+    ld [wNoteFrameChannel_3], a
+    ld [wNoteFrameChannel_4], a
+    ld [wLoopTimesChannel_1], a
+    ld [wLoopTimesChannel_2], a
+    ld [wLoopTimesChannel_3], a
+    ld [wLoopTimesChannel_4], a
+
+    ld hl, MainThemeChannel_1
+    ld a, h
+    ld [wPositionChannel_1], a
+    ld [wPositionChannelCopy_1], a
+    ld a, l
+    ld [wPositionChannel_1 + 1], a
+    ld [wPositionChannelCopy_1 + 1], a
+
+    ld hl, MainThemeChannel_2
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
+    ld hl, MainThemeChannel_3
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+    
+    ld hl, MainThemeChannel_4
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
+
+    ret
+
+SwitchToDeathScreenTheme::
+    xor a
+    ld [wNoteFrameChannel_1], a
+    ld [wNoteFrameChannelCopy_1], a
+    ld [wNoteFrameChannel_2], a
+    ld [wNoteFrameChannel_3], a
+    ld [wNoteFrameChannel_4], a
+    ld [wLoopTimesChannel_1], a
+    ld [wLoopTimesChannel_2], a
+    ld [wLoopTimesChannel_3], a
+    ld [wLoopTimesChannel_4], a
+
+    ld hl, DeathScreenThemeChannel_1
+    ld a, h
+    ld [wPositionChannel_1], a
+    ld [wPositionChannelCopy_1], a
+    ld a, l
+    ld [wPositionChannel_1 + 1], a
+    ld [wPositionChannelCopy_1 + 1], a
+
+    ld hl, DeathScreenThemeChannel_2
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
+    ld hl, DeathScreenThemeChannel_3
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+    
+    ld hl, DeathScreenThemeChannel_4
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
 
     ret
 
@@ -940,4 +1014,4 @@ SECTION "WavePatterns", ROM0
 
 WavePatterns:
     db $02, $46, $8A, $CE, $FF, $FE, $ED, $DC, $CB, $A9, $87, $65, $44, $33, $22, $11
-    db $01, $23, $45, $67, $8A, $CD, $EE, $F7, $7F, $EE, $DC, $A8, $76, $54, $32, $10
+    db $31, $23, $45, $67, $8A, $CD, $EE, $FA, $AF, $EE, $DC, $A8, $76, $54, $32, $13

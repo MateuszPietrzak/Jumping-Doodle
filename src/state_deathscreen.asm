@@ -5,6 +5,7 @@ SECTION "StateDeath", ROM0
 StateDeathscreen::
 
     call LoadDeathScreenBackground
+    call SwitchToDeathScreenTheme
 
     ld a, [wAchievedHighscore]
     cp a, $0
@@ -27,6 +28,8 @@ StateDeathscreen::
     ld [wLeaderboardMarker + 3], a
     ld [wLeaderboardSelect], a
     ld [wFramesFromButton], a
+
+    ; switch music
 
 .deathscreenLoop:
     call UpdateKeys
@@ -55,6 +58,8 @@ StateDeathscreen::
 
     jr z, .pressedBackEnd
 .pressedBack:
+    call SwitchToMainTheme
+
     xor a
     ld [wKeysPressed], a
 

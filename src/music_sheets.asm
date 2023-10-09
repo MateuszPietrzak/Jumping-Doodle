@@ -56,24 +56,24 @@ MainThemeChannel_1::
     dw $00
 .start
     ; P1B1
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw A3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P1B2
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw B3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P1B3
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw G3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P1B4
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw C4
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
 
     db LOOP
@@ -81,69 +81,69 @@ MainThemeChannel_1::
     db $02
 
     ; P2B1
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw A3
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw A3
-    db NOTE, NL * 2, VOL_MUTE
+    db NOTE, NL150 * 2, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw B3
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw B3
-    db NOTE, NL * 2, VOL_MUTE
+    db NOTE, NL150 * 2, VOL_MUTE
     dw $00
     ; P2B3
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw G3
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw G3
-    db NOTE, NL * 2, VOL_MUTE
+    db NOTE, NL150 * 2, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw C4
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw C4
-    db NOTE, NL * 2, VOL_MUTE
+    db NOTE, NL150 * 2, VOL_MUTE
     dw $00
 
     ; P3B1
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw A3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P3B2
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw B3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P3B3
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw G3
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
     ; P3B4
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw C4
-    db NOTE, NL * 6, VOL_MUTE
+    db NOTE, NL150 * 6, VOL_MUTE
     dw $00
 
     ; P4B1
-    db NOTE, NL * 8, VOL_MUTE
+    db NOTE, NL150 * 8, VOL_MUTE
     dw $00
     ; P4B2
-    db NOTE, NL * 8, VOL_MUTE
+    db NOTE, NL150 * 8, VOL_MUTE
     dw $00
     ; P4B3
-    db NOTE, NL * 8, VOL_MUTE
+    db NOTE, NL150 * 8, VOL_MUTE
     dw $00
     ; P4B4
-    db NOTE, NL * 8, VOL_MUTE
+    db NOTE, NL150 * 8, VOL_MUTE
     dw $00
 
     db LOOP
     dw .start
-    db NOTE
+    db INFINITE
 
     db END
 
@@ -153,64 +153,64 @@ MainThemeChannel_2::
     dw $00
 .start
     ; P1B1
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
     ; P1B2 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
     ; P1B3 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
     ; P1B4 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
     ; -------------
 
@@ -219,175 +219,175 @@ MainThemeChannel_2::
     db $02
     ; --------------------------------------------------
     ; P2B1 -----------
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw C4
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw C4
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw D4
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw D4
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
     ; P2B2 -----------
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw B3
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw B3
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw E4
-    db NOTE, NL, VOL_14
+    db NOTE, NL150, VOL_14
     dw E4
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
-    db NOTE, NL, VOL_MUTE
+    db NOTE, NL150, VOL_MUTE
     dw $00
     ; --------------------------------------------
     ; P3B1
-    db NOTE, NL * 2, VOL_24
+    db NOTE, NL150 * 2, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
     ; P3B2 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
     ; P3B3 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
     ; P3B4 -------------
-    db NOTE, NL * 2, VOL_34
+    db NOTE, NL150 * 2, VOL_34
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
     ; -------------
     ; --------------------------------------------------------
     ; P4B1
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw D3
     ; P4B2 -------------
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw B3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
     ; P4B3 -------------
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw E3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw G3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C3
     ; P4B4 -------------
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw A3
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw C4
-    db NOTE, NL, VOL_24
+    db NOTE, NL150, VOL_24
     dw F3
     ; -------------
 
     db LOOP 
     dw .start 
-    db NOTE
+    db INFINITE
 
     db END
 
@@ -397,24 +397,24 @@ MainThemeChannel_3::
     dw $00
 .start
     ; P1B1
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw F4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P1B2
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw G4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P1B3
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw E4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P1B4
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw A4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
 
     db LOOP
@@ -422,71 +422,71 @@ MainThemeChannel_3::
     db $02
 
     ; P2B1
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw F4
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw F4
-    db NOTE, NL * 2, VOL3_MUTE
+    db NOTE, NL150 * 2, VOL3_MUTE
     dw $00
     ; P2B2
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw G4
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw G4
-    db NOTE, NL * 2, VOL3_MUTE
+    db NOTE, NL150 * 2, VOL3_MUTE
     dw $00
     ; P2B3
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw E4
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw E4
-    db NOTE, NL * 2, VOL3_MUTE
+    db NOTE, NL150 * 2, VOL3_MUTE
     dw $00
     ; P2B4
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw A4
-    db NOTE, NL, VOL3_12
+    db NOTE, NL150, VOL3_12
     dw A4
-    db NOTE, NL * 2, VOL3_MUTE
+    db NOTE, NL150 * 2, VOL3_MUTE
     dw $00
 
     ; P3B1
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw F4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P3B2
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw G4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P3B3
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw E4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
     ; P3B4
-    db NOTE, NL * 2, VOL3_12
+    db NOTE, NL150 * 2, VOL3_12
     dw A4
-    db NOTE, NL * 6, VOL3_MUTE
+    db NOTE, NL150 * 6, VOL3_MUTE
     dw $00
 
     ; P4B1
-    db NOTE, NL * 8, VOL3_MUTE
+    db NOTE, NL150 * 8, VOL3_MUTE
     dw $00
     ; P4B2
-    db NOTE, NL * 8, VOL3_MUTE
+    db NOTE, NL150 * 8, VOL3_MUTE
     dw $00
     ; P4B3
-    db NOTE, NL * 8, VOL3_MUTE
+    db NOTE, NL150 * 8, VOL3_MUTE
     dw $00
     ; P4B4
-    db NOTE, NL * 8, VOL3_MUTE
+    db NOTE, NL150 * 8, VOL3_MUTE
     dw $00
 
     db LOOP
     dw .start
-    db NOTE
+    db INFINITE
 
     db END
 
@@ -495,25 +495,25 @@ MainThemeChannel_4::
     dw $00
 .start
     ; P1B1 ----------------
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dG7s
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MID_L
+    db NOTE, NL150 - 2, VOLD_MID_L
     dw dD7
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MID_S
+    db NOTE, hNL150, VOLD_MID_S
     dw dG7s
-    db NOTE, hNL, VOLD_MUTE
+    db NOTE, hNL150, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MID_S
+    db NOTE, hNL150, VOLD_MID_S
     dw dG8s
-    db NOTE, hNL * 3, VOLD_MUTE
+    db NOTE, hNL150 * 3, VOLD_MUTE
     dw $00
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dD7
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
     
     db LOOP
@@ -522,19 +522,19 @@ MainThemeChannel_4::
     ; --------------------
     ; P2B1-3 -------------
 .part21
-    db NOTE, NL - 2, VOLD_MAX_S
+    db NOTE, NL150 - 2, VOLD_MAX_S
     dw dG7s
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MAX_S
+    db NOTE, NL150 - 2, VOLD_MAX_S
     dw dD7
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MAX_S
+    db NOTE, hNL150, VOLD_MAX_S
     dw dG7s
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
-    db NOTE, hNL - 2, VOLD_MAX_S
+    db NOTE, hNL150 - 2, VOLD_MAX_S
     dw dG8s
     db NOTE, 2, VOLD_MUTE
     dw $00
@@ -544,44 +544,44 @@ MainThemeChannel_4::
     db $03
 
     ; P2B4 ---------------
-    db NOTE, NL - 2, VOLD_MAX_S
+    db NOTE, NL150 - 2, VOLD_MAX_S
     dw dG7s
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MAX_S
+    db NOTE, NL150 - 2, VOLD_MAX_S
     dw dD7
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MAX_S
+    db NOTE, hNL150, VOLD_MAX_S
     dw dG7s
-    db NOTE, hNL, VOLD_MUTE
+    db NOTE, hNL150, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MAX_S
+    db NOTE, hNL150, VOLD_MAX_S
     dw dG8s
-    db NOTE, hNL, VOLD_MUTE
+    db NOTE, hNL150, VOLD_MUTE
     dw $00
     ; -----------------
     ; P3B1 ------------
 .part3
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dG7s
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MID_L
+    db NOTE, NL150 - 2, VOLD_MID_L
     dw dD7
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MID_S
+    db NOTE, hNL150, VOLD_MID_S
     dw dG7s
-    db NOTE, hNL, VOLD_MUTE
+    db NOTE, hNL150, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MID_S
+    db NOTE, hNL150, VOLD_MID_S
     dw dG8s
-    db NOTE, hNL * 3, VOLD_MUTE
+    db NOTE, hNL150 * 3, VOLD_MUTE
     dw $00
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dD7
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
     
     db LOOP
@@ -590,25 +590,25 @@ MainThemeChannel_4::
     ; ----------------
     ; P4B1 -----------
 .part4
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dG7s
-    db NOTE, NL * 2, VOLD_MUTE
+    db NOTE, NL150 * 2, VOLD_MUTE
     dw $00
-    db NOTE, NL, VOLD_MID_L
+    db NOTE, NL150, VOLD_MID_L
     dw dD7
-    db NOTE, NL, VOLD_MUTE
+    db NOTE, NL150, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MID_S
+    db NOTE, NL150 - 2, VOLD_MID_S
     dw dD8
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, NL - 2, VOLD_MID_S
+    db NOTE, NL150 - 2, VOLD_MID_S
     dw dD7
     db NOTE, 2, VOLD_MUTE
     dw $00
-    db NOTE, hNL, VOLD_MID_S
+    db NOTE, hNL150, VOLD_MID_S
     dw dG8s
-    db NOTE, hNL, VOLD_MUTE
+    db NOTE, hNL150, VOLD_MUTE
     dw $00
 
     db LOOP
@@ -618,7 +618,129 @@ MainThemeChannel_4::
 
     db LOOP
     dw .start
-    db NOTE
+    db INFINITE
+
+    db END
+
+DeathScreenThemeChannel_1::
+.start
+    db NOTE, NL113, VOL_24F
+    dw G3s
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+    db NOTE, NL113, VOL_24F
+    dw C4s
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+    db NOTE, NL113, VOL_24F
+    dw B3
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+DeathScreenThemeChannel_2::
+.start
+    db NOTE, NL113, VOL_24F
+    dw C3s
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+    db NOTE, NL113, VOL_24F
+    dw F3s
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+    db NOTE, NL113, VOL_24F
+    dw D3s
+    db NOTE, NL113 * 3, VOL_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+DeathScreenThemeChannel_3::
+    db $25, $01
+.start
+    ; B1
+    db NOTE, NL113, VOL3_MAX
+    dw E2
+    db NOTE, hNL113, VOL3_MAX
+    dw D2s
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113-2, VOL3_MAX
+    dw C2s
+    db NOTE, 2, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113, VOL3_MAX
+    dw C2s
+    db NOTE, hNL113, VOL3_MAX
+    dw E2
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    ; B2
+    db NOTE, NL113, VOL3_MAX
+    dw A2
+    db NOTE, hNL113, VOL3_MAX
+    dw B2
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113-2, VOL3_MAX
+    dw A2
+    db NOTE, 2, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113, VOL3_MAX
+    dw A2
+    db NOTE, hNL113, VOL3_MAX
+    dw F2s
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    ; B3
+    db NOTE, NL113, VOL3_MAX
+    dw F2s
+    db NOTE, hNL113, VOL3_MAX
+    dw E2
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113-2, VOL3_MAX
+    dw D2s
+    db NOTE, 2, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113, VOL3_MAX
+    dw D2s
+    db NOTE, hNL113, VOL3_MUTE
+    dw $00
+    db NOTE, hNL113, VOL3_MAX
+    dw E2
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+DeathScreenThemeChannel_4::
+.start
+    db NOTE, hNL113, VOLD_LOW_S
+    dw dG7s
+    db NOTE, hNL113, VOLD_LOW_S
+    dw dD8
+    db NOTE, NL113, VOLD_MUTE
+    dw $00
+    db NOTE, hNL113, VOLD_LOW_S
+    dw dG7s
+    db NOTE, hNL113 * 3, VOLD_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
 
     db END
 
