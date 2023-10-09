@@ -129,6 +129,7 @@ StateMenu::
     cp a, $0
     jr nz, .scoreSelected
     ; If "PLAY" selected
+    call SwitchToMainTheme
     call StateGame
 
     ; reload default color palette

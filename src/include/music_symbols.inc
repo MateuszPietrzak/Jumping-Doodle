@@ -134,7 +134,10 @@ DEF hNL113	        EQU 16
 DEF NL106	        EQU	17
 DEF NL100	        EQU	18
 DEF hNL100	        EQU	9
+
 DEF NL95	        EQU	19
+DEF hNL95	        EQU	9
+
 DEF NL90	        EQU	20
 DEF hNL90	        EQU	10
 DEF NL86	        EQU	21

@@ -5,30 +5,7 @@ SECTION "Music", ROM0
 
 InitMusic::
     ; set starting points for each channel
-    
-    ld hl, MainThemeChannel_1
-    ld a, h
-    ld [wPositionChannel_1], a
-    ld a, l
-    ld [wPositionChannel_1 + 1], a
-
-    ld hl, MainThemeChannel_2
-    ld a, h
-    ld [wPositionChannel_2], a
-    ld a, l
-    ld [wPositionChannel_2 + 1], a
-
-    ld hl, MainThemeChannel_3
-    ld a, h
-    ld [wPositionChannel_3], a
-    ld a, l
-    ld [wPositionChannel_3 + 1], a
-    
-    ld hl, MainThemeChannel_4
-    ld a, h
-    ld [wPositionChannel_4], a
-    ld a, l
-    ld [wPositionChannel_4 + 1], a
+    call SwitchToMenuTheme
 
     ; turn on all channels
     ld a, 1
@@ -85,7 +62,45 @@ InitMusic::
 
     ret
 
-; TODO make this work with interrupts
+SwitchToMenuTheme::
+    xor a
+    ld [wNoteFrameChannel_1], a
+    ld [wNoteFrameChannelCopy_1], a
+    ld [wNoteFrameChannel_2], a
+    ld [wNoteFrameChannel_3], a
+    ld [wNoteFrameChannel_4], a
+    ld [wLoopTimesChannel_1], a
+    ld [wLoopTimesChannel_2], a
+    ld [wLoopTimesChannel_3], a
+    ld [wLoopTimesChannel_4], a
+
+    ld hl, MenuThemeChannel_1
+    ld a, h
+    ld [wPositionChannel_1], a
+    ld [wPositionChannelCopy_1], a
+    ld a, l
+    ld [wPositionChannel_1 + 1], a
+    ld [wPositionChannelCopy_1 + 1], a
+
+    ld hl, MenuThemeChannel_2
+    ld a, h
+    ld [wPositionChannel_2], a
+    ld a, l
+    ld [wPositionChannel_2 + 1], a
+
+    ld hl, MenuThemeChannel_3
+    ld a, h
+    ld [wPositionChannel_3], a
+    ld a, l
+    ld [wPositionChannel_3 + 1], a
+    
+    ld hl, MenuThemeChannel_4
+    ld a, h
+    ld [wPositionChannel_4], a
+    ld a, l
+    ld [wPositionChannel_4 + 1], a
+
+    ret
 
 SwitchToMainTheme::
     xor a

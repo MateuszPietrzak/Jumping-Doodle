@@ -58,7 +58,7 @@ StateDeathscreen::
 
     jr z, .pressedBackEnd
 .pressedBack:
-    call SwitchToMainTheme
+    call SwitchToMenuTheme
 
     xor a
     ld [wKeysPressed], a

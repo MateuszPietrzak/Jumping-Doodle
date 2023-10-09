@@ -623,6 +623,9 @@ MainThemeChannel_4::
     db END
 
 DeathScreenThemeChannel_1::
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
 .start
     db NOTE, NL113, VOL_24F
     dw G3s
@@ -644,6 +647,9 @@ DeathScreenThemeChannel_1::
     db END
 
 DeathScreenThemeChannel_2::
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
 .start
     db NOTE, NL113, VOL_24F
     dw C3s
@@ -666,6 +672,8 @@ DeathScreenThemeChannel_2::
 
 DeathScreenThemeChannel_3::
     db $25, $01
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
 .start
     ; B1
     db NOTE, NL113, VOL3_MAX
@@ -726,6 +734,8 @@ DeathScreenThemeChannel_3::
     db END
 
 DeathScreenThemeChannel_4::
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
 .start
     db NOTE, hNL113, VOLD_LOW_S
     dw dG7s
@@ -743,6 +753,181 @@ DeathScreenThemeChannel_4::
     db INFINITE
 
     db END
+
+MenuThemeChannel_1::
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
+.start
+    ; B1
+    db NOTE, NL95 * 2, VOL_14
+    dw C4s
+    db NOTE, NL95, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw C4s
+    db NOTE, hNL95, VOL_24
+    dw D4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw F4
+    db NOTE, hNL95, VOL_24
+    dw A4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw G4s
+    ; B2
+    db NOTE, NL95 * 2, VOL_14
+    dw C5s
+    db NOTE, NL95, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw C5s
+    db NOTE, hNL95, VOL_24
+    dw A4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw G4s
+    db NOTE, hNL95, VOL_24
+    dw A4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw D4s
+    ; B3
+    db NOTE, NL95 * 2, VOL_14
+    dw A4s
+    db NOTE, NL95, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw A4s
+    db NOTE, hNL95, VOL_24
+    dw G4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw F4
+    db NOTE, hNL95, VOL_24
+    dw D4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw A4s
+    ; B4
+    db NOTE, NL95 * 2, VOL_14
+    dw F4s
+    db NOTE, NL95, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw F4s
+    db NOTE, hNL95, VOL_24
+    dw G4s
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw A4s
+    db NOTE, hNL95, VOL_24
+    dw C5
+    db NOTE, hNL95 + 1, VOL_MUTE
+    dw $00
+    db NOTE, NL95, VOL_24
+    dw F4s
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+MenuThemeChannel_2::
+    db VIB, %01010101
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
+.start
+    ; B1
+    db NOTE, NL95 * 2, VOL_14
+    dw F4
+    db NOTE, NL95 * 6, VOL_MUTE
+    dw $00
+    ; B2
+    db NOTE, NL95 * 2, VOL_14
+    dw G4s
+    db NOTE, NL95 * 6, VOL_MUTE
+    dw $00
+    ; B3
+    db NOTE, NL95 * 2, VOL_14
+    dw F4
+    db NOTE, NL95 * 6, VOL_MUTE
+    dw $00
+    ; B4
+    db NOTE, NL95 * 2, VOL_14
+    dw C4s
+    db NOTE, NL95 * 6, VOL_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+MenuThemeChannel_3::
+    db $25, $00
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
+.start
+    ; B1
+    db NOTE, NL95 * 2, VOL3_12
+    dw G4s
+    db NOTE, NL95 * 6, VOL3_MUTE
+    dw $00
+    ; B2
+    db NOTE, NL95 * 2, VOL3_12
+    dw D4s
+    db NOTE, NL95 * 6, VOL3_MUTE
+    dw $00
+    ; B3
+    db NOTE, NL95 * 2, VOL3_12
+    dw C4s
+    db NOTE, NL95 * 6, VOL3_MUTE
+    dw $00
+    ; B4
+    db NOTE, NL95 * 2, VOL3_12
+    dw A4s
+    db NOTE, NL95 * 6, VOL3_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+MenuThemeChannel_4::
+    db NOTE, START_PAUSE, VOL_MUTE 
+    dw $00
+.start
+    ; B1
+    db NOTE, NL95, VOLD_LOW_L
+    dw dG7s
+    db NOTE, NL95 * 3, VOLD_MUTE
+    dw $00
+    db NOTE, NL95, VOLD_LOW_L
+    dw dD7
+    db NOTE, NL95 * 3, VOLD_MUTE
+    dw $00
+
+    db LOOP
+    dw .start
+    db INFINITE
+
+    db END
+
+    
+
 
 JumpSoundChannel_1::
     db NOTE, 1, VOL_MAX
