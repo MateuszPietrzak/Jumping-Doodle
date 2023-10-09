@@ -1,6 +1,6 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "stategame", ROM0
+SECTION "StateGame", ROM0
 
 StateGame::
     ; All initialization needed before a game is started, such as resetting player, should go here
@@ -169,7 +169,7 @@ GameFinish::
 
     ret
 
-SECTION "gamedata", WRAM0
+SECTION "GameData", WRAM0
 
 wIsAlive:: 
     ds 1

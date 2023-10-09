@@ -1,6 +1,6 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "stateinit", ROM0
+SECTION "StateInit", ROM0
 
 ; THIS IS WHERE MOST OF THE GAME INITIALIZATION SHOULD GO
 ; This subroutine is only called once, when the game boots
