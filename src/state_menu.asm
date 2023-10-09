@@ -19,7 +19,7 @@ StateMenu::
     ; If we need to reload buttons
     ld a, [wRefreshButtonsFlag]
     cp a, $0
-    jp z, .noRefreshButtons
+    jr z, .noRefreshButtons
 
     ; Reset the flag back to zero
     xor a
@@ -27,7 +27,7 @@ StateMenu::
 
     ld a, [wButtonSelected]
     cp a, $0
-    jp nz, .caseOne 
+    jr nz, .caseOne 
 .caseZero:
 
     ld hl, $9928 
@@ -46,7 +46,7 @@ StateMenu::
     ld b, $4
     call Sub16
 
-    jp .noRefreshButtons
+    jr .noRefreshButtons
 .caseOne:
 
     ld hl, $9928 
@@ -75,12 +75,12 @@ StateMenu::
     ld b, PADF_DOWN
     and a, b
 
-    jp z, .pressedDownEnd
+    jr z, .pressedDownEnd
 .pressedDown
     ; Only go down if you can
     ld a, [wButtonSelected]
     cp a, $0
-    jp nz, .pressedDownEnd
+    jr nz, .pressedDownEnd
 
     ; Increment button state
     inc a
@@ -99,12 +99,12 @@ StateMenu::
     ld b, PADF_UP
     and a, b
 
-    jp z, .pressedUpEnd
+    jr z, .pressedUpEnd
 .pressedUp
     ; Only go up if you can
     ld a, [wButtonSelected]
     cp a, $1
-    jp nz, .pressedUpEnd
+    jr nz, .pressedUpEnd
 
     ; Decrement button state
     dec a
@@ -123,11 +123,11 @@ StateMenu::
     ld b, PADF_A
     and a, b
 
-    jp z, .pressedAEnd
+    jr z, .pressedAEnd
 .pressedA
     ld a, [wButtonSelected]
     cp a, $0
-    jp nz, .scoreSelected
+    jr nz, .scoreSelected
     ; If "PLAY" selected
     call StateGame
 

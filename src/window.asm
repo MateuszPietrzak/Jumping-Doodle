@@ -74,7 +74,7 @@ LoadGameBackground::
 .generateStripesLoop:
     ld a, b
     cp a, $0
-    jp z, .generateStripesLoopEnd
+    jr z, .generateStripesLoopEnd
 
     ld a, b
     ld [wGenerateLinePositionY], a
@@ -83,7 +83,7 @@ LoadGameBackground::
     pop bc
 
     dec b
-    jp .generateStripesLoop
+    jr .generateStripesLoop
 .generateStripesLoopEnd:
     ld a, $1F
     ld [wGenerateLinePositionY], a
@@ -98,7 +98,7 @@ LoadGameBackground::
     dec bc
     ld a, b
     or a, c
-    jp nz, .floorTiles
+    jr nz, .floorTiles
 
 
     ; write text to window
@@ -175,7 +175,7 @@ LoadScoresBackground::
     dec bc
     ld a, b
     or a, c
-    jp nz, .cleanBG
+    jr nz, .cleanBG
 
     ld de, $9800 + $20 + $3
     ld hl, LeaderboardText
@@ -223,7 +223,7 @@ LoadDeathScreenBackground::
     dec bc
     ld a, b
     or a, c
-    jp nz, .cleanBG
+    jr nz, .cleanBG
 
     ld de, $9800 + $20 + $5
     ld hl, DeathscreenText1
@@ -289,24 +289,24 @@ WriteTextToWindow::
 
 .caseEnd:
     cp a, 0
-    jp z, .end
+    jr z, .end
 
 .caseSpace:
     cp a, 32
-    jp nz, .caseNumber
+    jr nz, .caseNumber
 
     sub a, 32
     ld [de], a
 
-    jp .switchEnd
+    jr .switchEnd
 .caseNumber:
     cp a, 65
-    jp nc, .caseLetter
+    jr nc, .caseLetter
 
     sub a, 46
     ld [de], a
 
-    jp .switchEnd
+    jr .switchEnd
 .caseLetter:
     ; A = 12 (vs 65 in ASCII)
     sub a, 53
@@ -316,7 +316,7 @@ WriteTextToWindow::
     inc de
     dec bc
 
-    jp WriteTextToWindow
+    jr WriteTextToWindow
 .end:
     ret
 
@@ -369,7 +369,7 @@ WriteNumberToWindow::
     ; check if loop should end
     ld a, l
     or a, h
-    jp nz, .whileNumberIsNotZero
+    jr nz, .whileNumberIsNotZero
 
     ret
 
@@ -400,10 +400,10 @@ WhileDigits:
 
     ld a, e
     cp a, 0
-    jp z, .end
+    jr z, .end
 
     dec e
-    jp WhileDigits
+    jr WhileDigits
 .end
     ret
 

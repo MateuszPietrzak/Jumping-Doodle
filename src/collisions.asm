@@ -15,7 +15,7 @@ CheckCollisions::
     ;Check if mod 8 <= 4
 
     and a, %00000110
-    jp nz, .caseEnd
+    jr nz, .caseEnd
     
     ld a, d
 
@@ -48,7 +48,7 @@ CheckCollisions::
 .caseLeft:
     ld a, [hl]
     cp a, $40
-    jp nz, .caseRight
+    jr nz, .caseRight
 
     ; xor a
     ; ld [hl], a
@@ -61,7 +61,7 @@ CheckCollisions::
 .caseRight:
     ld a, [hl]
     cp a, $41
-    jp nz, .caseFloor
+    jr nz, .caseFloor
 
     ; xor a
     ; ld [hl], a
@@ -74,7 +74,7 @@ CheckCollisions::
 .caseFloor:
     ld a, [hl]
     cp a, $44
-    jp nz, .caseFragileLeft
+    jr nz, .caseFragileLeft
 
     ld a, $1
     ret
@@ -82,7 +82,7 @@ CheckCollisions::
 .caseFragileLeft:
     ld a, [hl]
     cp a, $42
-    jp nz, .caseFragileRight
+    jr nz, .caseFragileRight
 
     xor a
     ld [hl], a
@@ -95,7 +95,7 @@ CheckCollisions::
 .caseFragileRight:
     ld a, [hl]
     cp a, $43
-    jp nz, .caseEnd
+    jr nz, .caseEnd
 
     xor a
     ld [hl], a

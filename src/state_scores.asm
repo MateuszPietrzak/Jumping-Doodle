@@ -24,7 +24,7 @@ ClearScores:
     ld [hl+], a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld c, 8
     ld hl, sLeaderboardNames
@@ -37,7 +37,7 @@ ClearScores:
     ld [hl+], a
     
     dec c
-    jp nz, .whileC2
+    jr nz, .whileC2
 
     xor a
     ld [sCheckSum], a
@@ -49,7 +49,7 @@ ClearScores:
 CheckSum:
     ld a, [sCheckSum]
     cp a, 0
-    jp z, .checkCorrect
+    jr z, .checkCorrect
 
     call ClearScores
     ret
@@ -67,7 +67,7 @@ CheckSum:
     ld d, a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld a, b
     cp a, d
@@ -118,4 +118,4 @@ StateScores::
     and a, b
 
     ret nz
-    jp .scoresLoop
+    jr .scoresLoop

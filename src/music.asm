@@ -119,14 +119,14 @@ PlayMusic::
 
     ld a, [wOnChannel_1]
     cp a, 0
-    jp z, .channel_1_off
+    jr z, .channel_1_off
 
     ld a, [wInterruptChannel_1]
     cp a, 0
-    jp nz, .interruptChannel_1
+    jr nz, .interruptChannel_1
 
     call PlayChannel_1
-    jp .channel_1_off
+    jr .channel_1_off
 
 .interruptChannel_1:
     ; real position should be loaded
@@ -172,21 +172,21 @@ PlayMusic::
 
     ld a, [wOnChannel_2]
     cp a, 0
-    jp z, .channel_2_off
+    jr z, .channel_2_off
     call PlayChannel_2
 
 .channel_2_off
 
     ld a, [wOnChannel_3]
     cp a, 0
-    jp z, .channel_3_off
+    jr z, .channel_3_off
     call PlayChannel_3
 
 .channel_3_off
 
     ld a, [wOnChannel_4]
     cp a, 0
-    jp z, .channel_4_off
+    jr z, .channel_4_off
     call PlayChannel_4
 
 .channel_4_off
@@ -239,7 +239,7 @@ PlayChannel_1:
     ; check which command it is
 .case01: ; Play note --------------------------------------------
     cp a, NOTE
-    jp nz, .caseA1
+    jr nz, .caseA1
 
     ; apply vibrato
     ld a, [wVibratoChannel_1]
@@ -260,7 +260,7 @@ PlayChannel_1:
     xor a
     cp a, b
     ; if var == 0 set note length
-    jp z, .initNote
+    jr z, .initNote
 .alreadySet:
     ld a, [wNoteFrameChannel_1]
     dec a
@@ -285,7 +285,7 @@ PlayChannel_1:
 
     ld a, [wSkipMusicChannel_1]
     cp a, 0
-    jp nz, .handleSkip
+    jr nz, .handleSkip
 
     ld a, [hl+] ; load volume and sweep (+2)
 
@@ -304,7 +304,7 @@ PlayChannel_1:
     or a, %10000000 ; trigger channel
     ld [rNR14], a
 
-    jp .noSkip
+    jr .noSkip
 
 .handleSkip
 
@@ -325,7 +325,7 @@ PlayChannel_1:
     jp .endSwitch
 .caseA1: ; Vibrato -------------------------------------------------
     cp a, VIB
-    jp nz, .caseEE
+    jr nz, .caseEE
 
     ld a, [hl+]
     ld [wVibratoChannel_1], a
@@ -338,16 +338,16 @@ PlayChannel_1:
     jp PlayChannel_1
 .caseEE: ; Loop -----------------------------------------------------
     cp a, LOOP
-    jp nz, .caseFF
+    jr nz, .caseFF
 
     ld a, [wLoopTimesChannel_1]
     cp a, 0
-    jp z, .initLoop
+    jr z, .initLoop
     ; loop again
     dec a
     ld [wLoopTimesChannel_1], a
     cp a, 0
-    jp nz, .noLoopEnd
+    jr nz, .noLoopEnd
 
     ; move sheet pointer after loop command
     ld bc, 3
@@ -377,11 +377,11 @@ PlayChannel_1:
     jp PlayChannel_1
 .caseFF: ; music end command --------------------------------------
     cp a, END
-    jp nz, .endSwitch
+    jr nz, .endSwitch
 
     ld a, [wInterruptChannel_1]
     cp a, 0
-    jp nz, .interruptEnded
+    jr nz, .interruptEnded
 
     xor a
     ld [wOnChannel_1], a            ; turn off channel in music engine
@@ -394,7 +394,7 @@ PlayChannel_1:
     ld a, l
     ld [wPositionChannel_1 + 1], a
 
-    jp .endSwitch
+    jr .endSwitch
 
 .interruptEnded:
 
@@ -429,7 +429,7 @@ PlayChannel_2:
     ; check which command it is
 .case01: ; Play note --------------------------------------------
     cp a, NOTE
-    jp nz, .caseA1
+    jr nz, .caseA1
 
     ; apply vibrato
     ld a, [wVibratoChannel_2]
@@ -450,7 +450,7 @@ PlayChannel_2:
     xor a
     cp a, b
     ; if var == 0 set note length
-    jp z, .initNote
+    jr z, .initNote
 .alreadySet:
     ld a, [wNoteFrameChannel_2]
     dec a
@@ -466,7 +466,7 @@ PlayChannel_2:
     ld a, l
     ld [wPositionChannel_2 + 1], a
 
-    jp .endSwitch
+    jr .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
     dec a
@@ -489,10 +489,10 @@ PlayChannel_2:
     or a, %10000000 ; trigger channel
     ld [rNR24], a
 
-    jp .endSwitch
+    jr .endSwitch
 .caseA1: ; Vibrato -------------------------------------------------
     cp a, VIB
-    jp nz, .caseEE
+    jr nz, .caseEE
 
     ld a, [hl+]
     ld [wVibratoChannel_2], a
@@ -502,19 +502,19 @@ PlayChannel_2:
     ld a, l
     ld [wPositionChannel_2 + 1], a
 
-    jp PlayChannel_2
+    jr PlayChannel_2
 .caseEE: ; Loop -----------------------------------------------------
     cp a, LOOP
-    jp nz, .caseFF
+    jr nz, .caseFF
 
     ld a, [wLoopTimesChannel_2]
     cp a, 0
-    jp z, .initLoop
+    jr z, .initLoop
     ; loop again
     dec a
     ld [wLoopTimesChannel_2], a
     cp a, 0
-    jp nz, .noLoopEnd
+    jr nz, .noLoopEnd
 
     ; move sheet pointer after loop command
     ld bc, 3
@@ -544,7 +544,7 @@ PlayChannel_2:
     jp PlayChannel_2
 .caseFF: ; music end command --------------------------------------
     cp a, END
-    jp nz, .endSwitch
+    jr nz, .endSwitch
 
     xor a
     ld [wOnChannel_2], a            ; turn off channel in music engine
@@ -576,7 +576,7 @@ PlayChannel_3:
     ; check which command it is
 .case01: ; Play note --------------------------------------------
     cp a, NOTE
-    jp nz, .case25
+    jr nz, .case25
     
     ld a, [hl+] ; load note length (+1)
     ld c, a
@@ -586,7 +586,7 @@ PlayChannel_3:
     xor a
     cp a, b
     ; if var == 0 set note length
-    jp z, .initNote
+    jr z, .initNote
 .alreadySet:
     ld a, [wNoteFrameChannel_3]
     dec a
@@ -628,7 +628,7 @@ PlayChannel_3:
     jp .endSwitch
 .case25: ; Set waveform ---------------------------------------------
     cp a, $25
-    jp nz, .caseEE
+    jr nz, .caseEE
     
     xor a
     ld [rNR30], a ; turn off channel
@@ -662,19 +662,19 @@ PlayChannel_3:
     ld a, l
     ld [wPositionChannel_3 + 1], a
 
-    jp PlayChannel_3
+    jr PlayChannel_3
 .caseEE: ; Loop -----------------------------------------------------
     cp a, LOOP
-    jp nz, .caseFF
+    jr nz, .caseFF
 
     ld a, [wLoopTimesChannel_3]
     cp a, 0
-    jp z, .initLoop
+    jr z, .initLoop
     ; loop again
     dec a
     ld [wLoopTimesChannel_3], a
     cp a, 0
-    jp nz, .noLoopEnd
+    jr nz, .noLoopEnd
 
     ; move sheet pointer after loop command
     ld bc, 3
@@ -704,7 +704,7 @@ PlayChannel_3:
     jp PlayChannel_3
 .caseFF: ; music end command --------------------------------------
     cp a, END
-    jp nz, .endSwitch
+    jr nz, .endSwitch
 
     xor a
     ld [wOnChannel_3], a            ; turn off channel in music engine
@@ -737,7 +737,7 @@ PlayChannel_4:
     ; check which command it is
 .case01: ; Play note --------------------------------------------
     cp a, NOTE
-    jp nz, .caseEE
+    jr nz, .caseEE
     
     ld a, [hl+] ; load note length (+1)
     ld c, a
@@ -747,14 +747,14 @@ PlayChannel_4:
     xor a
     cp a, b
     ; if var == 0 set note length
-    jp z, .initNote
+    jr z, .initNote
 .alreadySet:
     ld a, [wNoteFrameChannel_4]
     dec a
     ld [wNoteFrameChannel_4], a
 
     cp a, 0             ; if frame == 0
-    jp nz, .endSwitch
+    jr nz, .endSwitch
 
     ld bc, 3            ; set it to next byte of music sheet
     add hl, bc
@@ -763,7 +763,7 @@ PlayChannel_4:
     ld a, l
     ld [wPositionChannel_4 + 1], a
 
-    jp .endSwitch
+    jr .endSwitch
 .initNote:
     ld a, c                     ; set intital note length
     dec a
@@ -783,19 +783,19 @@ PlayChannel_4:
     ld a, %10000000 ; trigger channel
     ld [rNR44], a
 
-    jp .endSwitch
+    jr .endSwitch
 .caseEE: ; Loop -----------------------------------------------------
     cp a, LOOP
-    jp nz, .caseFF
+    jr nz, .caseFF
 
     ld a, [wLoopTimesChannel_4]
     cp a, 0
-    jp z, .initLoop
+    jr z, .initLoop
     ; loop again
     dec a
     ld [wLoopTimesChannel_4], a
     cp a, 0
-    jp nz, .noLoopEnd
+    jr nz, .noLoopEnd
 
     ; move sheet pointer after loop command
     ld bc, 3
@@ -805,14 +805,14 @@ PlayChannel_4:
     ld a, l
     ld [wPositionChannel_4 + 1], a
 
-    jp PlayChannel_4
+    jr PlayChannel_4
 .noLoopEnd:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_4 + 1], a
     ld a, [hl+] ; add 2
     ld [wPositionChannel_4], a
 
-    jp PlayChannel_4
+    jr PlayChannel_4
 .initLoop:
     ld a, [hl+] ; add 1
     ld [wPositionChannel_4 + 1], a
@@ -822,10 +822,10 @@ PlayChannel_4:
     dec a ; already did 1 time when coming here
     ld [wLoopTimesChannel_4], a
 
-    jp PlayChannel_4
+    jr PlayChannel_4
 .caseFF: ; music end command --------------------------------------
     cp a, END
-    jp nz, .endSwitch
+    jr nz, .endSwitch
 
     xor a
     ld [wOnChannel_4], a            ; turn off channel in music engine
