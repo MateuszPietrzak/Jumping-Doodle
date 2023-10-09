@@ -1,13 +1,6 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "MenuText", ROM0
-
-GameTitle1::
-    db "JUMPING", 0
-GameTitle2::
-    db "DOODLE", 0
-
-SECTION "statemenu", ROM0
+SECTION "StateMenu", ROM0
 
 StateMenu::
     ; Init all stuff for menu rendering
@@ -137,11 +130,17 @@ StateMenu::
     jp nz, .scoreSelected
     ; If "PLAY" selected
     call StateGame
+
+    ; reload default color palette
+    ld a, %1110_0100
+    ld [rBGP], a
+
     jp StateMenu
 .scoreSelected
     ; Else, "SCORES must be selected
     call StateScores
 
+    ; reload default color palette
     ld a, %1110_0100
     ld [rBGP], a
 
@@ -151,7 +150,7 @@ StateMenu::
 
     jp .menuLoop
 
-SECTION "menudata", WRAM0
+SECTION "MenuData", WRAM0
 
 wButtonSelected:: ds 1
 wRefreshButtonsFlag:: ds 1

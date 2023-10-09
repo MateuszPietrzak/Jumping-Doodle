@@ -14,19 +14,7 @@ SECTION "Highscores", WRAM0
     wScoresInBCD:: 
         ds 8 * 8
 
-SECTION "statescores", ROM0
-
-LeaderboardText::
-    db "LEADERBOARD", 0
-LeaderboardNumbers::
-    db "0[", 0
-    db "1[", 0
-    db "2[", 0
-    db "3[", 0
-    db "4[", 0
-    db "5[", 0
-    db "6[", 0
-    db "7[", 0
+SECTION "StateScores", ROM0
 
 ClearScores:
     ld c, sLeaderboardNames - sScoresInBCD ; sScoresInBCD length

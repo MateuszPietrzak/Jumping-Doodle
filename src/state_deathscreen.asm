@@ -1,19 +1,6 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "statedeath", ROM0
-
-DeathscreenText1::
-    db "GAME  OVER", 0
-DeathscreenText2::
-    db "YOUR SCORE WAS", 0
-DeathscreenText3::
-    db "PRESS B TO RETURN", 0
-DeathscreenText4::
-    db "TO MAIN MENU", 0
-DeathscreenText5::
-    db "NEW HIGHSCORE", 0
-DeathscreenText6::
-    db "ENTER YOUR NAME", 0
+SECTION "StateDeath", ROM0
 
 StateDeathscreen::
 
@@ -21,7 +8,7 @@ StateDeathscreen::
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .deathscreenLoop
+    jr z, .deathscreenLoop
 
     call LoadHighscoreScreenBackground
 
@@ -47,7 +34,7 @@ StateDeathscreen::
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .skipName
+    jr z, .skipName
 
     ld de, $9800 + $160 + $4
     ld hl, wLeaderboardCurrentName
@@ -66,14 +53,14 @@ StateDeathscreen::
     ld b, PADF_B | PADF_SELECT | PADF_START
     and a, b
 
-    jp z, .pressedBackEnd
+    jr z, .pressedBackEnd
 .pressedBack:
     xor a
     ld [wKeysPressed], a
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .noHighscore
+    jr z, .noHighscore
 
     call SaveScore
 
@@ -93,12 +80,12 @@ StateDeathscreen::
     ld [wFramesFromButton], a
 
     cp a, 8 ; check for letter change every [value] - 1 frames
-    jp c, .skipButtons
+    jr c, .skipButtons
 
     ld a, [wKeysPressed]
     ld b, PADF_UP
     and a, b
-    jp z, .pressedUpEnd
+    jr z, .pressedUpEnd
 .pressedUp:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -119,7 +106,7 @@ StateDeathscreen::
     inc a           ; load current letter and add 1
 
     cp a, 91        ; check if we need modulo
-    jp c, .noModulo1
+    jr c, .noModulo1
 
     ld a, 65        ; rewind back to a
 
@@ -133,7 +120,7 @@ StateDeathscreen::
     ld b, PADF_DOWN
     and a, b
 
-    jp z, .pressedDownEnd
+    jr z, .pressedDownEnd
 .pressedDown:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -154,7 +141,7 @@ StateDeathscreen::
     dec a           ; load current letter and add 1
 
     cp a, 65        ; check if we need modulo
-    jp nc, .noModulo2
+    jr nc, .noModulo2
 
     ld a, 90        ; rewind back to a
 
@@ -168,7 +155,7 @@ StateDeathscreen::
     ld b, PADF_RIGHT
     and a, b
 
-    jp z, .pressedRightEnd
+    jr z, .pressedRightEnd
 .pressedRight:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -181,7 +168,7 @@ StateDeathscreen::
     inc a           ; load current letter and add 1
 
     cp a, 3         ; check if we need modulo
-    jp nz, .noModulo3
+    jr nz, .noModulo3
 
     ld a, 0        ; rewind back to a
 
@@ -259,7 +246,7 @@ SaveScore::
     ld d, a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld a, d
     ld [sCheckSum + 1], a
