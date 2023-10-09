@@ -62,10 +62,7 @@ GameLoop:
     cp a, $0
     jr z, GameFinish
 
-.waitForPaletteSwap:
-    ld a, [rLY]
-    cp $78
-    jr c, .waitForPaletteSwap
+    call WaitForPaletteSwap
 
     ; Set bg and window layers palette
     ld a, %00011011

@@ -117,6 +117,12 @@ WaitForVBlankStart::
     jr nz, WaitForVBlankStart
     ret
 
+WaitForPaletteSwap::
+    ld a, [rLY]
+    cp $78
+    jr c, WaitForPaletteSwap
+    ret
+
 
 ; ClearOam
 ; Resets all OAM values to 0
