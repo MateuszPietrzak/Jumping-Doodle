@@ -80,7 +80,7 @@ StateDeathscreen::
     ld [wFramesFromButton], a
 
     cp a, 8 ; check for letter change every [value] - 1 frames
-    jr c, .skipButtons
+    jp c, .skipButtons
 
     ld a, [wKeysPressed]
     ld b, PADF_UP
@@ -191,6 +191,46 @@ StateDeathscreen::
     ld [hl], a
 
 .pressedRightEnd
+    ; ==================================
+    ld a, [wKeysPressed]
+    ld b, PADF_LEFT
+    and a, b
+
+    jr z, .pressedLeftEnd
+.pressedLeft:
+
+    ld bc, SwitchLetterSoundChannel_1
+    call StartSoundEffect
+
+    xor a
+    ld [wFramesFromButton], a
+
+    ld a, [wLeaderboardSelect]
+    cp a, 0
+    jr nz, .noModulo32
+
+    ld a, 3
+
+.noModulo32:
+    dec a
+    
+    ld [wLeaderboardSelect], a      ; load it back
+
+    ; get new marker place
+    ld hl, wLeaderboardMarker
+    ld b, 0
+    ld c, a
+    add hl, bc
+    ; clear marker
+    ld a, 32
+    ld [wLeaderboardMarker], a
+    ld [wLeaderboardMarker + 1], a
+    ld [wLeaderboardMarker + 2], a
+    ; set marker
+    ld a, 92 ; overscore
+    ld [hl], a
+
+.pressedLeftEnd
     ; ==================================
 
 .skipButtons
