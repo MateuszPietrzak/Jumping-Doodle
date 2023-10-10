@@ -64,7 +64,7 @@ HandlePlayerVBlank::
 
     ld a, [wPlayerVelocityY]
     and a, $80
-    jp nz, .endBounce
+    jr nz, .endBounce
 
     push af
     push bc
@@ -83,7 +83,7 @@ HandlePlayerVBlank::
 
     call CheckCollisions
     cp a, $1
-    jp z, .bounce
+    jr z, .bounce
     
     ; X coordinate
     ld a, [wActualX]
@@ -97,9 +97,9 @@ HandlePlayerVBlank::
 
     call CheckCollisions
     cp a, $1
-    jp z, .bounce
+    jr z, .bounce
 
-    jp .skipBounce
+    jr .skipBounce
 
 .bounce:
     ld a, $1
@@ -131,18 +131,18 @@ HandlePlayer::
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
     cp a, $40
-    jp nc, .skipAcceleratingDown
+    jr nc, .skipAcceleratingDown
 
     ld a, [wPlayerVelocityY]
     and a, $80 ; Get the sign bit
-    jp z, .incAccelerate
+    jr z, .incAccelerate
 
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
     dec a
-    jp z, .skipAcceleratingDown ; Don't put the sign bit back on if a = 0    
+    jr z, .skipAcceleratingDown ; Don't put the sign bit back on if a = 0    
     or a, $80
-    jp .skipAcceleratingDown
+    jr .skipAcceleratingDown
 
 .incAccelerate:
     ld a, [wPlayerVelocityY]
@@ -159,7 +159,7 @@ HandlePlayer::
     ld b, PADF_RIGHT
     and a, b
 
-    jp z, .pressedRightEnd
+    jr z, .pressedRightEnd
 .pressedRight:
     ld a, $10
     ld [wPlayerVelocityX], a
@@ -174,7 +174,7 @@ HandlePlayer::
     ld b, PADF_LEFT
     and a, b
 
-    jp z, .pressedLeftEnd
+    jr z, .pressedLeftEnd
 .pressedLeft:
     ld a, $90 
     ld [wPlayerVelocityX], a
@@ -203,37 +203,37 @@ HandlePlayer::
     ; Check the highest bit
     ld a, $80
     and a, d
-    jp nz, .decPlayerXstart
+    jr nz, .decPlayerXstart
     xor a, d
     ld d, a
 
 .incPlayerX:
     ld a, 0
     cp a, d
-    jp z, .incPlayerXend
+    jr z, .incPlayerXend
 
     inc bc ; Increment x position by 1/16 of a pixel
     ld a, b
     cp a, $0A
-    jp c, .noPlusTorus
+    jr c, .noPlusTorus
     ld a, c
     cp a, $80
-    jp c, .noPlusTorus
+    jr c, .noPlusTorus
 
     ld h, $F5
     ld l, $7F
     add hl, bc
     ld b, h
     ld c, l
-    jp .incPlayerXend
+    jr .incPlayerXend
 
 
 .noPlusTorus
     dec d
-    jp .incPlayerX
+    jr .incPlayerX
 .incPlayerXend:
 
-    jp .decPlayerXend ; Skip decrementing
+    jr .decPlayerXend ; Skip decrementing
 
 .decPlayerXstart:
 
@@ -244,23 +244,23 @@ HandlePlayer::
 .decPlayerX:
     ld a, 0
     cp a, d
-    jp z, .incPlayerXend
+    jr z, .incPlayerXend
 
     dec bc ; Decrement x position by 1/16 of a pixel
     ld a, b
     or a, c
-    jp nz, .noMinusTorus
+    jr nz, .noMinusTorus
 
     ld h, $0A
     ld l, $80
     add hl, bc
     ld b, h
     ld c, l
-    jp .decPlayerXend
+    jr .decPlayerXend
 
 .noMinusTorus
     dec d
-    jp .decPlayerX
+    jr .decPlayerX
 .decPlayerXend:
 
     ld a, b
@@ -288,21 +288,21 @@ HandlePlayer::
     ; Check the highest bit
     ld a, $80
     and a, d
-    jp nz, .decPlayerYstart
+    jr nz, .decPlayerYstart
     xor a, d
     ld d, a
 
 .incPlayerY:
     ld a, 0
     cp a, d
-    jp z, .incPlayerYend
+    jr z, .incPlayerYend
 
     ld a, b
     cp a, $08
-    jp nz, .skipNoFall
+    jr nz, .skipNoFall
     ld a, c
     cp a, $40
-    jp c, .skipNoFall
+    jr c, .skipNoFall
 
     ; When dies, set isAlive to 0
     xor a
@@ -312,12 +312,12 @@ HandlePlayer::
 .skipNoFall:
     inc bc ; Increment y position by 1/16 of a pixel
     dec d
-    jp .incPlayerY
+    jr .incPlayerY
 .incPlayerYend:
 
     ld a, [wBounceFlag]
     cp a, $1
-    jp nz, .noUpdateBounce
+    jr nz, .noUpdateBounce
 
     xor a
     ld [wBounceFlag], a
@@ -334,7 +334,7 @@ HandlePlayer::
 
 .noUpdateBounce
 
-    jp .decPlayerYend ; Skip decrementing
+    jr .decPlayerYend ; Skip decrementing
 
 .decPlayerYstart:
 
@@ -344,14 +344,14 @@ HandlePlayer::
 .decPlayerY:
     ld a, 0
     cp a, d
-    jp z, .incPlayerYend
+    jr z, .incPlayerYend
 
     ld a, b
     cp a, $06
-    jp nc, .skipNoRise
+    jr nc, .skipNoRise
     ld a, c
     cp a, $00
-    jp z, .skipNoRise
+    jr z, .skipNoRise
 
     ld a, [wScreenScrollY]
     ld h, a
@@ -374,7 +374,7 @@ HandlePlayer::
     ld a, l
     and a, %00111111
     cp a, $00
-    jp nz, .noGenerateNew
+    jr nz, .noGenerateNew
 
     ld a, $01
     ld [wGenerateLine], a
@@ -382,13 +382,13 @@ HandlePlayer::
 
 .noGenerateNew:
 
-    jp .skipDecY
+    jr .skipDecY
 
 .skipNoRise:
     dec bc ; Decrement y position by 1/16 of a pixel
 .skipDecY:
     dec d
-    jp .decPlayerY
+    jr .decPlayerY
 .decPlayerYend:
     ; I believe this is where decrementing screenScroll ends lol - drabart
     ld a, e
@@ -420,7 +420,7 @@ HandlePlayer::
 
     ld a, [wGenerateLine]
     cp a, $00
-    jp z, .noGenerateNewSet
+    jr z, .noGenerateNewSet
 
     ld a, [wActualSCY]
     srl a

@@ -117,6 +117,12 @@ WaitForVBlankStart::
     jr nz, WaitForVBlankStart
     ret
 
+WaitForPaletteSwap::
+    ld a, [rLY]
+    cp $78
+    jr c, WaitForPaletteSwap
+    ret
+
 
 ; ClearOam
 ; Resets all OAM values to 0
@@ -160,13 +166,13 @@ GenerateStripe::
     ld a, $14
 .clearStripe:
     cp a, $0
-    jp z, .clearStripeEnd
+    jr z, .clearStripeEnd
 
     ld [hl], $0
     inc hl
     dec a
 
-    jp .clearStripe
+    jr .clearStripe
 .clearStripeEnd:
 
     pop hl
@@ -192,12 +198,12 @@ GenerateStripe::
     and a, %00000111
 .offsetLoop:
     cp a, $0
-    jp z, .offsetLoopEnd
+    jr z, .offsetLoopEnd
 
     dec a
     inc hl
 
-    jp .offsetLoop
+    jr .offsetLoop
 .offsetLoopEnd:
 
     call GeneratePlatform
@@ -211,7 +217,7 @@ GeneratePlatform::
     and a, $01
 .caseNormal:
     cp a, $0
-    jp nz, .caseFragile
+    jr nz, .caseFragile
 
     ld [hl], $40
     inc hl

@@ -1,28 +1,17 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "statedeath", ROM0
-
-DeathscreenText1::
-    db "GAME  OVER", 0
-DeathscreenText2::
-    db "YOUR SCORE WAS", 0
-DeathscreenText3::
-    db "PRESS B TO RETURN", 0
-DeathscreenText4::
-    db "TO MAIN MENU", 0
-DeathscreenText5::
-    db "NEW HIGHSCORE", 0
-DeathscreenText6::
-    db "ENTER YOUR NAME", 0
+SECTION "StateDeath", ROM0
 
 StateDeathscreen::
 
     call LoadDeathScreenBackground
+    call SwitchToDeathScreenTheme
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .deathscreenLoop
+    jr z, .deathscreenLoop
 
+    call SwitchToLeaderboardTheme
     call LoadHighscoreScreenBackground
 
     ; set name to AAA
@@ -41,13 +30,15 @@ StateDeathscreen::
     ld [wLeaderboardSelect], a
     ld [wFramesFromButton], a
 
+    ; switch music
+
 .deathscreenLoop:
     call UpdateKeys
     call WaitForVBlankStart
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .skipName
+    jr z, .skipName
 
     ld de, $9800 + $160 + $4
     ld hl, wLeaderboardCurrentName
@@ -66,14 +57,16 @@ StateDeathscreen::
     ld b, PADF_B | PADF_SELECT | PADF_START
     and a, b
 
-    jp z, .pressedBackEnd
+    jr z, .pressedBackEnd
 .pressedBack:
+    call SwitchToMenuTheme
+
     xor a
     ld [wKeysPressed], a
 
     ld a, [wAchievedHighscore]
     cp a, $0
-    jp z, .noHighscore
+    jr z, .noHighscore
 
     call SaveScore
 
@@ -98,7 +91,7 @@ StateDeathscreen::
     ld a, [wKeysPressed]
     ld b, PADF_UP
     and a, b
-    jp z, .pressedUpEnd
+    jr z, .pressedUpEnd
 .pressedUp:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -119,7 +112,7 @@ StateDeathscreen::
     inc a           ; load current letter and add 1
 
     cp a, 91        ; check if we need modulo
-    jp c, .noModulo1
+    jr c, .noModulo1
 
     ld a, 65        ; rewind back to a
 
@@ -133,7 +126,7 @@ StateDeathscreen::
     ld b, PADF_DOWN
     and a, b
 
-    jp z, .pressedDownEnd
+    jr z, .pressedDownEnd
 .pressedDown:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -154,7 +147,7 @@ StateDeathscreen::
     dec a           ; load current letter and add 1
 
     cp a, 65        ; check if we need modulo
-    jp nc, .noModulo2
+    jr nc, .noModulo2
 
     ld a, 90        ; rewind back to a
 
@@ -168,7 +161,7 @@ StateDeathscreen::
     ld b, PADF_RIGHT
     and a, b
 
-    jp z, .pressedRightEnd
+    jr z, .pressedRightEnd
 .pressedRight:
 
     ld bc, SwitchLetterSoundChannel_1
@@ -181,7 +174,7 @@ StateDeathscreen::
     inc a           ; load current letter and add 1
 
     cp a, 3         ; check if we need modulo
-    jp nz, .noModulo3
+    jr nz, .noModulo3
 
     ld a, 0        ; rewind back to a
 
@@ -204,6 +197,46 @@ StateDeathscreen::
     ld [hl], a
 
 .pressedRightEnd
+    ; ==================================
+    ld a, [wKeysPressed]
+    ld b, PADF_LEFT
+    and a, b
+
+    jr z, .pressedLeftEnd
+.pressedLeft:
+
+    ld bc, SwitchLetterSoundChannel_1
+    call StartSoundEffect
+
+    xor a
+    ld [wFramesFromButton], a
+
+    ld a, [wLeaderboardSelect]
+    cp a, 0
+    jr nz, .noModulo32
+
+    ld a, 3
+
+.noModulo32:
+    dec a
+    
+    ld [wLeaderboardSelect], a      ; load it back
+
+    ; get new marker place
+    ld hl, wLeaderboardMarker
+    ld b, 0
+    ld c, a
+    add hl, bc
+    ; clear marker
+    ld a, 32
+    ld [wLeaderboardMarker], a
+    ld [wLeaderboardMarker + 1], a
+    ld [wLeaderboardMarker + 2], a
+    ; set marker
+    ld a, 92 ; overscore
+    ld [hl], a
+
+.pressedLeftEnd
     ; ==================================
 
 .skipButtons
@@ -259,7 +292,7 @@ SaveScore::
     ld d, a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld a, d
     ld [sCheckSum + 1], a

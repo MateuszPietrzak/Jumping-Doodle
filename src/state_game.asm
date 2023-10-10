@@ -1,6 +1,6 @@
 INCLUDE "include/hardware.inc/hardware.inc"
 
-SECTION "stategame", ROM0
+SECTION "StateGame", ROM0
 
 StateGame::
     ; All initialization needed before a game is started, such as resetting player, should go here
@@ -40,7 +40,7 @@ GameLoop:
 
     ld a, [wScoreToAdd]         ; number of subpixels that screen was lowered
     cp a, 0
-    jp z, .skipScoreChange      ; don't change score if it wasn't modified
+    jr z, .skipScoreChange      ; don't change score if it wasn't modified
 
     call CharToBCD              ; convert a to BCD_2
     call AddNumbersBCD          ; add BCD_1 and BCD_2
@@ -62,18 +62,15 @@ GameLoop:
 
     ld a, [wIsAlive]
     cp a, $0
-    jp z, GameFinish
+    jr z, GameFinish
 
-.waitForPaletteSwap:
-    ld a, [rLY]
-    cp $78
-    jp c, .waitForPaletteSwap
+    call WaitForPaletteSwap
 
     ; Set bg and window layers palette
     ld a, %00011011
     ld [rBGP], a
 
-    jp GameLoop
+    jr GameLoop
 
 GameFinish::
     ; Everything to do after dying, for example saving score
@@ -83,7 +80,7 @@ GameFinish::
     call GreaterBCD
 
     cp a, 0
-    jp z, .deathscreenJump          ; if score lower then just skip
+    jr z, .deathscreenJump          ; if score lower then just skip
 
     ld a, 8
     ld [wAchievedHighscore], a
@@ -97,7 +94,7 @@ GameFinish::
     ; check if this it the top score
     ld a, c                    
     cp a, 0
-    jp z, .deathscreenJump
+    jr z, .deathscreenJump
 
     ; compare score at wScoreInBCD + c * 8 with (c-1) * 8
     ld hl, wScoresInBCD
@@ -125,7 +122,7 @@ GameFinish::
     pop de
 
     cp a, 0
-    jp z, .deathscreenJump    ; no swap
+    jr z, .deathscreenJump    ; no swap
 
     ; indicate getting higher score
     ld a, [wAchievedHighscore]
@@ -162,7 +159,7 @@ GameFinish::
     srl c
     srl c
 
-    jp .whileBetter
+    jr .whileBetter
 
 .deathscreenJump:
     ; Switch to deathscreen
@@ -171,7 +168,7 @@ GameFinish::
 
     ret
 
-SECTION "gamedata", WRAM0
+SECTION "GameData", WRAM0
 
 wIsAlive:: 
     ds 1

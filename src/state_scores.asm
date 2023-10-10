@@ -14,19 +14,7 @@ SECTION "Highscores", WRAM0
     wScoresInBCD:: 
         ds 8 * 8
 
-SECTION "statescores", ROM0
-
-LeaderboardText::
-    db "LEADERBOARD", 0
-LeaderboardNumbers::
-    db "0[", 0
-    db "1[", 0
-    db "2[", 0
-    db "3[", 0
-    db "4[", 0
-    db "5[", 0
-    db "6[", 0
-    db "7[", 0
+SECTION "StateScores", ROM0
 
 ClearScores:
     ld c, sLeaderboardNames - sScoresInBCD ; sScoresInBCD length
@@ -36,7 +24,7 @@ ClearScores:
     ld [hl+], a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld c, 8
     ld hl, sLeaderboardNames
@@ -49,7 +37,7 @@ ClearScores:
     ld [hl+], a
     
     dec c
-    jp nz, .whileC2
+    jr nz, .whileC2
 
     xor a
     ld [sCheckSum], a
@@ -61,7 +49,7 @@ ClearScores:
 CheckSum:
     ld a, [sCheckSum]
     cp a, 0
-    jp z, .checkCorrect
+    jr z, .checkCorrect
 
     call ClearScores
     ret
@@ -79,7 +67,7 @@ CheckSum:
     ld d, a
     
     dec c
-    jp nz, .whileC
+    jr nz, .whileC
 
     ld a, b
     cp a, d
@@ -128,6 +116,8 @@ StateScores::
     ld a, [wKeysPressed]
     ld b, PADF_B
     and a, b
+    jp z, .scoresLoop
 
-    ret nz
-    jp .scoresLoop
+    call SwitchToMainTheme
+
+    ret

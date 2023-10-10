@@ -1,5 +1,17 @@
 ; Channel Notes
 
+DEF C2	EQU 44
+DEF C2s	EQU 157
+DEF D2	EQU 263
+DEF D2s	EQU 363
+DEF E2	EQU 457
+DEF F2	EQU 547
+DEF F2s	EQU 631
+DEF G2	EQU 711
+DEF G2s	EQU 786
+DEF A2	EQU 856
+DEF A2s	EQU 923
+DEF B2	EQU 986
 DEF C3  EQU 1046
 DEF C3s EQU 1102
 DEF D3  EQU 1155
@@ -71,15 +83,20 @@ DEF dD2  EQU $97
 DEF dC2  EQU $A4
 
 
-; Music shee commands
+; Music sheet commands
 
 DEF NOTE            EQU $01
 DEF VIB             EQU $A1
 DEF LOOP            EQU $EE
 DEF END             EQU $FF
+
+DEF INFINITE        EQU $01
+
+; different volume settings
 DEF VOL_MAX         EQU $F8
 DEF VOL_34          EQU $C8
 DEF VOL_24          EQU $88
+DEF VOL_24F         EQU $84
 DEF VOL_14          EQU $58
 DEF VOL_MUTE        EQU $08
 DEF VOL3_MAX        EQU $20
@@ -90,8 +107,18 @@ DEF VOLD_MAX_S      EQU $D1
 DEF VOLD_MAX_L      EQU $D2
 DEF VOLD_MID_S      EQU $A1
 DEF VOLD_MID_L      EQU $A2
+DEF VOLD_LOW_S      EQU $81
+DEF VOLD_LOW_L      EQU $82
 DEF VOLD_MUTE       EQU $00
 
-DEF NL              EQU 12      ; note length
-DEF hNL             EQU 6       ; half note length
-DEF START_PAUSE     EQU $30     ; pause for the music chip to initialize
+; note lengths for different tempos
+DEF NL150	        EQU	12
+DEF hNL150	        EQU	6
+
+DEF NL113	        EQU	32
+DEF hNL113	        EQU 16
+
+DEF NL95	        EQU	19
+DEF hNL95	        EQU	9
+
+DEF START_PAUSE     EQU $20     ; pause for the music chip to initialize
