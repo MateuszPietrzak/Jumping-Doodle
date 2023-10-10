@@ -139,6 +139,7 @@ StateMenu::
     jp StateMenu
 .scoreSelected
     ; Else, "SCORES must be selected
+    call SwitchToLeaderboardTheme
     call StateScores
 
     ; reload default color palette

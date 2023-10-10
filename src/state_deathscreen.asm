@@ -11,6 +11,7 @@ StateDeathscreen::
     cp a, $0
     jr z, .deathscreenLoop
 
+    call SwitchToLeaderboardTheme
     call LoadHighscoreScreenBackground
 
     ; set name to AAA

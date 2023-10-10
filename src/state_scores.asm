@@ -116,6 +116,8 @@ StateScores::
     ld a, [wKeysPressed]
     ld b, PADF_B
     and a, b
+    jp z, .scoresLoop
 
-    ret nz
-    jr .scoresLoop
+    call SwitchToMainTheme
+
+    ret

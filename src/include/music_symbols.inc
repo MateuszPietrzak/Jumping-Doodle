@@ -112,41 +112,13 @@ DEF VOLD_LOW_L      EQU $82
 DEF VOLD_MUTE       EQU $00
 
 ; note lengths for different tempos
-DEF NL300	        EQU	6
-DEF hNL300	        EQU	3
-DEF NL257	        EQU	7
-DEF NL225	        EQU	8
-DEF hNL225	        EQU	4
-DEF NL200	        EQU	9
-DEF NL180	        EQU	10
-DEF hNL180	        EQU	5
-DEF NL164	        EQU	11
 DEF NL150	        EQU	12
 DEF hNL150	        EQU	6
-DEF NL138	        EQU	13
-DEF NL129	        EQU	14
-DEF hNL129	        EQU	7
-DEF NL120	        EQU	15
 
 DEF NL113	        EQU	32
 DEF hNL113	        EQU 16
 
-DEF NL106	        EQU	17
-DEF NL100	        EQU	18
-DEF hNL100	        EQU	9
-
 DEF NL95	        EQU	19
 DEF hNL95	        EQU	9
 
-DEF NL90	        EQU	20
-DEF hNL90	        EQU	10
-DEF NL86	        EQU	21
-DEF NL82	        EQU	22
-DEF hNL82	        EQU	11
-DEF NL78	        EQU	23
-DEF NL75	        EQU	24
-DEF hNL75	        EQU	12
-DEF NL72	        EQU	25
-DEF NL69	        EQU	26
-DEF hNL69	        EQU	13
 DEF START_PAUSE     EQU $20     ; pause for the music chip to initialize
