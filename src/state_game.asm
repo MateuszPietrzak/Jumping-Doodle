@@ -6,6 +6,7 @@ StateGame::
     ; All initialization needed before a game is started, such as resetting player, should go here
 
     call ResetPlayerState
+    call ResetEnemyState
     call WaitForVBlank
     call HandlePlayer
 
@@ -20,6 +21,7 @@ GameLoop:
     ld [rBGP], a
 
     call PlayerBufferToOAM
+    call EnemyBufferToOAM
 
     ld bc, 8
     ld hl, $9c00 + $20 + $7              ; load second line
