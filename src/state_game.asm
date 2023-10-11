@@ -15,6 +15,7 @@ StateGame::
 GameLoop:
     call WaitForVBlankStart
 
+.a
     ; TO DO WHILE VBLANK
     ; Set bg and window layers palette
     ld a, %11100100
@@ -34,6 +35,7 @@ GameLoop:
     call HandlePlayerVBlank
     call HandleEnemyVBlank
     ; TO DO WHILE VBLANK END
+.b
 
     ; play music
     ; RIGHT AFTER ALL MEMCOPY
