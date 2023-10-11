@@ -19,7 +19,7 @@ ResetEnemyState::
     ld [_OAMRAM + 10], a
 
     ; Reset enemy position
-    ld a, $20
+    ld a, $A0
     ld [wActualEnemyX], a
     ld [wActualEnemyY], a
     ld [wActualEnemyYScrolled], a
@@ -27,6 +27,7 @@ ResetEnemyState::
     xor a
     ld [wAnimationFrame], a
     ld [wAnimationCountdwn], a
+    ld [wMoveRight], a
 
     ret
 
@@ -75,40 +76,24 @@ HandleEnemy::
     ld [wActualEnemyY], a
 .moveEnd:
 
-    ld a, [wActualEnemyX]
-    inc a
-    ld b, a
-    and a, %11110000
-    cp a, $B0
-    jp nz, .noResetPosLeft
-.resetPosLeft:
-    ld a, b
-    ld a, $0
-    sub a, $10
-    ld [wActualEnemyX], a
-
-    ld a, [rSCY]
-    ld b, a
-    call Rng
-    and a, %11100000
-    add a, b 
-    ld [wActualEnemyY], a
-
-    jp .noGoDown
-.noResetPosLeft:
-    ld a, b
-
-    ld [wActualEnemyX], a
-
-
-    call Rng
-    and a, %00000111
-    jp nz, .noGoDown
-
     ld a, [wActualEnemyY]
     inc a
     ld [wActualEnemyY], a
-.noGoDown:
+
+    ld a, [wMoveRight]
+    cp a, $0
+    jp z, .moveToLeft
+.moveToRight:
+    ld a, [wActualEnemyX]
+    inc a
+
+    jp .moveToNo
+.moveToLeft:
+    ld a, [wActualEnemyX]
+    dec a
+
+.moveToNo:
+    ld [wActualEnemyX], a
 
     ; Move enemy with screen
     ld a, [rSCY]
@@ -122,6 +107,60 @@ HandleEnemy::
     ld [wAnimationCountdwn], a
     cp a, $4
     jp nz, .skipAnimationProgress
+
+    ; If it is off-screen, randomize the position on X
+    ld a, [wActualEnemyYScrolled]
+    cp a, $90
+    jp c, .noResetX
+
+    call Rng
+    and a, %01100000
+    add a, %01000000
+    ld [wActualEnemyX], a
+
+    ld a, [rSCY]
+    ld b, a
+    xor a
+    add a, b
+    ld [wActualEnemyY], a
+
+.noResetX:
+
+     ; If nearing right edge, bounce to the left
+     ld a, [wMoveRight]
+     cp a, $1
+     jp nz, .endRightBounce
+ 
+     ld a, [wActualEnemyX]
+     cp a, $90
+     jp c, .endRightBounce
+ 
+     sub a, $2
+     ld [wActualEnemyX], a
+ 
+     ld a, $0
+     ld [wMoveRight], a
+     jp .endRightBounce
+ 
+ .endRightBounce:
+
+     ; If nearing left edge, bounce to the right
+     ld a, [wMoveRight]
+     cp a, $0
+     jp nz, .endLeftBounce
+ 
+     ld a, [wActualEnemyX]
+     cp a, $10
+     jp nc, .endLeftBounce
+ 
+     add a, $2
+     ld [wActualEnemyX], a
+ 
+     ld a, $1
+     ld [wMoveRight], a
+     jp .endLeftBounce
+ 
+ .endLeftBounce:
 
     ; Progress animation
     ld a, [wAnimationFrame]
@@ -163,3 +202,4 @@ wActualEnemyY:: ds 1
 wActualEnemyYScrolled:: ds 1
 wAnimationFrame:: ds 1
 wAnimationCountdwn:: ds 1
+wMoveRight:: ds 1
