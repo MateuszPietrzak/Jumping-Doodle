@@ -19,6 +19,9 @@ GameLoop:
     ; Set bg and window layers palette
     ld a, %11100100
     ld [rBGP], a
+    ld a, [rLCDC]
+    or a, LCDCF_OBJON
+    ld [rLCDC], a
 
     call PlayerBufferToOAM
     call EnemyBufferToOAM
@@ -29,6 +32,7 @@ GameLoop:
     call Memcpy
 
     call HandlePlayerVBlank
+    call HandleEnemyVBlank
     ; TO DO WHILE VBLANK END
 
     ; play music
@@ -37,6 +41,7 @@ GameLoop:
     call PlayMusic
 
     call HandlePlayer
+    call HandleEnemy
 
     ld a, [wScoreToAdd]         ; number of subpixels that screen was lowered
     cp a, 0
@@ -70,7 +75,11 @@ GameLoop:
     ld a, %00011011
     ld [rBGP], a
 
-    jr GameLoop
+    ld a, [rLCDC]
+    xor a, LCDCF_OBJON
+    ld [rLCDC], a
+
+    jp GameLoop
 
 GameFinish::
     ; Everything to do after dying, for example saving score
