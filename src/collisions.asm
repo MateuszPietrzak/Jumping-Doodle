@@ -115,14 +115,6 @@ CheckCollisions::
     ld a, [hl]
     cp a, $45
     jr z, .powerUPCollision
-
-    ld a, l
-    sub a, $20
-    ld l, a
-
-    ld a, [hl]
-    cp a, $45
-    jr z, .powerUPCollision
     jr .caseEnd
 .powerUPCollision:
 
