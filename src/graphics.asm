@@ -6,3 +6,24 @@ GraphicTilesEnd::
 FontTiles::
     incbin "assets/font.2bpp"
 FontTilesEnd::
+
+SECTION "EnemyTiles", ROM0
+
+EnemyTiles::
+    incbin "assets/Fly.2bpp"
+.end::
+
+SECTION "BackgroundTilemap", ROM0
+
+BackgroundTiles::
+    incbin "assets/Platforms.2bpp"
+.end::
+
+MenuTiles::
+    incbin "assets/ButtonsTiles.2bpp"
+.end::
+
+MenuTilemap::
+    incbin "assets/MainMenuTilemap.2bpp"
+.end::
+    

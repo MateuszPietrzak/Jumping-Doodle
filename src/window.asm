@@ -33,17 +33,15 @@ InitializeWindow::
     ld bc, MenuTiles.end - MenuTiles
     call Memcpy
     
-    ; do tilemap for window
-    ld de, WindowInitialState
+    ; clear window
     ld hl, $9C00
-    ld bc, WindowInitialState.end - WindowInitialState
-    call Memcpy
+    ld bc, 32 * 32
+    call Zero
     
-    ; do tilemap for window
-    ld de, WindowInitialState
+    ; clear window copu
     ld hl, wWindowTilemapCopy
-    ld bc, WindowInitialState.end - WindowInitialState
-    call Memcpy
+    ld bc, 32 * 32
+    call Zero
     
     pop af
     ; turn on window displaying
@@ -421,16 +419,3 @@ REPT 32
 ENDR
 .end:
 
-SECTION "BackgroundTilemap", ROM0
-
-BackgroundTiles:
-    incbin "assets/Platforms.2bpp"
-.end:
-
-MenuTiles:
-    incbin "assets/ButtonsTiles.2bpp"
-.end:
-
-MenuTilemap:
-    incbin "assets/MainMenuTilemap.2bpp"
-.end:

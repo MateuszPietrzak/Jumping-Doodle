@@ -156,12 +156,6 @@ EnemyBufferToOAM::
     ld [_OAMRAM + 10], a
     ret
 
-SECTION "EnemyTiles", ROM0
-
-EnemyTiles:
-   incbin "assets/Fly.2bpp"
-.end:
-
 SECTION "EnemyData", WRAM0
 
 wActualEnemyX:: ds 1

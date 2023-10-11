@@ -17,6 +17,19 @@ Memcpy::
     jr nz, Memcpy   ; 3
     ret             ; 4
 
+; Zero
+; Sets bytes to 0
+; @param hl start of data
+; @param bc length
+Zero::
+    xor a           ; 1
+    ld [hl+], a     ; 2
+    dec bc          ; 2
+    ld a, b         ; 1
+    or a, c         ; 1
+    jr nz, Zero   ; 3
+    ret             ; 4
+
 
 ; Memswap
 ; Swaps data

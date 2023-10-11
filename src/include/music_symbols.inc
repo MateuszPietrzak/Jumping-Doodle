@@ -112,8 +112,8 @@ DEF VOLD_LOW_L      EQU $82
 DEF VOLD_MUTE       EQU $00
 
 ; note lengths for different tempos
-DEF NL150	        EQU	12
-DEF hNL150	        EQU	6
+DEF NL150	        EQU	24
+DEF hNL150	        EQU 12
 
 DEF NL113	        EQU	32
 DEF hNL113	        EQU 16
