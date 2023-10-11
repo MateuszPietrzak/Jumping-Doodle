@@ -13,7 +13,7 @@ StateGame::
     ld a, $1
     ld [wIsAlive], a
 GameLoop:
-    call WaitForVBlank
+    call WaitForVBlankStart
 
     ; TO DO WHILE VBLANK
     ; Set bg and window layers palette

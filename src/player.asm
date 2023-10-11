@@ -61,11 +61,6 @@ ResetPlayerState::
     ret
 
 HandlePlayerVBlank::
-
-    ld a, [wPlayerVelocityY]
-    and a, $80
-    jr nz, .endBounce
-
     push af
     push bc
     push de
@@ -82,8 +77,7 @@ HandlePlayerVBlank::
     ld c, a
 
     call CheckCollisions
-    cp a, $1
-    jr z, .bounce
+    ld [wBounceFlag], a
     
     ; X coordinate
     ld a, [wActualX]
@@ -96,22 +90,15 @@ HandlePlayerVBlank::
     ld c, a
 
     call CheckCollisions
-    cp a, $1
-    jr z, .bounce
-
-    jr .skipBounce
-
-.bounce:
-    ld a, $1
+    ld b, a
+    ld a, [wBounceFlag]
+    or a, b
     ld [wBounceFlag], a
-
-.skipBounce:
 
     pop hl
     pop de
     pop bc
     pop af
-.endBounce:
 
     ; Generate new line
     ld a, [wGenerateLine]
@@ -316,6 +303,7 @@ HandlePlayer::
 .incPlayerYend:
 
     ld a, [wBounceFlag]
+    and a, $1
     cp a, $1
     jr nz, .noUpdateBounce
 
