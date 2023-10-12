@@ -215,9 +215,8 @@ HandleEnemy::
     cp a, b
     jp nc, .noCollsion
 
-    ; Set bg and window layers palette
-    ld a, %00011011
-    ld [rBGP], a
+    xor a
+    ld [wIsAlive], a
 
 .noCollsion:
 
