@@ -173,6 +173,54 @@ HandleEnemy::
 
 .skipAnimationProgress:
 
+    ; Collision check with player
+
+    ; Player X
+    ld a, [wActualX]
+    ld b, a
+    ld a, [wActualEnemyX]
+
+    ; enemy x + 12 > player x
+    add a, $C
+    cp a, b
+    jp c, .noCollsion
+
+    ; enemy x + 4 < player x + 8
+    sub a, $8
+    push af
+    ld a, b
+    add a, $8
+    ld b, a
+    pop af
+    cp a, b
+    jp nc, .noCollsion
+
+    ; Player Y
+    ld a, [wActualY]
+    ld b, a
+    ld a, [wActualEnemyYScrolled]
+
+    ; enemy y + 8 > player y
+    add a, $8
+    cp a, b
+    jp c, .noCollsion
+
+    ; enemy y < player y + 8
+    sub a, $8
+    push af
+    ld a, b
+    add a, $8
+    ld b, a
+    pop af
+    cp a, b
+    jp nc, .noCollsion
+
+    ; Set bg and window layers palette
+    ld a, %00011011
+    ld [rBGP], a
+
+.noCollsion:
+
     ret
 
 EnemyBufferToOAM::
