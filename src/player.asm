@@ -18,6 +18,10 @@ ResetPlayerState::
     xor a
     ld [wAchievedHighscore], a
 
+    xor a
+    ld [wInventory], a
+    ld [wInventory + 1], a
+
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -52,7 +56,7 @@ ResetPlayerState::
     ; Clear player flags
     xor a
     ld [wPlayerFlags], a
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
 
     ld [wGenerateLine], a
     ld [wGenerateLinePositionX], a
@@ -77,7 +81,7 @@ HandlePlayerVBlank::
     ld c, a
 
     call CheckCollisions
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
     
     ; X coordinate
     ld a, [wActualX]
@@ -91,9 +95,9 @@ HandlePlayerVBlank::
 
     call CheckCollisions
     ld b, a
-    ld a, [wBounceFlag]
+    ld a, [wCollisionFlag]
     or a, b
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
 
     pop hl
     pop de
@@ -302,13 +306,12 @@ HandlePlayer::
     jr .incPlayerY
 .incPlayerYend:
 
-    ld a, [wBounceFlag]
+    ld a, [wCollisionFlag]
     and a, $1
     cp a, $1
     jr nz, .noUpdateBounce
 
-    xor a
-    ld [wBounceFlag], a
+    ; add vertical velocity
     ld a, $A0 
     ld [wPlayerVelocityY], a
 
@@ -321,6 +324,28 @@ HandlePlayer::
     pop bc
 
 .noUpdateBounce
+    
+    ; check if powerup was picked up
+    ld a, [wCollisionFlag]
+    and a, $2
+    cp a, $2
+    jr nz, .noPowerUP
+
+    push bc
+
+    call PickupPowerUP
+
+    ; PLAY DOING
+    ld bc, PowerUPSoundChannel_1
+    call StartSoundEffect
+
+    pop bc
+
+.noPowerUP:
+
+    ; clear collision flag
+    xor a
+    ld [wCollisionFlag], a
 
     jr .decPlayerYend ; Skip decrementing
 
@@ -499,7 +524,7 @@ wPlayerVelocityX:: ds 1
 wPlayerVelocityY:: ds 1
 
 wScreenScrollY:: ds 2
-wBounceFlag:: ds 1
+wCollisionFlag:: ds 1
 
 wActualSCY:: ds 1
 wActualX:: ds 1
