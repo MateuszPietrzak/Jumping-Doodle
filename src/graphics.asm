@@ -26,4 +26,8 @@ MenuTiles::
 MenuTilemap::
     incbin "assets/MainMenuTilemap.2bpp"
 .end::
+
+PowerUpTiles::
+    incbin "assets/powerups.2bpp"
+.end::
     

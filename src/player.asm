@@ -18,6 +18,8 @@ ResetPlayerState::
     xor a
     ld [wAchievedHighscore], a
 
+    call PowerUpInit
+
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -52,7 +54,7 @@ ResetPlayerState::
     ; Clear player flags
     xor a
     ld [wPlayerFlags], a
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
 
     ld [wGenerateLine], a
     ld [wGenerateLinePositionX], a
@@ -77,7 +79,7 @@ HandlePlayerVBlank::
     ld c, a
 
     call CheckCollisions
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
     
     ; X coordinate
     ld a, [wActualX]
@@ -91,9 +93,9 @@ HandlePlayerVBlank::
 
     call CheckCollisions
     ld b, a
-    ld a, [wBounceFlag]
+    ld a, [wCollisionFlag]
     or a, b
-    ld [wBounceFlag], a
+    ld [wCollisionFlag], a
 
     pop hl
     pop de
@@ -117,7 +119,7 @@ HandlePlayer::
     ; Fall
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
-    cp a, $40
+    cp a, $30
     jr nc, .skipAcceleratingDown
 
     ld a, [wPlayerVelocityY]
@@ -137,9 +139,35 @@ HandlePlayer::
 .skipAcceleratingDown:
     ld [wPlayerVelocityY], a
 
-    ; Default to not moving
-    ; ld a, $00 
-    ; ld [wPlayerVelocityX], a
+    ; cancel dash after time
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDash
+
+    dec a
+    ld [wDashLength], a
+    cp a, 0
+    jp nz, .noDash
+
+    ; change velocity from $20 to $10 ($A0 to $90 for neg)
+    ld a, [wPlayerVelocityX]
+    xor a, %0011_0000
+    ld [wPlayerVelocityX], a
+
+.noDash:
+
+    ; cancel jetpack after time
+    ld a, [wJetpackLength]
+    cp a, 0
+    jp z, .noJetpack
+
+    dec a
+    ld [wJetpackLength], a
+
+    ld a, $A0
+    ld [wPlayerVelocityY], a
+
+.noJetpack:
 
     ; Check for d-pad right
     ld a, [wKeysPressed]
@@ -148,6 +176,22 @@ HandlePlayer::
 
     jr z, .pressedRightEnd
 .pressedRight:
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDashR
+
+    ld a, [wPlayerVelocityX]
+    and a, $80
+    ; if dash in the same direction
+    jp z, .pressedRightEnd
+
+    ; cancel dash
+    xor a
+    ld [wDashLength], a
+    jp .noDashR
+
+.noDashR:
+
     ld a, $10
     ld [wPlayerVelocityX], a
     ; Since going right, flip the sprite right 
@@ -163,6 +207,22 @@ HandlePlayer::
 
     jr z, .pressedLeftEnd
 .pressedLeft:
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDashL
+
+    ld a, [wPlayerVelocityX]
+    and a, $80
+    ; if dash in the same direction
+    jp nz, .pressedLeftEnd
+
+    ; cancel dash
+    xor a
+    ld [wDashLength], a
+    jp .noDashL
+
+.noDashL:
+
     ld a, $90 
     ld [wPlayerVelocityX], a
     ; Since going left, flip the sprite left
@@ -170,6 +230,50 @@ HandlePlayer::
     ld [wPlayerFlags], a
 
 .pressedLeftEnd:
+    ; cooldown on using powerups
+    ld a, [wLastPowerUp]
+    cp a, $0
+    jp nz, .decPowerUp
+    
+    ; Check for A button
+    ld a, [wKeysPressed]
+    ld b, PADF_A
+    and a, b
+
+    jr z, .pressedAEnd
+.pressedA:
+    ; use current ability
+    call UseAbility
+    jp .pressedAEnd
+
+.decPowerUp:
+    dec a
+    ld [wLastPowerUp], a
+
+.pressedAEnd:
+    ; cooldown on swapping items
+    ld a, [wLastSwap]
+    cp a, $0
+    jp nz, .decSwap
+
+    ; Check for B button
+    ld a, [wKeysPressed]
+    ld b, PADF_B
+    and a, b
+
+    jr z, .pressedBEnd
+.pressedB:
+    ; switch abilities
+    call SwitchAbilities
+    jp .pressedBEnd
+
+.decSwap:
+
+    dec a
+    ld [wLastSwap], a
+
+.pressedBEnd:
+
 
     ; Update position
 
@@ -302,13 +406,12 @@ HandlePlayer::
     jr .incPlayerY
 .incPlayerYend:
 
-    ld a, [wBounceFlag]
+    ld a, [wCollisionFlag]
     and a, $1
     cp a, $1
     jr nz, .noUpdateBounce
 
-    xor a
-    ld [wBounceFlag], a
+    ; add vertical velocity
     ld a, $A0 
     ld [wPlayerVelocityY], a
 
@@ -320,7 +423,29 @@ HandlePlayer::
 
     pop bc
 
-.noUpdateBounce
+.noUpdateBounce:
+    
+    ; check if powerup was picked up
+    ld a, [wCollisionFlag]
+    and a, $2
+    cp a, $2
+    jr nz, .noPowerUP
+
+    push bc
+
+    call PickupPowerUP
+
+    ; PLAY DOING
+    ld bc, PowerUPSoundChannel_1
+    call StartSoundEffect
+
+    pop bc
+
+.noPowerUP:
+
+    ; clear collision flag
+    xor a
+    ld [wCollisionFlag], a
 
     jr .decPlayerYend ; Skip decrementing
 
@@ -499,7 +624,7 @@ wPlayerVelocityX:: ds 1
 wPlayerVelocityY:: ds 1
 
 wScreenScrollY:: ds 2
-wBounceFlag:: ds 1
+wCollisionFlag:: ds 1
 
 wActualSCY:: ds 1
 wActualX:: ds 1

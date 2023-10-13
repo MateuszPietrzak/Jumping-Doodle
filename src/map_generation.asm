@@ -49,7 +49,7 @@ GenerateStripe::
     ; check if generate powerup
     call Rng
     ; there is 255 - x / 255 chance for the collectible to spawn on each line
-    cp a, 230
+    cp a, 100
     jp c, .noPowerUP
 
     and a, %00001111

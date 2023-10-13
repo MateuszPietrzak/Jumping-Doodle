@@ -32,6 +32,11 @@ GameLoop:
     ld de, wWindowTilemapCopy + 32 + 7
     call Memcpy
 
+    ld a, [wInventory]
+    ld [$9C30], a
+    ld a, [wInventory + 1]
+    ld [$9C32], a
+
     call HandlePlayerVBlank
     call HandleEnemyVBlank
     ; TO DO WHILE VBLANK END
