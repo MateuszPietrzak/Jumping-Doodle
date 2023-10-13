@@ -27,6 +27,7 @@ PowerUpInit::
     xor a
     ld [wDashLength], a
     ld [wJetpackLength], a
+    ld [wJetpackFlags], a
 
     ret
 
