@@ -119,7 +119,7 @@ HandlePlayer::
     ; Fall
     ld a, [wPlayerVelocityY]
     and a, $7F ; Strip off the sign bit
-    cp a, $40
+    cp a, $30
     jr nc, .skipAcceleratingDown
 
     ld a, [wPlayerVelocityY]
@@ -139,9 +139,22 @@ HandlePlayer::
 .skipAcceleratingDown:
     ld [wPlayerVelocityY], a
 
-    ; Default to not moving
-    ; ld a, $00 
-    ; ld [wPlayerVelocityX], a
+    ; cancel dash after time
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDash
+
+    dec a
+    ld [wDashLength], a
+    cp a, 0
+    jp nz, .noDash
+
+    ; change velocity from $20 to $10 ($A0 to $90 for neg)
+    ld a, [wPlayerVelocityX]
+    xor a, %0011_0000
+    ld [wPlayerVelocityX], a
+
+.noDash:
 
     ; Check for d-pad right
     ld a, [wKeysPressed]
@@ -150,6 +163,22 @@ HandlePlayer::
 
     jr z, .pressedRightEnd
 .pressedRight:
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDashR
+
+    ld a, [wPlayerVelocityX]
+    and a, $80
+    ; if dash in the same direction
+    jp z, .pressedRightEnd
+
+    ; cancel dash
+    xor a
+    ld [wDashLength], a
+    jp .noDashR
+
+.noDashR:
+
     ld a, $10
     ld [wPlayerVelocityX], a
     ; Since going right, flip the sprite right 
@@ -165,6 +194,22 @@ HandlePlayer::
 
     jr z, .pressedLeftEnd
 .pressedLeft:
+    ld a, [wDashLength]
+    cp a, 0
+    jp z, .noDashL
+
+    ld a, [wPlayerVelocityX]
+    and a, $80
+    ; if dash in the same direction
+    jp nz, .pressedLeftEnd
+
+    ; cancel dash
+    xor a
+    ld [wDashLength], a
+    jp .noDashL
+
+.noDashL:
+
     ld a, $90 
     ld [wPlayerVelocityX], a
     ; Since going left, flip the sprite left

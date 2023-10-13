@@ -1,9 +1,9 @@
-DEF DOUBLE_JUMP_WEIGHT  EQU 80 ; 80
-DEF DASH_WEIGHT         EQU 80 ; 160
-DEF GROUND_POUND_WEIGHT EQU 40 ; 200
-DEF SHIELD_WEIGHT       EQU 20 ; 220
-DEF JETPACK_WEIGHT      EQU 20 ; 240
-DEF REVIVE_WEIGHT       EQU 15 ; 255 (in reality this one is just the remaining weight to 255)
+DEF DOUBLE_JUMP_WEIGHT  EQU 90 ; 90
+DEF DASH_WEIGHT         EQU 60 ; 150
+DEF GROUND_POUND_WEIGHT EQU 50 ; 200
+DEF SHIELD_WEIGHT       EQU 35 ; 235
+DEF JETPACK_WEIGHT      EQU 10 ; 245
+DEF REVIVE_WEIGHT       EQU 10 ; 255 (in reality this one is just the remaining weight to 255)
 DEF DOUBLE_JUMP_ID      EQU $30
 DEF DASH_ID             EQU $31
 DEF GROUND_POUND_ID     EQU $32
@@ -16,12 +16,16 @@ SECTION "PowerUP", ROM0
 
 PowerUpInit::
     xor a
+    ; ld a, DASH_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
-    xor a
+    ld a, 20
     ld [wLastPowerUp], a
     ld [wLastSwap], a
+
+    xor a
+    ld [wDashLength], a
 
     ret
 
@@ -109,14 +113,63 @@ UseAbility::
     cp a, 0
     ret z
 
-    ; save that item for later
-    ld b, a
+.caseDoubleJump:
+    cp a, DOUBLE_JUMP_ID
+    jp nz, .caseDash
 
+    ld a, [wCollisionFlag] ; set the flag for jump
+    or a, $1
+    ld [wCollisionFlag], a
+
+    jp .caseEnd
+.caseDash:
+    cp a, DASH_ID
+    jp nz, .caseGroundPound
+
+    xor a
+    ld [wPlayerVelocityY], a
+
+    ld a, [wPlayerVelocityX]
+    add a, $20
+    ld [wPlayerVelocityX], a
+
+    ld a, 20
+    ld [wDashLength], a
+
+    jp .caseEnd
+.caseGroundPound:
+    cp a, GROUND_POUND_ID
+    jp nz, .caseShield
+
+    ld a, $20                   ; set negative velocity
+    ld [wPlayerVelocityY], a
+
+    jp .caseEnd
+.caseShield:
+    cp a, SHIELD_ID
+    jp nz, .caseJetPack
+
+    jp .caseEnd
+.caseJetPack:
+    cp a, JETPACK_ID
+    jp nz, .caseRevive
+
+    jp .caseEnd
+.caseRevive:
+    cp a, REVIVE_ID
+    jp nz, .caseEnd ; if this is used something went wrong
+
+    jp .caseEnd
+.caseEnd:
+    
     ; remove that powerup and move second slot to first
     ld a, [wInventory + 1]
     ld [wInventory], a
     xor a
     ld [wInventory + 1], a
+    
+    ld a, 20
+    ld [wLastPowerUp], a
 
     ret
 
@@ -150,4 +203,6 @@ wInventory::
 wLastSwap::
     ds 1
 wLastPowerUp::
+    ds 1
+wDashLength::
     ds 1
