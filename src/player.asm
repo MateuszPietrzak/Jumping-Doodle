@@ -437,10 +437,6 @@ HandlePlayer::
 
     call PickupPowerUP
 
-    ; PLAY DOING
-    ld bc, PowerUPSoundChannel_1
-    call StartSoundEffect
-
     pop bc
 
 .noPowerUP:

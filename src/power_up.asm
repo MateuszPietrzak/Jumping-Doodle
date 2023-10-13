@@ -92,6 +92,11 @@ InputItem::
 
     ld a, b
     ld [wInventory], a
+
+    ; PLAY DOING
+    ld bc, PowerUPSoundChannel_1
+    call StartSoundEffect
+
     jp .end
     
 .checkSecondSlot:
@@ -102,6 +107,11 @@ InputItem::
     
     ld a, b
     ld [wInventory + 1], a
+
+    ; PLAY DOING
+    ld bc, PowerUPSoundChannel_1
+    call StartSoundEffect
+
     jp .end
     
 .end:
