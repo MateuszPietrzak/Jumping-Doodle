@@ -235,7 +235,7 @@ HandlePlayer::
     ; cooldown on using powerups
     ld a, [wLastPowerUp]
     cp a, $0
-    jp nz, .decPowerUp
+    jp nz, .pressedBEnd
     
     ; Check for A button
     ld a, [wKeysPressed]
@@ -244,19 +244,12 @@ HandlePlayer::
 
     jr z, .pressedAEnd
 .pressedA:
-    ; use current ability
+    ; use second ability
+    ld a, 1
     call UseAbility
     jp .pressedAEnd
 
-.decPowerUp:
-    dec a
-    ld [wLastPowerUp], a
-
 .pressedAEnd:
-    ; cooldown on swapping items
-    ld a, [wLastSwap]
-    cp a, $0
-    jp nz, .decSwap
 
     ; Check for B button
     ld a, [wKeysPressed]
@@ -265,17 +258,21 @@ HandlePlayer::
 
     jr z, .pressedBEnd
 .pressedB:
-    ; switch abilities
-    call SwitchAbilities
+    ; use first ability
+    ld a, 0
+    call UseAbility
     jp .pressedBEnd
-
-.decSwap:
-
-    dec a
-    ld [wLastSwap], a
 
 .pressedBEnd:
 
+    ld a, [wLastPowerUp]
+    cp a, $0
+    jp z, .skipDecP
+
+    dec a
+    ld [wLastPowerUp], a
+
+.skipDecP:
 
     ; Update position
 
@@ -414,8 +411,12 @@ HandlePlayer::
     jr nz, .noUpdateBounce
 
     ; add vertical velocity
-    ld a, $A0 
+    ld a, [wPowerJump]
+    add a, $A2
     ld [wPlayerVelocityY], a
+
+    xor a
+    ld [wPowerJump], a
 
     push bc
 

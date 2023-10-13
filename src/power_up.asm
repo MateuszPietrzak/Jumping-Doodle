@@ -15,8 +15,8 @@ DEF REVIVE_ID           EQU $35
 SECTION "PowerUP", ROM0
 
 PowerUpInit::
-    xor a
-    ; ld a, JETPACK_ID
+    ; xor a
+    ld a, GROUND_POUND_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -28,6 +28,7 @@ PowerUpInit::
     ld [wDashLength], a
     ld [wJetpackLength], a
     ld [wJetpackFlags], a
+    ld [wPowerJump], a
 
     ret
 
@@ -118,20 +119,44 @@ InputItem::
 
     ret
 
-
+; uses ability
+; @param a, which item to use
 UseAbility::
+    cp a, 0
+    jp nz, .secondItem
+    ; first item
     ; check if player has item
     ld a, [wInventory]
     cp a, 0
     ret z
 
+    ld b, a
+    xor a
+    ld [wInventory], a
+    ld a, b
+
+    jp .caseDoubleJump
+
+.secondItem
+
+    ; first item
+    ; check if player has item
+    ld a, [wInventory + 1]
+    cp a, 0
+    ret z
+
+    ld b, a
+    xor a
+    ld [wInventory+ 1], a
+    ld a, b
+
 .caseDoubleJump:
     cp a, DOUBLE_JUMP_ID
     jp nz, .caseDash
 
-    ld a, [wCollisionFlag] ; set the flag for jump
-    or a, $1
-    ld [wCollisionFlag], a
+    ; add vertical velocity
+    ld a, $A0 
+    ld [wPlayerVelocityY], a
 
     jp .caseEnd
 .caseDash:
@@ -152,6 +177,9 @@ UseAbility::
 .caseGroundPound:
     cp a, GROUND_POUND_ID
     jp nz, .caseShield
+
+    ld a, $0A                   ; next jump will be more powerful
+    ld [wPowerJump], a
 
     ld a, $20                   ; set negative velocity
     ld [wPlayerVelocityY], a
@@ -177,37 +205,8 @@ UseAbility::
     jp .caseEnd
 .caseEnd:
     
-    ; remove that powerup and move second slot to first
-    ld a, [wInventory + 1]
-    ld [wInventory], a
-    xor a
-    ld [wInventory + 1], a
-    
-    ld a, 20
+    ld a, 10
     ld [wLastPowerUp], a
-
-    ret
-
-SwitchAbilities::
-    ; check for first slot
-    ld a, [wInventory]
-    cp a, 0
-    ret z
-
-    ; save first
-    ld b, a
-    ; check for second
-    ld a, [wInventory + 1]
-    cp a, 0
-    ret z
-
-    ; swap items if both present
-    ld [wInventory], a
-    ld a, b
-    ld [wInventory + 1], a
-
-    ld a, 20
-    ld [wLastSwap], a
 
     ret
 
@@ -222,4 +221,6 @@ wLastPowerUp::
 wDashLength::
     ds 1
 wJetpackLength::
+    ds 1
+wPowerJump::
     ds 1
