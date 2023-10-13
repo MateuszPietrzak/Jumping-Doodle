@@ -15,8 +15,8 @@ DEF REVIVE_ID           EQU $35
 SECTION "PowerUP", ROM0
 
 PowerUpInit::
-    xor a
-    ; ld a, DASH_ID
+    ; xor a
+    ld a, JETPACK_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -26,6 +26,7 @@ PowerUpInit::
 
     xor a
     ld [wDashLength], a
+    ld [wJetpackLength], a
 
     ret
 
@@ -154,6 +155,9 @@ UseAbility::
     cp a, JETPACK_ID
     jp nz, .caseRevive
 
+    ld a, 120
+    ld [wJetpackLength], a
+
     jp .caseEnd
 .caseRevive:
     cp a, REVIVE_ID
@@ -205,4 +209,6 @@ wLastSwap::
 wLastPowerUp::
     ds 1
 wDashLength::
+    ds 1
+wJetpackLength::
     ds 1

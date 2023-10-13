@@ -156,6 +156,19 @@ HandlePlayer::
 
 .noDash:
 
+    ; cancel jetpack after time
+    ld a, [wJetpackLength]
+    cp a, 0
+    jp z, .noJetpack
+
+    dec a
+    ld [wJetpackLength], a
+
+    ld a, $A0
+    ld [wPlayerVelocityY], a
+
+.noJetpack:
+
     ; Check for d-pad right
     ld a, [wKeysPressed]
     ld b, PADF_RIGHT
