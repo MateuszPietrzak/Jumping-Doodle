@@ -118,6 +118,6 @@ StateScores::
     and a, b
     jp z, .scoresLoop
 
-    call SwitchToMainTheme
+    call SwitchToMenuTheme
 
     ret
