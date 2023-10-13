@@ -1263,17 +1263,5 @@ PowerUPSoundChannel_1::
     dw E5
     db NOTE, 2, VOL_MAX
     dw F5s
-    db NOTE, 2, VOL_MAX
-    dw D5
-    db NOTE, 2, VOL_MAX
-    dw E5
-    db NOTE, 2, VOL_MAX
-    dw F5s
-    db NOTE, 2, VOL_MAX
-    dw D5
-    db NOTE, 2, VOL_MAX
-    dw E5
-    db NOTE, 2, VOL_MAX
-    dw F5s
 
     db END
