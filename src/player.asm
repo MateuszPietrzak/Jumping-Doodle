@@ -60,6 +60,8 @@ ResetPlayerState::
     ld [wGenerateLinePositionX], a
     ld [wGenerateLinePositionY], a
 
+    ld [wJetpackFlags], a
+
     ret
 
 HandlePlayerVBlank::
@@ -617,6 +619,9 @@ HandlePlayer::
 .jetpackShownEnd:
     ld [wJetpackX], a
 
+
+
+.jetpackNoBlink:
     ld a, [wJetpackLength]
     and a, $0F
     cp a, $0
