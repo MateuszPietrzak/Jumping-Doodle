@@ -35,6 +35,10 @@ StateInit::
     ld a, %11100100
     ld [rOBP0], a
 
+    ; Load palette for sprite powerups
+    ld a, %11100100
+    ld [rOBP1], a
+
     ; turn on window displaying
     call SwitchWindow
 

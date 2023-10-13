@@ -38,6 +38,11 @@ InitializeWindow::
     ld hl, $9300
     ld bc, PowerUpTiles.end - PowerUpTiles
     call Memcpy
+
+    ld de, PowerUpTiles
+    ld hl, $8100
+    ld bc, PowerUpTiles.end - PowerUpTiles
+    call Memcpy
     
     ; clear window
     ld hl, $9C00
@@ -124,6 +129,15 @@ ENDR
     ld bc, wWindowTilemapCopy + 7 + 32 + 7 ; tilemap address
     ld hl, wNumberBCD_1
     call WriteBCDToWindow
+
+    ; Load jetpack sprite and put it in (0,0) corner outside the view
+    ; Sprite #4
+    ; Y position (first byte) at _OAM + 12
+    ld a, $14
+    ld [_OAMRAM + 14], a
+    ; Set its palette to 2
+    ld a, %00010000
+    ld [_OAMRAM + 15], a
 
     ; turn on the LCD
     ld a, [rLCDC]

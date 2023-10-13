@@ -590,6 +590,45 @@ HandlePlayer::
     ld a, [wArithmeticResult + 1]
     ld [wActualY], a
 
+    ; Check if the player has jetpack, and on which side 
+    ; it should be attached
+
+    ld a, [wJetpackLength]
+    cp a, $0
+    jp z, .noJetpackShown
+
+    ld a, [wPlayerFlags]
+    and a, %00100000
+    cp a, $0
+    jp nz, .jetpackOnTheRight;
+
+.jetpackOnTheLeft:
+    ld a, [wActualX]
+    sub a, $7
+
+    jp .jetpackShownEnd
+.jetpackOnTheRight:
+    ld a, [wActualX]
+    add a, $7
+
+    jp .jetpackShownEnd
+.noJetpackShown:
+    xor a
+.jetpackShownEnd:
+    ld [wJetpackX], a
+
+    ld a, [wJetpackLength]
+    and a, $0F
+    cp a, $0
+    jp nz, .jetpackNoAnimation
+
+    ld a, [wJetpackFlags]
+    and a, %00100000
+    xor a, %00100000
+    ld [wJetpackFlags], a
+
+.jetpackNoAnimation:
+
     ret
 
 PlayerBufferToOAM::
@@ -610,7 +649,17 @@ PlayerBufferToOAM::
     ; Y position
     ld a, [wActualY]
     ld [_OAMRAM], a
+    ; Also jetpack always on the right position 
+    ; (even if off-screen not to branch in VBlank)
+    ld [_OAMRAM + 12], a
 
+    ; Jetpack X position
+    ld a, [wJetpackX]
+    ld [_OAMRAM + 13], a
+
+    ; Jetpack animation
+    ld a, [wJetpackFlags]
+    ld [_OAMRAM + 15], a
     
     ret
 
@@ -629,6 +678,9 @@ wCollisionFlag:: ds 1
 wActualSCY:: ds 1
 wActualX:: ds 1
 wActualY:: ds 1
+
+wJetpackX:: ds 1
+wJetpackFlags:: ds 1
 
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
