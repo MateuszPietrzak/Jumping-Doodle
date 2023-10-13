@@ -15,8 +15,8 @@ DEF REVIVE_ID           EQU $35
 SECTION "PowerUP", ROM0
 
 PowerUpInit::
-    ; xor a
-    ld a, JETPACK_ID
+    xor a
+    ; ld a, JETPACK_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
