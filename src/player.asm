@@ -18,9 +18,7 @@ ResetPlayerState::
     xor a
     ld [wAchievedHighscore], a
 
-    xor a
-    ld [wInventory], a
-    ld [wInventory + 1], a
+    call PowerUpInit
 
     ; Init position (which is in form pixels * 16)
     ; Position X
@@ -174,6 +172,50 @@ HandlePlayer::
     ld [wPlayerFlags], a
 
 .pressedLeftEnd:
+    ; cooldown on using powerups
+    ld a, [wLastPowerUp]
+    cp a, $0
+    jp nz, .decPowerUp
+    
+    ; Check for A button
+    ld a, [wKeysPressed]
+    ld b, PADF_A
+    and a, b
+
+    jr z, .pressedAEnd
+.pressedA:
+    ; use current ability
+    call UseAbility
+    jp .pressedAEnd
+
+.decPowerUp:
+    dec a
+    ld [wLastPowerUp], a
+
+.pressedAEnd:
+    ; cooldown on swapping items
+    ld a, [wLastSwap]
+    cp a, $0
+    jp nz, .decSwap
+
+    ; Check for B button
+    ld a, [wKeysPressed]
+    ld b, PADF_B
+    and a, b
+
+    jr z, .pressedBEnd
+.pressedB:
+    ; switch abilities
+    call SwitchAbilities
+    jp .pressedBEnd
+
+.decSwap:
+
+    dec a
+    ld [wLastSwap], a
+
+.pressedBEnd:
+
 
     ; Update position
 
@@ -323,7 +365,7 @@ HandlePlayer::
 
     pop bc
 
-.noUpdateBounce
+.noUpdateBounce:
     
     ; check if powerup was picked up
     ld a, [wCollisionFlag]

@@ -4,15 +4,26 @@ DEF GROUND_POUND_WEIGHT EQU 40 ; 200
 DEF SHIELD_WEIGHT       EQU 20 ; 220
 DEF JETPACK_WEIGHT      EQU 20 ; 240
 DEF REVIVE_WEIGHT       EQU 15 ; 255 (in reality this one is just the remaining weight to 255)
-DEF DOUBLE_JUMP_ID      EQU 01
-DEF DASH_ID             EQU 02
-DEF GROUND_POUND_ID     EQU 03
-DEF SHIELD_ID           EQU 04
-DEF JETPACK_ID          EQU 05
-DEF REVIVE_ID           EQU 06
+DEF DOUBLE_JUMP_ID      EQU $30
+DEF DASH_ID             EQU $31
+DEF GROUND_POUND_ID     EQU $32
+DEF SHIELD_ID           EQU $33
+DEF JETPACK_ID          EQU $34
+DEF REVIVE_ID           EQU $35
 
 
 SECTION "PowerUP", ROM0
+
+PowerUpInit::
+    xor a
+    ld [wInventory], a
+    ld [wInventory + 1], a
+
+    xor a
+    ld [wLastPowerUp], a
+    ld [wLastSwap], a
+
+    ret
 
 PickupPowerUP::
     ; take random number
@@ -84,7 +95,7 @@ InputItem::
     jp nz, .end
     
     ld a, b
-    ld [wInventory], a
+    ld [wInventory + 1], a
     jp .end
     
 .end:
@@ -92,7 +103,51 @@ InputItem::
     ret
 
 
+UseAbility::
+    ; check if player has item
+    ld a, [wInventory]
+    cp a, 0
+    ret z
+
+    ; save that item for later
+    ld b, a
+
+    ; remove that powerup and move second slot to first
+    ld a, [wInventory + 1]
+    ld [wInventory], a
+    xor a
+    ld [wInventory + 1], a
+
+    ret
+
+SwitchAbilities::
+    ; check for first slot
+    ld a, [wInventory]
+    cp a, 0
+    ret z
+
+    ; save first
+    ld b, a
+    ; check for second
+    ld a, [wInventory + 1]
+    cp a, 0
+    ret z
+
+    ; swap items if both present
+    ld [wInventory], a
+    ld a, b
+    ld [wInventory + 1], a
+
+    ld a, 20
+    ld [wLastSwap], a
+
+    ret
+
 SECTION "Inventory", WRAM0
 
 wInventory::
     ds 2
+wLastSwap::
+    ds 1
+wLastPowerUp::
+    ds 1

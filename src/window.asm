@@ -32,6 +32,12 @@ InitializeWindow::
     ld hl, $9500
     ld bc, MenuTiles.end - MenuTiles
     call Memcpy
+
+    ; powerup tiles
+    ld de, PowerUpTiles
+    ld hl, $9300
+    ld bc, PowerUpTiles.end - PowerUpTiles
+    call Memcpy
     
     ; clear window
     ld hl, $9C00
