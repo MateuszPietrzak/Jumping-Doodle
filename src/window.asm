@@ -137,12 +137,22 @@ ENDR
 
     ; Load jetpack sprite and put it in (0,0) corner outside the view
     ; Sprite #4
-    ; Y position (first byte) at _OAM + 12
     ld a, $14
     ld [_OAMRAM + 14], a
     ; Set its palette to 2
     ld a, %00010000
     ld [_OAMRAM + 15], a
+
+    ; Load shield sprites and put it in (0,0) corner outside the view
+    ; Sprite #5-8
+    ld a, $20
+    ld [_OAMRAM + 18], a
+    ld a, $21
+    ld [_OAMRAM + 22], a
+    ld a, $24
+    ld [_OAMRAM + 26], a
+    ld a, $25
+    ld [_OAMRAM + 30], a
 
     ; turn on the LCD
     ld a, [rLCDC]

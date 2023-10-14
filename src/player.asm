@@ -61,6 +61,9 @@ ResetPlayerState::
     ld [wGenerateLinePositionX], a
     ld [wGenerateLinePositionY], a
 
+    ld [wJetpackFlags], a
+    ld [wShieldAdder], a
+
     ret
 
 HandlePlayerVBlank::
@@ -640,6 +643,39 @@ HandlePlayer::
 
 .jetpackNoAnimation:
 
+    ld a, [wShieldLength]
+    cp a, $0
+    jp z, .shieldShowEnd
+
+.shieldShow:
+
+    ; Animation
+    and a, $0F
+    cp a, $0
+    jp nz, .noShieldAnimation
+
+    ld a, [wShieldAdder]
+    cp a, $0
+    jp z, .addShieldAnim
+
+.subShieldAnim:
+
+    sub a, $2
+    ld [wShieldAdder], a
+
+    jp .noShieldAnimation
+.addShieldAnim:
+
+    add a, $2
+    ld [wShieldAdder], a
+
+.noShieldAnimation:
+
+    ld a, [wActualX]
+    ld b, a
+    ld a, [wActualY]
+.shieldShowEnd:
+
     ret
 
 PlayerBufferToOAM::
@@ -657,12 +693,43 @@ PlayerBufferToOAM::
     ld a, [wActualX]
     ld [_OAMRAM + 1], a
 
+    sub a, $4
+    ld [_OAMRAM + 17], a
+    ld [_OAMRAM + 25], a
+    add a, $8
+    ld [_OAMRAM + 21], a
+    ld [_OAMRAM + 29], a
+
     ; Y position
     ld a, [wActualY]
     ld [_OAMRAM], a
     ; Also jetpack always on the right position 
     ; (even if off-screen not to branch in VBlank)
     ld [_OAMRAM + 12], a
+
+    push af
+    ld a, [wShieldLength]
+    cp a, $0
+    jp z, .shieldOffScreen
+.shieldOnScreen:
+    pop af
+    sub a, $4
+    ld [_OAMRAM + 16], a
+    ld [_OAMRAM + 20], a
+    add a, $8
+    ld [_OAMRAM + 24], a
+    ld [_OAMRAM + 28], a
+
+    jp .shieldOAMEnd
+.shieldOffScreen:
+    pop af
+    xor a
+    ld [_OAMRAM + 16], a
+    ld [_OAMRAM + 20], a
+    ld [_OAMRAM + 24], a
+    ld [_OAMRAM + 28], a
+
+.shieldOAMEnd:
 
     ; Jetpack X position
     ld a, [wJetpackX]
@@ -671,6 +738,32 @@ PlayerBufferToOAM::
     ; Jetpack animation
     ld a, [wJetpackFlags]
     ld [_OAMRAM + 15], a
+
+    ; Shield animation
+    ld a, [wShieldAdder]
+    cp a, $0
+    jp nz, .addShieldTile
+
+    ld a, $20
+    ld [_OAMRAM + 18], a
+    ld a, $21
+    ld [_OAMRAM + 22], a
+    ld a, $24
+    ld [_OAMRAM + 26], a
+    ld a, $25
+    ld [_OAMRAM + 30], a
+
+    ret
+
+.addShieldTile:
+    ld a, $22
+    ld [_OAMRAM + 18], a
+    ld a, $23
+    ld [_OAMRAM + 22], a
+    ld a, $26
+    ld [_OAMRAM + 26], a
+    ld a, $27
+    ld [_OAMRAM + 30], a
     
     ret
 
@@ -692,6 +785,8 @@ wActualY:: ds 1
 
 wJetpackX:: ds 1
 wJetpackFlags:: ds 1
+
+wShieldAdder:: ds 1
 
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
