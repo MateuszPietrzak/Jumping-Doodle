@@ -17,6 +17,34 @@ Memcpy::
     jr nz, Memcpy   ; 3
     ret             ; 4
 
+; Soubrouting to copy soublroutine into HRAM
+; https://gbdev.gg8.se/wiki/articles/OAM_DMA_tutorial
+; (Cursed as hell)
+CopyDMATransfer::
+    ld hl, DMATransfer
+    ld b, DMATransferEnd - DMATransfer
+    ld c, LOW(hOAMDMA)
+.copy:
+    ld  a, [hli]
+    ldh [c], a
+    inc c
+    dec b
+    jr  nz, .copy
+    ret
+
+; DMATransfer
+; Copies OAM data from high RAM
+; @param a Place in high ram divided by $100
+; https://gbdev.io/pandocs/OAM_DMA_Transfer.html
+DMATransfer::
+    ldh [rDMA], a  ; start DMA transfer (starts right after instruction)
+    ld a, 40        ; delay for a total of 4×40 = 160 cycles
+.wait:
+    dec a
+    jr nz, .wait
+    ret
+DMATransferEnd::
+
 ; Zero
 ; Sets bytes to 0
 ; @param hl start of data
@@ -147,6 +175,13 @@ ClearOam::
     ld [hl+], a
     dec b
     jr nz, ClearOam.clearOamLoop
+
+    ld b, $A0
+    ld hl, OAMBuffer
+.clearOamBufferLoop:
+    ld [hl+], a
+    dec b
+    jr nz, ClearOam.clearOamBufferLoop
     ret
 
 ; UpdateKeys
@@ -210,3 +245,7 @@ Rng::
 SECTION "VariablesMovement", WRAM0
 
 wKeysPressed:: db
+
+SECTION "OAM DMA", HRAM
+
+hOAMDMA:: ds DMATransferEnd - DMATransfer

@@ -265,21 +265,21 @@ SlapTheFly::
 EnemyBufferToOAM::
     ; Y Postition
     ld a, [wActualEnemyYScrolled]
-    ld [_OAMRAM + 4], a
-    ld [_OAMRAM + 8], a
+    ld [OAMBuffer + 4], a
+    ld [OAMBuffer + 8], a
 
     ; X Position
     ld a, [wActualEnemyX]
-    ld [_OAMRAM + 5], a
+    ld [OAMBuffer + 5], a
     add a, $8
-    ld [_OAMRAM + 9], a
+    ld [OAMBuffer + 9], a
 
     ; Animation frames
     ld a, [wAnimationFrame]
     add a, $1
-    ld [_OAMRAM + 6], a
+    ld [OAMBuffer + 6], a
     inc a
-    ld [_OAMRAM + 10], a
+    ld [OAMBuffer + 10], a
     ret
 
 

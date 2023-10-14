@@ -629,8 +629,6 @@ HandlePlayer::
     ld [wJetpackX], a
 
 
-
-.jetpackNoBlink:
     ld a, [wJetpackLength]
     and a, $0F
     cp a, $0
@@ -683,7 +681,7 @@ PlayerBufferToOAM::
 
     ; Flip sprite
     ld a, [wPlayerFlags]
-    ld [_OAMRAM + 3], a
+    ld [OAMBuffer + 3], a
 
     ; Move bg to correct position
     ld a, [wActualSCY]
@@ -691,21 +689,21 @@ PlayerBufferToOAM::
 
     ; X position
     ld a, [wActualX]
-    ld [_OAMRAM + 1], a
+    ld [OAMBuffer + 1], a
 
     sub a, $4
-    ld [_OAMRAM + 17], a
-    ld [_OAMRAM + 25], a
+    ld [OAMBuffer + 17], a
+    ld [OAMBuffer + 25], a
     add a, $8
-    ld [_OAMRAM + 21], a
-    ld [_OAMRAM + 29], a
+    ld [OAMBuffer + 21], a
+    ld [OAMBuffer + 29], a
 
     ; Y position
     ld a, [wActualY]
-    ld [_OAMRAM], a
+    ld [OAMBuffer], a
     ; Also jetpack always on the right position 
     ; (even if off-screen not to branch in VBlank)
-    ld [_OAMRAM + 12], a
+    ld [OAMBuffer + 12], a
 
     push af
     ld a, [wShieldLength]
@@ -714,30 +712,30 @@ PlayerBufferToOAM::
 .shieldOnScreen:
     pop af
     sub a, $4
-    ld [_OAMRAM + 16], a
-    ld [_OAMRAM + 20], a
+    ld [OAMBuffer + 16], a
+    ld [OAMBuffer + 20], a
     add a, $8
-    ld [_OAMRAM + 24], a
-    ld [_OAMRAM + 28], a
+    ld [OAMBuffer + 24], a
+    ld [OAMBuffer + 28], a
 
     jp .shieldOAMEnd
 .shieldOffScreen:
     pop af
     xor a
-    ld [_OAMRAM + 16], a
-    ld [_OAMRAM + 20], a
-    ld [_OAMRAM + 24], a
-    ld [_OAMRAM + 28], a
+    ld [OAMBuffer + 16], a
+    ld [OAMBuffer + 20], a
+    ld [OAMBuffer + 24], a
+    ld [OAMBuffer + 28], a
 
 .shieldOAMEnd:
 
     ; Jetpack X position
     ld a, [wJetpackX]
-    ld [_OAMRAM + 13], a
+    ld [OAMBuffer + 13], a
 
     ; Jetpack animation
     ld a, [wJetpackFlags]
-    ld [_OAMRAM + 15], a
+    ld [OAMBuffer + 15], a
 
     ; Shield animation
     ld a, [wShieldAdder]
@@ -745,26 +743,26 @@ PlayerBufferToOAM::
     jp nz, .addShieldTile
 
     ld a, $20
-    ld [_OAMRAM + 18], a
+    ld [OAMBuffer + 18], a
     ld a, $21
-    ld [_OAMRAM + 22], a
+    ld [OAMBuffer + 22], a
     ld a, $24
-    ld [_OAMRAM + 26], a
+    ld [OAMBuffer + 26], a
     ld a, $25
-    ld [_OAMRAM + 30], a
+    ld [OAMBuffer + 30], a
 
     ret
 
 .addShieldTile:
     ld a, $22
-    ld [_OAMRAM + 18], a
+    ld [OAMBuffer + 18], a
     ld a, $23
-    ld [_OAMRAM + 22], a
+    ld [OAMBuffer + 22], a
     ld a, $26
-    ld [_OAMRAM + 26], a
+    ld [OAMBuffer + 26], a
     ld a, $27
-    ld [_OAMRAM + 30], a
-    
+    ld [OAMBuffer + 30], a
+
     ret
 
 SECTION "PlayerData", WRAM0
@@ -791,3 +789,7 @@ wShieldAdder:: ds 1
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
 wGenerateLinePositionY:: ds 1
+
+SECTION "OAMBuffer", WRAM0[$C000]
+
+OAMBuffer:: ds 160

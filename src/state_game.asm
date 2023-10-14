@@ -13,6 +13,7 @@ StateGame::
     ld a, $1
     ld [wIsAlive], a
 GameLoop:
+
     call WaitForVBlankStart
 
 .a
@@ -24,8 +25,6 @@ GameLoop:
     or a, LCDCF_OBJON
     ld [rLCDC], a
 
-    call PlayerBufferToOAM
-    call EnemyBufferToOAM
 
     ld bc, 8
     ld hl, $9c00 + $20 + $7              ; load second line
@@ -42,13 +41,20 @@ GameLoop:
     ; TO DO WHILE VBLANK END
 .b
 
+    call EnemyBufferToOAM
+    call PlayerBufferToOAM
+
+    ; Transfer OAM buffer to actual OAM
+    ld a, $C0
+    call hOAMDMA
+
     ; play music
     ; RIGHT AFTER ALL MEMCOPY
 
     call PlayMusic
 
-    call HandlePlayer
     call HandleEnemy
+    call HandlePlayer
 
     ld a, [wScoreToAdd]         ; number of subpixels that screen was lowered
     cp a, 0

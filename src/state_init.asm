@@ -9,9 +9,12 @@ SECTION "StateInit", ROM0
 StateInit::
     call WaitForVBlank
 
-    ;Disable LCD before writing to VRAM
+    ; Disable LCD before writing to VRAM
     xor a
     ld [rLCDC], a
+
+    ; Don't ask
+    call CopyDMATransfer
 
     ; initialize window position and contents
     call InitializeWindow
