@@ -43,6 +43,11 @@ InitializeWindow::
     ld hl, $8100
     ld bc, PowerUpTiles.end - PowerUpTiles
     call Memcpy
+
+    ld de, ShieldTiles
+    ld hl, $8200
+    ld bc, ShieldTiles.end - ShieldTiles
+    call Memcpy
     
     ; clear window
     ld hl, $9C00

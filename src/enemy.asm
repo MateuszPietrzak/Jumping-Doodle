@@ -215,8 +215,31 @@ HandleEnemy::
     cp a, b
     jp nc, .noCollsion
 
+    ld a, [wShieldLength]
+    cp a, 0
+    jp nz, .destroyShield
+
     xor a
     ld [wIsAlive], a
+    ret
+
+.destroyShield:
+
+    ; destroy shield
+    xor a
+    ld [wShieldLength], a
+
+    ; respawn the fly
+    call Rng
+    and a, %01100000
+    add a, %01000000
+    ld [wActualEnemyX], a
+
+    ld a, [rSCY]
+    ld b, a
+    xor a
+    add a, b
+    ld [wActualEnemyY], a
 
 .noCollsion:
 

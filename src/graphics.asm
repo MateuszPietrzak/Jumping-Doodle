@@ -30,4 +30,8 @@ MenuTilemap::
 PowerUpTiles::
     incbin "assets/powerups.2bpp"
 .end::
+
+ShieldTiles::
+    incbin "assets/shield.2bpp"
+.end::
     

@@ -159,6 +159,16 @@ HandlePlayer::
 .noDash:
 
     ; cancel jetpack after time
+    ld a, [wShieldLength]
+    cp a, 0
+    jp z, .noShield
+
+    dec a
+    ld [wShieldLength], a
+
+.noShield:
+
+    ; cancel jetpack after time
     ld a, [wJetpackLength]
     cp a, 0
     jp z, .noJetpack

@@ -16,7 +16,7 @@ SECTION "PowerUP", ROM0
 
 PowerUpInit::
     ; xor a
-    ld a, GROUND_POUND_ID
+    ld a, SHIELD_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -27,6 +27,7 @@ PowerUpInit::
     xor a
     ld [wDashLength], a
     ld [wJetpackLength], a
+    ld [wShieldLength], a
     ld [wJetpackFlags], a
     ld [wPowerJump], a
 
@@ -189,6 +190,9 @@ UseAbility::
     cp a, SHIELD_ID
     jp nz, .caseJetPack
 
+    ld a, 255
+    ld [wShieldLength], a
+
     jp .caseEnd
 .caseJetPack:
     cp a, JETPACK_ID
@@ -207,6 +211,8 @@ UseAbility::
     
     ld a, 10
     ld [wLastPowerUp], a
+    ld a, $A0
+    ld [wPlayerVelocityY], a
 
     ret
 
@@ -221,6 +227,8 @@ wLastPowerUp::
 wDashLength::
     ds 1
 wJetpackLength::
+    ds 1
+wShieldLength::
     ds 1
 wPowerJump::
     ds 1
