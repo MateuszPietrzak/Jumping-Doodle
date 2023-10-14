@@ -469,7 +469,7 @@ HandlePlayer::
     jr z, .incPlayerYend
 
     ld a, b
-    cp a, $06
+    cp a, $05
     jr nc, .skipNoRise
     ld a, c
     cp a, $00

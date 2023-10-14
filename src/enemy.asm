@@ -29,12 +29,33 @@ ResetEnemyState::
     ld [wAnimationCountdwn], a
     ld [wMoveRight], a
 
+    ; Set enemy score requirement
+    xor a
+    ld [wEnemyPointsThreshold], a
+    ld [wEnemyPointsThreshold + 1], a
+    ld [wEnemyPointsThreshold + 2], a
+    ld [wEnemyPointsThreshold + 3], a
+    ; +4 set to $8 below
+    ld [wEnemyPointsThreshold + 5], a
+    ld [wEnemyPointsThreshold + 6], a
+    ld [wEnemyPointsThreshold + 7], a
+
+    ld a, $8
+    ld [wEnemyPointsThreshold + 4], a
+
     ret
 
 HandleEnemyVBlank::
     ret
 
 HandleEnemy::
+
+    ; If below reqiured points, dont spawn
+    ld bc, wEnemyPointsThreshold
+    ld de, wNumberBCD_1
+    call GreaterBCD
+    cp a, $0
+    ret nz
 
     ; Drunk man movement
     call Rng
@@ -273,3 +294,4 @@ wActualEnemyYScrolled:: ds 1
 wAnimationFrame:: ds 1
 wAnimationCountdwn:: ds 1
 wMoveRight:: ds 1
+wEnemyPointsThreshold:: ds 8
