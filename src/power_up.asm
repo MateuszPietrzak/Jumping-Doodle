@@ -211,8 +211,6 @@ UseAbility::
     
     ld a, 10
     ld [wLastPowerUp], a
-    ld a, $A0
-    ld [wPlayerVelocityY], a
 
     ret
 
