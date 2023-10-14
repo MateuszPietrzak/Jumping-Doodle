@@ -20,6 +20,13 @@ ResetPlayerState::
 
     call PowerUpInit
 
+    ; Init screen Y scroll
+    xor a
+    ld [wScreenScrollY], a
+    ld [wScreenScrollY + 1], a
+    ld [rSCY], a
+
+.resetPosition::
     ; Init position (which is in form pixels * 16)
     ; Position X
     ld a, $05
@@ -45,12 +52,6 @@ ResetPlayerState::
     ld a, $00
     ld [wPlayerVelocityY], a
 
-    ; Init screen Y scroll
-    xor a
-    ld [wScreenScrollY], a
-    ld [wScreenScrollY + 1], a
-    ld [rSCY], a
-
     ; Clear player flags
     xor a
     ld [wPlayerFlags], a
@@ -59,8 +60,6 @@ ResetPlayerState::
     ld [wGenerateLine], a
     ld [wGenerateLinePositionX], a
     ld [wGenerateLinePositionY], a
-
-    ld [wJetpackFlags], a
 
     ret
 

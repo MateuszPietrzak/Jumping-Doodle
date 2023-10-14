@@ -16,7 +16,7 @@ SECTION "PowerUP", ROM0
 
 PowerUpInit::
     ; xor a
-    ld a, SHIELD_ID
+    ld a, REVIVE_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -30,6 +30,7 @@ PowerUpInit::
     ld [wShieldLength], a
     ld [wJetpackFlags], a
     ld [wPowerJump], a
+    ld [wWillRevive], a
 
     ret
 
@@ -206,6 +207,9 @@ UseAbility::
     cp a, REVIVE_ID
     jp nz, .caseEnd ; if this is used something went wrong
 
+    ld a, REVIVE_ID
+    ld [wWillRevive], a
+
     jp .caseEnd
 .caseEnd:
     
@@ -229,4 +233,6 @@ wJetpackLength::
 wShieldLength::
     ds 1
 wPowerJump::
+    ds 1
+wWillRevive::
     ds 1

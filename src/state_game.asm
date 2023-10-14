@@ -36,6 +36,8 @@ GameLoop:
     ld [$9C30], a
     ld a, [wInventory + 1]
     ld [$9C32], a
+    ld a, [wWillRevive]
+    ld [$9C0F], a
 
     call HandlePlayerVBlank
     call HandleEnemyVBlank
@@ -74,7 +76,19 @@ GameLoop:
 
     ld a, [wIsAlive]
     cp a, $0
-    jr z, GameFinish
+    jr nz, .allGood
+
+    ld a, [wWillRevive]
+    cp a, $0
+    jr nz, .useRevive
+
+    jp GameFinish
+
+.useRevive:
+
+    call UseRevive
+
+.allGood:
 
     call WaitForPaletteSwap
 
@@ -183,6 +197,44 @@ GameFinish::
     call StateDeathscreen
 
     ret
+
+UseRevive:
+    xor a
+    ld [wWillRevive], a
+    ld a, 1
+    ld [wIsAlive], a
+
+    call WaitForVBlankStart
+    
+    call SlapTheFly
+    call ResetPlayerState.resetPosition
+
+    ld bc, $0014
+    ld d, 0
+    ld a, [rSCY]
+    srl a
+    srl a
+    srl a
+
+    sla a
+    sla a
+    sla a
+    sla a
+    sla a
+    ld e, a
+    ld hl, $99C0
+    add hl, de
+
+.floorTiles:
+    ld a, $44
+    ld [hl+], a
+    dec bc
+    ld a, b
+    or a, c
+    jr nz, .floorTiles
+
+    ret
+
 
 SECTION "GameData", WRAM0
 

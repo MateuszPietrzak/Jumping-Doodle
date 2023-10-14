@@ -134,16 +134,7 @@ HandleEnemy::
     cp a, $90
     jp c, .noResetX
 
-    call Rng
-    and a, %01100000
-    add a, %01000000
-    ld [wActualEnemyX], a
-
-    ld a, [rSCY]
-    ld b, a
-    xor a
-    add a, b
-    ld [wActualEnemyY], a
+    call SlapTheFly
 
 .noResetX:
 
@@ -251,6 +242,13 @@ HandleEnemy::
     ld [wShieldLength], a
 
     ; respawn the fly
+    call SlapTheFly
+
+.noCollsion:
+
+    ret
+
+SlapTheFly::
     call Rng
     and a, %01100000
     add a, %01000000
@@ -261,8 +259,6 @@ HandleEnemy::
     xor a
     add a, b
     ld [wActualEnemyY], a
-
-.noCollsion:
 
     ret
 
@@ -285,6 +281,7 @@ EnemyBufferToOAM::
     inc a
     ld [_OAMRAM + 10], a
     ret
+
 
 SECTION "EnemyData", WRAM0
 
