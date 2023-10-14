@@ -2,7 +2,7 @@
 ![scr_333](https://github.com/MateuszPietrzak/GB-ASM-Game/assets/60319969/a27b08e6-7760-4c6a-b6b4-37fa5f73c088)
 ---
 ## Description
-A clone of some other popular game.
+A clone of some other popular game, downported for a Game Boy.
 Its features include:
 - Physics counted in subpixels
 - Powerup system
@@ -25,7 +25,7 @@ Allows you to fly up freely for 2 seconds.
 #### Shield
 Shields you from enemies for about 4 seconds.
 #### Double jump
-Allows jumping mid-air
+Allows jumping mid-air.
 #### Dash
 Sends the player sideways. Can be canceled by reversing direction.
 #### Ground-pound
