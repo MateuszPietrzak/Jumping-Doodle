@@ -1,22 +1,19 @@
 DEF DOUBLE_JUMP_WEIGHT  EQU 90 ; 90
-DEF DASH_WEIGHT         EQU 60 ; 150
-DEF GROUND_POUND_WEIGHT EQU 50 ; 200
-DEF SHIELD_WEIGHT       EQU 35 ; 235
-DEF JETPACK_WEIGHT      EQU 10 ; 245
-DEF REVIVE_WEIGHT       EQU 10 ; 255 (in reality this one is just the remaining weight to 255)
+DEF GROUND_POUND_WEIGHT EQU 70 ; 160
+DEF DASH_WEIGHT         EQU 50 ; 210
+DEF SHIELD_WEIGHT       EQU 35 ; 245
+DEF JETPACK_WEIGHT      EQU 10 ; 255 (in reality this one is just the remaining weight to 255)
 DEF DOUBLE_JUMP_ID      EQU $30
 DEF DASH_ID             EQU $31
 DEF GROUND_POUND_ID     EQU $32
 DEF SHIELD_ID           EQU $33
 DEF JETPACK_ID          EQU $34
-DEF REVIVE_ID           EQU $35
 
 
 SECTION "PowerUP", ROM0
 
 PowerUpInit::
-    ; xor a
-    ld a, REVIVE_ID
+    xor a
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -30,7 +27,6 @@ PowerUpInit::
     ld [wShieldLength], a
     ld [wJetpackFlags], a
     ld [wPowerJump], a
-    ld [wWillRevive], a
 
     ret
 
@@ -71,15 +67,7 @@ PickupPowerUP::
 
     jp .caseEnd
 .caseJetPack:
-    cp a, DOUBLE_JUMP_WEIGHT + DASH_WEIGHT + GROUND_POUND_WEIGHT + SHIELD_WEIGHT + JETPACK_WEIGHT
-    jp nc, .caseRevive
-
     ld b, JETPACK_ID
-    call InputItem
-
-    jp .caseEnd
-.caseRevive:
-    ld b, REVIVE_ID
     call InputItem
 .caseEnd:
 
@@ -197,20 +185,10 @@ UseAbility::
     jp .caseEnd
 .caseJetPack:
     cp a, JETPACK_ID
-    jp nz, .caseRevive
+    jp nz, .caseEnd
 
     ld a, 120
     ld [wJetpackLength], a
-
-    jp .caseEnd
-.caseRevive:
-    cp a, REVIVE_ID
-    jp nz, .caseEnd ; if this is used something went wrong
-
-    ld a, REVIVE_ID
-    ld [wWillRevive], a
-
-    jp .caseEnd
 .caseEnd:
     
     ld a, 10
@@ -233,6 +211,4 @@ wJetpackLength::
 wShieldLength::
     ds 1
 wPowerJump::
-    ds 1
-wWillRevive::
     ds 1
