@@ -68,6 +68,18 @@ ResetPlayerState::
     ld [wDoubleJumpEffectX], a
     ld [wDoubleJumpEffectY], a
 
+    ld [wDeltaScreenScrollY], a
+
+    ld [wDoubleJumpCountdown], a
+    ld [wDoubleJumpEffectX], a
+    ld [wDoubleJumpEffectY], a
+
+    ld [wGroundpoundEffect1X], a
+    ld [wGroundpoundEffect2X], a
+    ld [wGroundpoundEffectY], a
+    ld [wPowerJumpFlag], a
+    ld [wGroundPoundCountdown], a
+
     ret
 
 HandlePlayerVBlank::
@@ -428,6 +440,13 @@ HandlePlayer::
 
     ; add vertical velocity
     ld a, [wPowerJump]
+    cp a, $0
+    jp z, .noPowerJump
+
+    ld a, $1
+    ld [wPowerJumpFlag], a
+
+.noPowerJump:
     add a, $A2
     ld [wPlayerVelocityY], a
 
@@ -697,8 +716,7 @@ PlayerBufferToOAM::
     ; delta SCY
     ld a, c
     sub a, b
-    ld b, a
-    push bc
+    ld [wDeltaScreenScrollY], a
 
     ; X position
     ld a, [wActualX]
@@ -831,12 +849,75 @@ PlayerBufferToOAM::
     ld a, [wDoubleJumpEffectX]
     ld [OAMBuffer + 37], a
 
-    pop bc
+    ld a, [wDeltaScreenScrollY]
+    ld b, a
 
     ld a, [wDoubleJumpEffectY]
     add a, b
     ld [wDoubleJumpEffectY], a
     ld [OAMBuffer + 36], a
+
+    ; Ground pound
+
+    ; Case we just jumped (spawn clouds)
+    ld a, [wPowerJumpFlag]
+    cp a, $1
+    jp nz, .noInitPowerJump
+
+    xor a
+    ld [wPowerJumpFlag], a
+
+    ld a, [wActualY]
+    ld [wGroundpoundEffectY], a
+
+    ld a, [wActualX]
+    sub a, $4
+    ld [wGroundpoundEffect1X], a
+    add a, $8
+    ld [wGroundpoundEffect2X], a
+
+    ld a, $C
+    ld [wGroundPoundCountdown], a
+
+.noInitPowerJump:
+
+    ld a, [wGroundPoundCountdown]
+    cp a, $0
+    jp z, .noGroundPoundAnimation
+
+    dec a
+    ld [wGroundPoundCountdown], a
+
+    ld a, [wGroundpoundEffect1X]
+    dec a
+    ld [wGroundpoundEffect1X], a
+
+    ld a, [wGroundpoundEffect2X]
+    inc a
+    ld [wGroundpoundEffect2X], a
+
+    jp .groundPoundAnimationEnd
+.noGroundPoundAnimation:
+
+    xor a
+    ld [wGroundpoundEffect1X], a
+    ld [wGroundpoundEffect2X], a
+
+.groundPoundAnimationEnd:
+
+    ld a, [wGroundpoundEffect1X]
+    ld [OAMBuffer + 33], a
+    ld a, [wGroundpoundEffect2X]
+    ld [OAMBuffer + 45], a
+
+    ld a, [wDeltaScreenScrollY]
+    ld b, a
+
+    ld a, [wGroundpoundEffectY]
+    add a, b
+    ld [wGroundpoundEffectY], a
+    ld [OAMBuffer + 32], a
+    ld [OAMBuffer + 44], a
 
     ret 
 
@@ -862,9 +943,17 @@ wJetpackFlags:: ds 1
 
 wShieldAdder:: ds 1
 
+wDeltaScreenScrollY:: ds 1
+
 wDoubleJumpCountdown:: ds 1
 wDoubleJumpEffectX:: ds 1
 wDoubleJumpEffectY:: ds 1
+
+wGroundpoundEffect1X:: ds 1
+wGroundpoundEffect2X:: ds 1
+wGroundpoundEffectY:: ds 1
+wPowerJumpFlag:: ds 1
+wGroundPoundCountdown:: ds 1
 
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
