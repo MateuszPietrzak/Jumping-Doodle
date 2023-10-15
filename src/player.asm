@@ -8,6 +8,9 @@ InitPlayer::
     ld hl, _VRAM8000
     ld bc, GraphicTilesEnd - GraphicTiles
     call Memcpy
+
+    xor a
+    ld [wJetpackLength], a
     ret
 
 ResetPlayerState:: 
