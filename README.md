@@ -30,3 +30,13 @@ Allows jumping mid-air.
 Sends the player sideways. Can be canceled by reversing direction.
 #### Ground-pound
 Sends the player down, making the next jump a super jump!
+
+## Building from source
+Prerequisites:
+- RGBDS (https://rgbds.gbdev.io/)
+```
+git clone https://github.com/MateuszPietrzak/Jumping-Doodle.git
+cd Jumping-Doodle
+make
+```
+The Game Boy executable will be available at `bin/jumpingDoodle.gb`.
