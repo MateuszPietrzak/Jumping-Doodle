@@ -1265,3 +1265,223 @@ PowerUPSoundChannel_1::
     dw F5s
 
     db END
+
+DoubleJumpSoundChannel_1::
+    db NOTE, 1, VOL_MAX
+    dw B4
+    db NOTE, 1, VOL_MAX
+    dw A4s
+    db NOTE, 1, VOL_MAX
+    dw A4
+    db NOTE, 1, VOL_MAX
+    dw A4s
+    db NOTE, 1, VOL_MAX
+    dw B4
+    db NOTE, 2, VOL_MAX
+    dw C5
+
+    db END
+
+DashSoundChannel_1::
+    db NOTE, 2, VOL_MAX
+    dw C4s
+    db NOTE, 2, VOL_MAX
+    dw B3
+    db NOTE, 1, VOL_MAX
+    dw A3
+    db NOTE, 1, VOL_MAX
+    dw G3s
+    db NOTE, 1, VOL_MAX
+    dw G3
+    db NOTE, 1, VOL_MAX
+    dw F3s
+    db NOTE, 1, VOL_MAX
+    dw F3
+
+    db END
+
+GroundPoundSoundChannel_1::
+    db NOTE, 2, VOL_MAX
+    dw B3
+    db NOTE, 2, VOL_MAX
+    dw A3
+    db NOTE, 1, VOL_MAX
+    dw G3
+    db NOTE, 1, VOL_MAX
+    dw F3
+
+    db END
+
+PowerJumpSoundChannel_1::
+    db NOTE, 1, VOL_MAX
+    dw C5
+    db NOTE, 1, VOL_MAX
+    dw B4
+    db NOTE, 1, VOL_MAX
+    dw A4s
+    db NOTE, 1, VOL_MAX
+    dw A4
+    db NOTE, 1, VOL_MAX
+    dw A4s
+    db NOTE, 1, VOL_MAX
+    dw B4
+    db NOTE, 1, VOL_MAX
+    dw C5
+    db NOTE, 1, VOL_MAX
+    dw C5s
+    db NOTE, 1, VOL_MAX
+    dw D5
+    db NOTE, 2, VOL_MAX
+    dw D5s
+    db NOTE, 2, VOL_MAX
+    dw E5
+    db NOTE, 2, VOL_MAX
+    dw F5
+    db NOTE, 2, VOL_MAX
+    dw F5s
+
+    db END
+
+ShieldSoundChannel_1::
+    db NOTE, 2, VOL_24F
+    dw D4
+    db NOTE, 2, VOL_24F
+    dw E4
+    db NOTE, 2, VOL_24F
+    dw D4
+    db NOTE, 2, VOL_24F
+    dw E4
+    db NOTE, 2, VOL_24F
+    dw D4
+    db NOTE, 2, VOL_24F
+    dw E4
+    db NOTE, 2, VOL_24F
+    dw D4
+    db NOTE, 2, VOL_24F
+    dw E4
+
+    db END
+
+JetpackSoundChannel_1::
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+    db NOTE, 2, VOL_34F
+    dw D2
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw F2s
+    db NOTE, 2, VOL_34F
+    dw E2
+    db NOTE, 2, VOL_34F
+    dw D2s
+
+    db END

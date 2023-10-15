@@ -444,6 +444,8 @@ HandlePlayer::
     cp a, $1
     jr nz, .noUpdateBounce
 
+    push bc
+
     ; add vertical velocity
     ld a, [wPowerJump]
     cp a, $0
@@ -452,21 +454,27 @@ HandlePlayer::
     ld a, $1
     ld [wPowerJumpFlag], a
 
+    ld bc, PowerJumpSoundChannel_1
+    call StartSoundEffect
+
+    jp .afterSound
+
 .noPowerJump:
+
+    ; PLAY BOING!
+    ld bc, JumpSoundChannel_1
+    call StartSoundEffect
+
+.afterSound:
+
+    pop bc
+
     ld a, [wPowerJump]
     add a, $A2
     ld [wPlayerVelocityY], a
 
     xor a
     ld [wPowerJump], a
-
-    push bc
-
-    ; PLAY BOING!
-    ld bc, JumpSoundChannel_1
-    call StartSoundEffect
-
-    pop bc
 
 .noUpdateBounce:
     

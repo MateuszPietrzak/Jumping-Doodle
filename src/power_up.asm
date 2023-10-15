@@ -16,6 +16,7 @@ SECTION "PowerUP", ROM0
 
 PowerUpInit::
     xor a
+    ld a, JETPACK_ID
     ld [wInventory], a
     ld [wInventory + 1], a
 
@@ -146,6 +147,9 @@ UseAbility::
     cp a, DOUBLE_JUMP_ID
     jp nz, .caseDash
 
+    ld bc, DoubleJumpSoundChannel_1
+    call StartSoundEffect
+
     ; add vertical velocity
     ld a, $A0 
     ld [wPlayerVelocityY], a
@@ -165,6 +169,9 @@ UseAbility::
     cp a, DASH_ID
     jp nz, .caseGroundPound
 
+    ld bc, DashSoundChannel_1
+    call StartSoundEffect
+    
     xor a
     ld [wPlayerVelocityY], a
 
@@ -192,6 +199,9 @@ UseAbility::
     cp a, GROUND_POUND_ID
     jp nz, .caseShield
 
+    ld bc, GroundPoundSoundChannel_1
+    call StartSoundEffect
+
     ld a, $0A                   ; next jump will be more powerful
     ld [wPowerJump], a
 
@@ -203,6 +213,9 @@ UseAbility::
     cp a, SHIELD_ID
     jp nz, .caseJetPack
 
+    ld bc, ShieldSoundChannel_1
+    call StartSoundEffect
+
     ld a, 255
     ld [wShieldLength], a
 
@@ -210,6 +223,9 @@ UseAbility::
 .caseJetPack:
     cp a, JETPACK_ID
     jp nz, .caseEnd
+
+    ld bc, JetpackSoundChannel_1
+    call StartSoundEffect
 
     ld a, 120
     ld [wJetpackLength], a

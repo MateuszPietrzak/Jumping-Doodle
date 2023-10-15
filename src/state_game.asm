@@ -100,7 +100,8 @@ GameLoop:
 
 GameFinish::
     ; Everything to do after dying, for example saving score
-    
+    call EndSoundEffect
+
     ld bc, wNumberBCD_1             ; compare final score
     ld de, wScoresInBCD + 7 * 8     ; with last (8th) highscore
     call GreaterBCD

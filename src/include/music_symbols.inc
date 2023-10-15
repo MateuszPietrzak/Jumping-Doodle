@@ -95,6 +95,7 @@ DEF INFINITE        EQU $01
 ; different volume settings
 DEF VOL_MAX         EQU $F8
 DEF VOL_34          EQU $C8
+DEF VOL_34F         EQU $C4
 DEF VOL_24          EQU $88
 DEF VOL_24F         EQU $84
 DEF VOL_14          EQU $58

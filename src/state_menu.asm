@@ -72,6 +72,22 @@ StateMenu::
 
     ; Check for d-pad down
     ld a, [wKeysPressed]
+    ld b, PADF_RIGHT
+    and a, b
+
+    jr z, .pressedRightEnd
+.pressedRight
+    ; Only go down if you can
+    ld a, [wButtonSelected]
+    cp a, $0
+    jr nz, .pressedRightEnd
+
+    ld bc, JetpackSoundChannel_1
+    call StartSoundEffect
+    
+.pressedRightEnd
+    ; Check for d-pad down
+    ld a, [wKeysPressed]
     ld b, PADF_DOWN
     and a, b
 

@@ -224,6 +224,11 @@ SwitchToLeaderboardTheme::
 
 ; param @bc address of sound's music sheet
 StartSoundEffect::
+    ; jetpack overrites everything
+    ld a, [wJetpackLength]
+    cp a, 0
+    ret nz
+
     ld a, [wPositionChannel_1]
     ld [wPositionChannelCopy_1], a
     ld a, [wPositionChannel_1 + 1]
@@ -241,6 +246,20 @@ StartSoundEffect::
     ld [wInterruptChannel_1], a
     xor a
     ld [wInterruptNoteFrameChannel_1], a
+
+    ret
+
+EndSoundEffect::
+    ld a, [wPositionChannelCopy_1]
+    ld [wPositionChannel_1], a
+    ld a, [wPositionChannelCopy_1 + 1]
+    ld [wPositionChannel_1 + 1], a
+
+    ld a, [wNoteFrameChannelCopy_1]
+    ld [wNoteFrameChannel_1], a
+
+    xor a
+    ld [wInterruptChannel_1], a
 
     ret
 
