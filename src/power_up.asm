@@ -172,6 +172,18 @@ UseAbility::
     add a, $20
     ld [wPlayerVelocityX], a
 
+    ld a, [wActualY]
+    ld [wDashEffectY], a
+
+    ld a, [wActualX]
+    ld [wDashEffectX], a
+
+    ld a, $1
+    ld [wDashFlag], a
+
+    ld a, $C
+    ld [wDashCountdown], a
+
     ld a, 20
     ld [wDashLength], a
 

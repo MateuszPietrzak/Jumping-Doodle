@@ -80,6 +80,12 @@ ResetPlayerState::
     ld [wPowerJumpFlag], a
     ld [wGroundPoundCountdown], a
 
+    ld [wDashEffectX], a
+    ld [wDashEffectY], a
+    ld [wDashCountdown], a
+    ld [wDashFlag], a
+
+
     ret
 
 HandlePlayerVBlank::
@@ -919,6 +925,63 @@ PlayerBufferToOAM::
     ld [OAMBuffer + 32], a
     ld [OAMBuffer + 44], a
 
+    ; Dash
+
+    ld a, [wDashFlag]
+    cp a, $1
+    jp nz, .noInitDash
+
+    xor a
+    ld [wDashFlag], a
+
+    ld a, [wPlayerFlags]
+    ld [OAMBuffer + 43], a
+
+.noInitDash:
+
+    ld a, [wDashCountdown]
+    cp a, $0
+    jp z, .noDashAnimation
+
+.caseDashAnimation1:
+    cp a, $6
+    jp c, .caseDashAnimation2
+
+    ld a, $35
+    ld [OAMBuffer + 42], a
+    
+    jp .dashAnimFramesEnd
+.caseDashAnimation2:
+
+    ld a, $36
+    ld [OAMBuffer + 42], a
+
+.dashAnimFramesEnd:
+
+    ld a, [wDashCountdown]
+    dec a
+    ld [wDashCountdown], a
+    jp .dashAnimationEnd
+.noDashAnimation:
+
+    xor a
+    ld [wDashEffectX], a
+
+.dashAnimationEnd:
+
+
+    ld a, [wDashEffectX]
+    ld [OAMBuffer + 41], a
+
+    ld a, [wDeltaScreenScrollY]
+    ld b, a
+
+    ld a, [wDashEffectY]
+    add a, b
+    ld [wDashEffectY], a
+    ld [OAMBuffer + 40], a
+
+
     ret 
 
 
@@ -954,6 +1017,11 @@ wGroundpoundEffect2X:: ds 1
 wGroundpoundEffectY:: ds 1
 wPowerJumpFlag:: ds 1
 wGroundPoundCountdown:: ds 1
+
+wDashEffectX:: ds 1
+wDashEffectY:: ds 1
+wDashCountdown:: ds 1
+wDashFlag:: ds 1
 
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
