@@ -40,6 +40,8 @@ ResetEnemyState::
     ld [wEnemyPointsThreshold + 6], a
     ld [wEnemyPointsThreshold + 7], a
 
+    ld [wNoEnemyCountdown], a
+
     ld a, $8
     ld [wEnemyPointsThreshold + 4], a
 
@@ -56,6 +58,22 @@ HandleEnemy::
     call GreaterBCD
     cp a, $0
     ret nz
+
+    ld a, [wNoEnemyCountdown]
+    cp a, $0
+    jp z, .skipNoEnemy
+
+    dec a
+    ld [wNoEnemyCountdown], a
+
+    ld a, [rSCY]
+    ld b, a
+    xor a
+    add a, b
+    ld [wActualEnemyY], a
+    ret
+
+.skipNoEnemy:
 
     ; Drunk man movement
     call Rng
@@ -260,6 +278,16 @@ SlapTheFly::
     add a, b
     ld [wActualEnemyY], a
 
+    call Rng
+    ld [wNoEnemyCountdown], a
+
+    ; Move enemy with screen
+    ld a, [rSCY]
+    ld b, a
+    ld a, [wActualEnemyY]
+    sub a, b
+    ld [wActualEnemyYScrolled], a
+
     ret
 
 EnemyBufferToOAM::
@@ -292,3 +320,4 @@ wAnimationFrame:: ds 1
 wAnimationCountdwn:: ds 1
 wMoveRight:: ds 1
 wEnemyPointsThreshold:: ds 8
+wNoEnemyCountdown:: ds 1
