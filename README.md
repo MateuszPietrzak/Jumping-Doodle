@@ -30,5 +30,3 @@ Allows jumping mid-air.
 Sends the player sideways. Can be canceled by reversing direction.
 #### Ground-pound
 Sends the player down, making the next jump a super jump!
-#### Revive
-Revives the player in the middle of a screen after death.
