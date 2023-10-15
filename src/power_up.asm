@@ -1,3 +1,5 @@
+INCLUDE "include/hardware.inc/hardware.inc"
+
 DEF DOUBLE_JUMP_WEIGHT  EQU 90 ; 90
 DEF GROUND_POUND_WEIGHT EQU 70 ; 160
 DEF DASH_WEIGHT         EQU 50 ; 210
@@ -147,6 +149,16 @@ UseAbility::
     ; add vertical velocity
     ld a, $A0 
     ld [wPlayerVelocityY], a
+    ld a, $10
+    ld [wDoubleJumpCountdown], a
+    ; ld a, [rSCY]
+    ; ld b, a
+    ld a, [wActualY]
+    add a, $4
+    ; add a, b
+    ld [wDoubleJumpEffectY], a
+    ld a, [wActualX]
+    ld [wDoubleJumpEffectX], a
 
     jp .caseEnd
 .caseDash:

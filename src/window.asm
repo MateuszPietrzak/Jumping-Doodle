@@ -48,6 +48,11 @@ InitializeWindow::
     ld hl, $8200
     ld bc, ShieldTiles.end - ShieldTiles
     call Memcpy
+
+    ld de, PowerUpEffectsTiles 
+    ld hl, $8300
+    ld bc, PowerUpEffectsTiles.end - PowerUpEffectsTiles 
+    call Memcpy
     
     ; clear window
     ld hl, $9C00
@@ -153,6 +158,19 @@ ENDR
     ld [OAMBuffer + 26], a
     ld a, $25
     ld [OAMBuffer + 30], a
+
+    ; Load powerup effects sprites and put it in (0,0) corner outside the view
+    ; Sprite #9-12
+    ld a, $30
+    ld [OAMBuffer + 34], a
+    ld a, $31
+    ld [OAMBuffer + 38], a
+    ld a, $35
+    ld [OAMBuffer + 42], a
+    ld a, $30
+    ld [OAMBuffer + 46], a
+    ld a, %00100000
+    ld [OAMBuffer + 47], a
 
     ; turn on the LCD
     ld a, [rLCDC]

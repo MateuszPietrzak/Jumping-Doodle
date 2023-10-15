@@ -35,3 +35,6 @@ ShieldTiles::
     incbin "assets/shield.2bpp"
 .end::
     
+PowerUpEffectsTiles::
+    incbin "assets/PowerupEffects.2bpp"
+.end::

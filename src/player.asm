@@ -64,6 +64,10 @@ ResetPlayerState::
     ld [wJetpackFlags], a
     ld [wShieldAdder], a
 
+    ld [wDoubleJumpCountdown], a
+    ld [wDoubleJumpEffectX], a
+    ld [wDoubleJumpEffectY], a
+
     ret
 
 HandlePlayerVBlank::
@@ -684,8 +688,17 @@ PlayerBufferToOAM::
     ld [OAMBuffer + 3], a
 
     ; Move bg to correct position
+    ld a, [rSCY]
+    ld c, a
     ld a, [wActualSCY]
+    ld b, a
     ld [rSCY], a
+
+    ; delta SCY
+    ld a, c
+    sub a, b
+    ld b, a
+    push bc
 
     ; X position
     ld a, [wActualX]
@@ -751,7 +764,7 @@ PlayerBufferToOAM::
     ld a, $25
     ld [OAMBuffer + 30], a
 
-    ret
+    jp .doubleJump
 
 .addShieldTile:
     ld a, $22
@@ -763,7 +776,70 @@ PlayerBufferToOAM::
     ld a, $27
     ld [OAMBuffer + 30], a
 
-    ret
+.doubleJump:
+    ; Double jump effect
+    ld a, [wDoubleJumpCountdown]
+    cp a, $0
+    jp z, .noDoubleJump
+
+.doubleJumpStage1:
+    cp a, $C
+    jp c, .doubleJumpStage2
+
+    ld a, $31
+    ld [OAMBuffer + 38], a
+
+    jp .doubleJumpDecCountdown
+
+.doubleJumpStage2:
+    cp a, $8
+    jp c, .doubleJumpStage3
+
+    ld a, $32
+    ld [OAMBuffer + 38], a
+
+    jp .doubleJumpDecCountdown
+
+.doubleJumpStage3:
+    cp a, $4
+    jp c, .doubleJumpStage4
+
+    ld a, $33
+    ld [OAMBuffer + 38], a
+
+    jp .doubleJumpDecCountdown
+
+.doubleJumpStage4:
+
+    ld a, $34
+    ld [OAMBuffer + 38], a
+
+    jp .doubleJumpDecCountdown
+
+.noDoubleJump:
+    xor a
+    ld [wDoubleJumpEffectX], a
+
+    jp .doubleJumpEnd
+.doubleJumpDecCountdown:
+    ld a, [wDoubleJumpCountdown]
+    dec a
+    ld [wDoubleJumpCountdown], a
+
+
+.doubleJumpEnd:
+    ld a, [wDoubleJumpEffectX]
+    ld [OAMBuffer + 37], a
+
+    pop bc
+
+    ld a, [wDoubleJumpEffectY]
+    add a, b
+    ld [wDoubleJumpEffectY], a
+    ld [OAMBuffer + 36], a
+
+    ret 
+
 
 SECTION "PlayerData", WRAM0
 
@@ -785,6 +861,10 @@ wJetpackX:: ds 1
 wJetpackFlags:: ds 1
 
 wShieldAdder:: ds 1
+
+wDoubleJumpCountdown:: ds 1
+wDoubleJumpEffectX:: ds 1
+wDoubleJumpEffectY:: ds 1
 
 wGenerateLine:: ds 1
 wGenerateLinePositionX:: ds 1
