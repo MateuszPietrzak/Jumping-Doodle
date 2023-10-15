@@ -453,6 +453,7 @@ HandlePlayer::
     ld [wPowerJumpFlag], a
 
 .noPowerJump:
+    ld a, [wPowerJump]
     add a, $A2
     ld [wPlayerVelocityY], a
 
