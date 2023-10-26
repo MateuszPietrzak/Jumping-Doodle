@@ -184,6 +184,95 @@ ClearOam::
     jr nz, ClearOam.clearOamBufferLoop
     ret
 
+InitPalettes:: 
+    ; set palette loader to auto increment
+    ld a, BCPSF_AUTOINC
+    ld [rBCPS], a
+
+    ; colors are at that label
+    ld hl, PalleteData
+
+    ; load 2 palettes of 4 colors
+    ld c, 2 * 4
+
+.rep:
+    ; load full color
+    ld a, [hl+]
+    ld [rBCPD], a
+    ld a, [hl+]
+    ld [rBCPD], a
+
+    dec c
+    ld a, c
+    cp a, 0
+    jr nz, .rep
+
+    ret
+
+PalleteData::
+    ; palette 1
+    ; color 1
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 2
+    ; GGGRRRRR
+    db %000_01000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 3
+    ; GGGRRRRR
+    db %000_10000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 4
+    ; GGGRRRRR
+    db %000_11000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; palette 2
+    ; color 1
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 2
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 3
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+    ; color 4
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+
+
+; @param hl - palette id
+SetPalette::
+    ld a, [wGameboyColor]
+    cp a, 1
+    jp z, .color
+    ; gameboy classic here
+
+    ; load palette from id
+    ld a, [hl]
+    ; set current palette
+    ld [rBGP], a
+
+    jp .end
+.color
+    ; gameboy color here
+
+.end
+    ret
+
 ; UpdateKeys
 ; Updates wKeysPressed variable, storing information about keys pressed to bits:
 ; %000000001 ($01) - A key
@@ -241,6 +330,17 @@ PollKeys::
 Rng::
     ld a, [rTIMA] ; xD
     ret
+
+PaletteNormalDGB::
+    db %11100100
+PaletteInvertedDGB::
+    db %00011011
+PaletteDarkDGB::
+    db %1111_0101
+
+SECTION "HardwareInfo", WRAM0
+
+wGameboyColor:: db
 
 SECTION "VariablesMovement", WRAM0
 

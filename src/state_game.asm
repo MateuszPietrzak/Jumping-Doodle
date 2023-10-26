@@ -1,4 +1,5 @@
 INCLUDE "include/hardware.inc/hardware.inc"
+INCLUDE "include/palettes.inc"
 
 SECTION "StateGame", ROM0
 
@@ -16,11 +17,11 @@ GameLoop:
 
     call WaitForVBlankStart
 
-.a
     ; TO DO WHILE VBLANK
     ; Set bg and window layers palette
-    ld a, %11100100
-    ld [rBGP], a
+    ld hl, PaletteNormalDGB
+    call SetPalette
+
     ld a, [rLCDC]
     or a, LCDCF_OBJON
     ld [rLCDC], a
@@ -39,7 +40,6 @@ GameLoop:
     call HandlePlayerVBlank
     call HandleEnemyVBlank
     ; TO DO WHILE VBLANK END
-.b
 
     call EnemyBufferToOAM
     call PlayerBufferToOAM
@@ -89,8 +89,10 @@ GameLoop:
     call WaitForPaletteSwap
 
     ; Set bg and window layers palette
-    ld a, %00011011
+    ld a, [PaletteInvertedDGB]
     ld [rBGP], a
+    ; ld hl, PaletteInvertedDGB
+    ; call SetPalette
 
     ld a, [rLCDC]
     xor a, LCDCF_OBJON

@@ -1,5 +1,6 @@
 
 INCLUDE "hardware.inc/hardware.inc"
+INCLUDE "include/palettes.inc"
 
 SECTION "windowFunctions", ROM0
 
@@ -214,8 +215,8 @@ LoadScoresBackground::
     xor a
     ld [rLCDC], a
 
-    ld a, %1111_0101
-    ld [rBGP], a
+    ld hl, PaletteDarkDGB
+    call SetPalette
 
     ld bc, $03FF
     ld hl, $9800
@@ -261,8 +262,8 @@ LoadDeathScreenBackground::
     ld [rLCDC], a
 
     ; load darker palette
-    ld a, %1111_0101
-    ld [rBGP], a
+    ld hl, PaletteDarkDGB
+    call SetPalette
 
     ; Clear screen
     ld bc, $03FF
