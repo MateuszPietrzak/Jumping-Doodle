@@ -170,7 +170,7 @@ ENDR
     ld [OAMBuffer + 42], a
     ld a, $30
     ld [OAMBuffer + 46], a
-    ld a, %00100000
+    ld a, %00100011
     ld [OAMBuffer + 47], a
 
     ; turn on the LCD

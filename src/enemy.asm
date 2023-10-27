@@ -308,6 +308,11 @@ EnemyBufferToOAM::
     ld [OAMBuffer + 6], a
     inc a
     ld [OAMBuffer + 10], a
+
+    ; Change color palette
+    ld a, %00000001
+    ld [OAMBuffer + 7], a
+    ld [OAMBuffer + 11], a
     ret
 
 

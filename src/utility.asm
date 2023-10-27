@@ -190,7 +190,7 @@ InitPalettes::
     ld [rBCPS], a
 
     ; colors are at that label
-    ld hl, PalleteData
+    ld hl, BgPaletteData
 
     ; load 2 palettes of 4 colors
     ld c, 2 * 4
@@ -207,28 +207,50 @@ InitPalettes::
     cp a, 0
     jr nz, .rep
 
+    ; set palette loader to auto increment
+    ld a, OCPSF_AUTOINC
+    ld [rOCPS], a
+
+    ; colors are at that label
+    ld hl, SpritePaletteData
+
+    ; load 4 palettes of 4 colors
+    ld c, 4 * 4
+
+.rep2:
+    ; load full color
+    ld a, [hl+]
+    ld [rOCPD], a
+    ld a, [hl+]
+    ld [rOCPD], a
+
+    dec c
+    ld a, c
+    cp a, 0
+    jr nz, .rep2
+
     ret
 
-PalleteData::
+BgPaletteData::
     ; palette 1
     ; color 1
     ; GGGRRRRR
-    db %000_00000
+    db %10111100
     ; XBBBBBGG
-    db %0_00000_00
+    db %01110111
     ; color 2
     ; GGGRRRRR
-    db %000_01000
+    db %101_11101
     ; XBBBBBGG
-    db %0_00000_00
+    db %0_01001_11
     ; color 3
     ; GGGRRRRR
-    db %000_10000
+    db %000_10001
     ; XBBBBBGG
-    db %0_00000_00
+    db %0_01001_11
     ; color 4
     ; GGGRRRRR
-    db %000_11000
+    db %000_00000
     ; XBBBBBGG
     db %0_00000_00
     ; palette 2
@@ -252,6 +274,96 @@ PalleteData::
     db %000_00000
     ; XBBBBBGG
     db %0_00000_00
+
+SpritePaletteData::
+    ; palette 1 (player)
+    ; color 1 (transparent)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 2
+    ; GGGRRRRR
+    db %01011000
+    ; XBBBBBGG
+    db %01000011
+    ; color 3
+    ; GGGRRRRR
+    db %000_10001
+    ; XBBBBBGG
+    db %0_01001_11
+    ; color 4
+    ; GGGRRRRR
+    db %000_00000
+    ; XBBBBBGG
+    db %0_00000_00
+
+    ; palette 2 (enemy)
+    ; color 1 (transparent)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 2
+    ; GGGRRRRR
+    db %01111001
+    ; XBBBBBGG
+    db %01010010
+    ; color 3
+    ; GGGRRRRR
+    db %11011110
+    ; XBBBBBGG
+    db %00101000
+    ; color 4
+    ; GGGRRRRR
+    db %01000011
+    ; XBBBBBGG
+    db %00001000
+
+    ; palette 3 (shield)
+    ; color 1 (transparent)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 2
+    ; GGGRRRRR
+    db %00000111
+    ; XBBBBBGG
+    db %01101111
+    ; color 3
+    ; GGGRRRRR
+    db %01100010
+    ; XBBBBBGG
+    db %01100000
+    ; color 4 (not used)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+
+    ; palette 4 (effects)
+    ; color 1 (transparent)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 2
+    ; GGGRRRRR
+    db %10110011
+    ; XBBBBBGG
+    db %01010010
+    ; color 3 (not used)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 4 (not used)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+
 
 
 ; @param hl - palette id

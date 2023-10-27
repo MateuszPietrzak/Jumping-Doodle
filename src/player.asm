@@ -18,6 +18,21 @@ ResetPlayerState::
     call WaitForVBlank
     call LoadGameBackground
 
+    ; Load proper shield palette
+    ld a, %00000010
+    ld [OAMBuffer + 19], a
+    ld [OAMBuffer + 23], a
+    ld [OAMBuffer + 27], a
+    ld [OAMBuffer + 31], a
+
+    ; Load proper effects palette
+    ld a, %00000011
+    ld [OAMBuffer + 35], a
+    ld [OAMBuffer + 39], a
+    ld [OAMBuffer + 43], a
+    ld a, %00100011
+    ld [OAMBuffer + 47], a
+
     xor a
     ld [wAchievedHighscore], a
 
@@ -947,6 +962,8 @@ PlayerBufferToOAM::
     ld [wDashFlag], a
 
     ld a, [wPlayerFlags]
+    ; Ensure palette preservation
+    or a, %00000011
     ld [OAMBuffer + 43], a
 
 .noInitDash:
