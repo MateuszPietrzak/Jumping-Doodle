@@ -14,7 +14,7 @@ EntryPoint::
     
     ld a, 1
     ld [wGameboyColor], a
-    
+    jp .endCheck
 .gameboyClassic:
     
     xor a

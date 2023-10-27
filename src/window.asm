@@ -197,6 +197,10 @@ LoadMenuBackground::
     ld hl, GameTitle1
     call WriteTextToWindow
 
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
     ld a, $1
     ld [rVBK], a
     ld d, $1
@@ -205,6 +209,7 @@ LoadMenuBackground::
     call Memset
     xor a
     ld [rVBK], a
+.noCGBPalette:
 
     ld de, $9800 + $A0 + $8
     ld hl, GameTitle2
