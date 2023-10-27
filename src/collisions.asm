@@ -120,8 +120,12 @@ CheckCollisions::
 .powerUPCollision:
 
     ; erase powerup
+    ; ld a, $1
+    ; ld [rVBK], a
     xor a
     ld [hl], a
+    ; ld [rVBK], a
+    ; ld [hl], a
 
     ld a, $2
     ret

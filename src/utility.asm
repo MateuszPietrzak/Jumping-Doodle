@@ -17,6 +17,20 @@ Memcpy::
     jr nz, Memcpy   ; 3
     ret             ; 4
 
+; Memset
+; Sets data
+; @param d value to be set
+; @param hl beginning of target space
+; @param bc data size
+Memset::
+    ld a, d
+    ld [hl+], a
+    dec bc
+    ld a, b
+    or a, c
+    jr nz, Memset
+    ret
+
 ; Soubrouting to copy soublroutine into HRAM
 ; https://gbdev.gg8.se/wiki/articles/OAM_DMA_tutorial
 ; (Cursed as hell)
@@ -240,40 +254,41 @@ BgPaletteData::
     db %01110111
     ; color 2
     ; GGGRRRRR
-    db %101_11101
+    db %01101100
     ; XBBBBBGG
-    db %0_01001_11
+    db %01001001
     ; color 3
     ; GGGRRRRR
-    db %000_10001
+    db %01100110
     ; XBBBBBGG
-    db %0_01001_11
+    db %01001100
     ; color 4
     ; GGGRRRRR
-    db %000_00000
+    db %01000100
     ; XBBBBBGG
-    db %0_00000_00
+    db %00110000
+
     ; palette 2
     ; color 1
     ; GGGRRRRR
-    db %000_00000
+    db %01100110
     ; XBBBBBGG
-    db %0_00000_00
+    db %01001100
     ; color 2
     ; GGGRRRRR
-    db %000_00000
+    db %01101100
     ; XBBBBBGG
-    db %0_00000_00
+    db %01001001
     ; color 3
     ; GGGRRRRR
-    db %000_00000
+    db %10111100
     ; XBBBBBGG
-    db %0_00000_00
+    db %01110111
     ; color 4
     ; GGGRRRRR
-    db %000_00000
+    db %01000100
     ; XBBBBBGG
-    db %0_00000_00
+    db %00110000
 
 SpritePaletteData::
     ; palette 1 (player)
@@ -284,19 +299,19 @@ SpritePaletteData::
     db %00000000
     ; color 2
     ; GGGRRRRR
-    db %01011000
+    db %00110011
     ; XBBBBBGG
-    db %01000011
+    db %00101011
     ; color 3
     ; GGGRRRRR
-    db %000_10001
+    db %11001001
     ; XBBBBBGG
-    db %0_01001_11
+    db %00001001
     ; color 4
     ; GGGRRRRR
-    db %000_00000
+    db %00000100
     ; XBBBBBGG
-    db %0_00000_00
+    db %00000101
 
     ; palette 2 (enemy)
     ; color 1 (transparent)

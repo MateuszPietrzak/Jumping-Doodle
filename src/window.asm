@@ -197,6 +197,15 @@ LoadMenuBackground::
     ld hl, GameTitle1
     call WriteTextToWindow
 
+    ld a, $1
+    ld [rVBK], a
+    ld d, $1
+    ld hl, $9C00
+    ld bc, $60
+    call Memset
+    xor a
+    ld [rVBK], a
+
     ld de, $9800 + $A0 + $8
     ld hl, GameTitle2
     call WriteTextToWindow
