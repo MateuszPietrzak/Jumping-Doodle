@@ -8,6 +8,9 @@ SECTION "StateInit", ROM0
 ; This subroutine should never be called outside "header.asm" file
 
 StateInit::
+    ei
+    ld a, $1
+    ld [rIE], a
     call WaitForVBlank
 
     ; Disable LCD before writing to VRAM

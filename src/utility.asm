@@ -159,17 +159,17 @@ Add16::
 ; WaitPorVBlank
 ; Waits until VBlank (duh)
 WaitForVBlank::
-    ld a, [rLY]
-    cp 144
-    jr c, WaitForVBlank
+    xor a
+    ld [rIF], a
+    halt
     ret
 
 ; WaitPorVBlankStart
 ; Wait for the start of the VBlank
 WaitForVBlankStart::
-    ld a, [rLY]
-    cp 144
-    jr nz, WaitForVBlankStart
+    xor a
+    ld [rIF], a
+    halt
     ret
 
 WaitForPaletteSwap::
