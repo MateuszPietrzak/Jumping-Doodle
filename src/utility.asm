@@ -206,8 +206,8 @@ InitPalettes::
     ; colors are at that label
     ld hl, BgPaletteData
 
-    ; load 3 palettes of 4 colors
-    ld c, 3 * 4
+    ; load 4 palettes of 4 colors
+    ld c, 4 * 4
 
 .rep:
     ; load full color
@@ -308,9 +308,31 @@ BgPaletteData::
     db %00000010
     ; color 4
     ; GGGRRRRR
-    db %00000000
+    db %01100110
     ; XBBBBBGG
-    db %00000001
+    db %00010001
+
+    ; palette 4
+    ; color 1
+    ; GGGRRRRR
+    db %10100100
+    ; XBBBBBGG
+    db %00011000
+    ; color 2
+    ; GGGRRRRR
+    db %11110110
+    ; XBBBBBGG
+    db %01011110
+    ; color 3
+    ; GGGRRRRR
+    db %11110110
+    ; XBBBBBGG
+    db %01011110
+    ; color 4
+    ; GGGRRRRR
+    db %11110110
+    ; XBBBBBGG
+    db %01011110
 
 SpritePaletteData::
     ; palette 1 (player)

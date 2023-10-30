@@ -40,9 +40,10 @@ ResetPlayerState::
 
     ; Init screen Y scroll
     xor a
-    ld [wScreenScrollY], a
-    ld [wScreenScrollY + 1], a
     ld [rSCY], a
+    ld [wScreenScrollY], a
+    ld a, $80
+    ld [wScreenScrollY + 1], a
 
 .resetPosition::
     ; Init position (which is in form pixels * 16)

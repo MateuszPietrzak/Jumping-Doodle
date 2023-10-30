@@ -110,7 +110,7 @@ LoadGameBackground::
     call GenerateStripe
 
     ld bc, $0014
-    ld hl, $99C0
+    ld hl, $99E0
 
 .floorTiles:
     ld a, $44
@@ -314,7 +314,7 @@ LoadDeathScreenBackground::
     jp nz, .noCGBPalette
     ld a, $1
     ld [rVBK], a
-    ld d, $1
+    ld d, $3
     ld hl, $9800
     ld bc, $300
     call Memset
