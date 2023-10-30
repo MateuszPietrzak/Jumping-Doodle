@@ -245,6 +245,108 @@ InitPalettes::
 
     ret
 
+
+
+
+; @param hl - palette id
+SetPalette::
+    ld a, [wGameboyColor]
+    cp a, 1
+    jp z, .color
+    ; gameboy classic here
+
+    ; load palette from id
+    ld a, [hl]
+    ; set current palette
+    ld [rBGP], a
+
+    jp .end
+.color
+    ; gameboy color here
+
+.end
+    ret
+
+; UpdateKeys
+; Updates wKeysPressed variable, storing information about keys pressed to bits:
+; %000000001 ($01) - A key
+; %000000010 ($02) - B key
+; %000000100 ($04) - START key
+; %000001000 ($08) - SELECT key
+; %000010000 ($10) - RIGHT key
+; %000100000 ($20) - LEFT key
+; %001000000 ($40) - UP key
+; %010000000 ($80) - DOWN key
+; use PADF_{key} define from hardware.inc
+UpdateKeys::
+    ld a, P1F_GET_BTN
+    ldh [rP1], a
+
+    call PollKeys
+
+    or a, $F0
+    ld b, a
+
+    ld a, P1F_GET_DPAD
+    ldh [rP1], a
+
+    call PollKeys
+
+    or a, $F0
+    swap a
+    xor a, b
+    
+
+    ld [wKeysPressed], a
+
+    ld a, P1F_GET_NONE
+    ldh [rP1], a
+    ret
+
+; PollKeys
+; Polls keys enough times
+PollKeys::
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ldh a, [rP1]
+    ret
+
+; Rng
+; @return a the random number
+Rng::
+    ld a, [rTIMA] ; xD
+    ret
+
+PaletteNormalDGB::
+    db %11100100
+PaletteInvertedDGB::
+    db %00011011
+PaletteDarkDGB::
+    db %1111_0101
+
+SECTION "HardwareInfo", WRAM0
+
+wGameboyColor:: db
+
+SECTION "VariablesMovement", WRAM0
+
+wKeysPressed:: db
+
+SECTION "OAM DMA", HRAM
+
+hOAMDMA:: ds DMATransferEnd - DMATransfer
+
+SECTION "Palettes", ROM0
+
+
 BgPaletteData::
     ; palette 1
     ; color 1
@@ -444,101 +546,3 @@ SpritePaletteData::
     db %01101011
     ; XBBBBBGG
     db %00110001
-
-
-
-; @param hl - palette id
-SetPalette::
-    ld a, [wGameboyColor]
-    cp a, 1
-    jp z, .color
-    ; gameboy classic here
-
-    ; load palette from id
-    ld a, [hl]
-    ; set current palette
-    ld [rBGP], a
-
-    jp .end
-.color
-    ; gameboy color here
-
-.end
-    ret
-
-; UpdateKeys
-; Updates wKeysPressed variable, storing information about keys pressed to bits:
-; %000000001 ($01) - A key
-; %000000010 ($02) - B key
-; %000000100 ($04) - START key
-; %000001000 ($08) - SELECT key
-; %000010000 ($10) - RIGHT key
-; %000100000 ($20) - LEFT key
-; %001000000 ($40) - UP key
-; %010000000 ($80) - DOWN key
-; use PADF_{key} define from hardware.inc
-UpdateKeys::
-    ld a, P1F_GET_BTN
-    ldh [rP1], a
-
-    call PollKeys
-
-    or a, $F0
-    ld b, a
-
-    ld a, P1F_GET_DPAD
-    ldh [rP1], a
-
-    call PollKeys
-
-    or a, $F0
-    swap a
-    xor a, b
-    
-
-    ld [wKeysPressed], a
-
-    ld a, P1F_GET_NONE
-    ldh [rP1], a
-    ret
-
-; PollKeys
-; Polls keys enough times
-PollKeys::
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ldh a, [rP1]
-    ret
-
-; Rng
-; @return a the random number
-Rng::
-    ld a, [rTIMA] ; xD
-    ret
-
-PaletteNormalDGB::
-    db %11100100
-PaletteInvertedDGB::
-    db %00011011
-PaletteDarkDGB::
-    db %1111_0101
-
-SECTION "HardwareInfo", WRAM0
-
-wGameboyColor:: db
-
-SECTION "VariablesMovement", WRAM0
-
-wKeysPressed:: db
-
-SECTION "OAM DMA", HRAM
-
-hOAMDMA:: ds DMATransferEnd - DMATransfer
