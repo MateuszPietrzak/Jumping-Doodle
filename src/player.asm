@@ -799,6 +799,7 @@ PlayerBufferToOAM::
 
     ; Jetpack animation
     ld a, [wJetpackFlags]
+    or a, %00000100
     ld [OAMBuffer + 15], a
 
     ; Shield animation

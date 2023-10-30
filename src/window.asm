@@ -120,6 +120,36 @@ LoadGameBackground::
     or a, c
     jr nz, .floorTiles
 
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
+    ld hl, $9800
+    ld a, $1
+    ld [rVBK], a
+REPT 16
+    ld d, $2
+    ld bc, $20
+    call Memset
+    ld d, $0
+    ld bc, $20
+    call Memset
+ENDR
+    xor a
+    ld [rVBK], a
+.noCGBPalette:
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPaletteWindow
+    ld a, $1
+    ld [rVBK], a
+    ld d, $1
+    ld hl, $9C00
+    ld bc, $60
+    call Memset
+    xor a
+    ld [rVBK], a
+.noCGBPaletteWindow:
 
     ; write text to window
     ld hl, ScoreText
@@ -204,8 +234,8 @@ LoadMenuBackground::
     ld a, $1
     ld [rVBK], a
     ld d, $1
-    ld hl, $9C00
-    ld bc, $60
+    ld hl, $9800
+    ld bc, $300
     call Memset
     xor a
     ld [rVBK], a
@@ -278,6 +308,19 @@ LoadDeathScreenBackground::
     ; load darker palette
     ld hl, PaletteDarkDGB
     call SetPalette
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
+    ld a, $1
+    ld [rVBK], a
+    ld d, $1
+    ld hl, $9800
+    ld bc, $300
+    call Memset
+    xor a
+    ld [rVBK], a
+.noCGBPalette:
 
     ; Clear screen
     ld bc, $03FF

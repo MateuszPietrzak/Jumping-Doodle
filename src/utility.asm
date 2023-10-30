@@ -206,8 +206,8 @@ InitPalettes::
     ; colors are at that label
     ld hl, BgPaletteData
 
-    ; load 2 palettes of 4 colors
-    ld c, 2 * 4
+    ; load 3 palettes of 4 colors
+    ld c, 3 * 4
 
 .rep:
     ; load full color
@@ -228,8 +228,8 @@ InitPalettes::
     ; colors are at that label
     ld hl, SpritePaletteData
 
-    ; load 4 palettes of 4 colors
-    ld c, 4 * 4
+    ; load 5 palettes of 4 colors
+    ld c, 5 * 4
 
 .rep2:
     ; load full color
@@ -249,46 +249,68 @@ BgPaletteData::
     ; palette 1
     ; color 1
     ; GGGRRRRR
-    db %10111100
+    db %00001011
     ; XBBBBBGG
-    db %01110111
+    db %01111010
     ; color 2
     ; GGGRRRRR
-    db %01101100
+    db %11011111
     ; XBBBBBGG
-    db %01001001
+    db %00100110
     ; color 3
     ; GGGRRRRR
-    db %01100110
+    db %10111000
     ; XBBBBBGG
-    db %01001100
+    db %00000001
     ; color 4
     ; GGGRRRRR
-    db %01000100
+    db %11001100
     ; XBBBBBGG
-    db %00110000
+    db %00000000
 
     ; palette 2
     ; color 1
     ; GGGRRRRR
-    db %01100110
+    db %01111100
     ; XBBBBBGG
-    db %01001100
+    db %01010011
     ; color 2
     ; GGGRRRRR
-    db %01101100
+    db %11011111
     ; XBBBBBGG
-    db %01001001
+    db %00100110
     ; color 3
     ; GGGRRRRR
-    db %10111100
+    db %10111000
     ; XBBBBBGG
-    db %01110111
+    db %00000001
     ; color 4
     ; GGGRRRRR
-    db %01000100
+    db %11001100
     ; XBBBBBGG
-    db %00110000
+    db %00000000
+
+    ; palette 3
+    ; color 1
+    ; GGGRRRRR
+    db %00001011
+    ; XBBBBBGG
+    db %01111010
+    ; color 2
+    ; GGGRRRRR
+    db %11111111
+    ; XBBBBBGG
+    db %01111111
+    ; color 3
+    ; GGGRRRRR
+    db %00011111
+    ; XBBBBBGG
+    db %00000010
+    ; color 4
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000001
 
 SpritePaletteData::
     ; palette 1 (player)
@@ -365,9 +387,9 @@ SpritePaletteData::
     db %00000000
     ; color 2
     ; GGGRRRRR
-    db %10110011
+    db %01011000
     ; XBBBBBGG
-    db %01010010
+    db %01101111
     ; color 3 (not used)
     ; GGGRRRRR
     db %00000000
@@ -378,6 +400,28 @@ SpritePaletteData::
     db %00000000
     ; XBBBBBGG
     db %00000000
+
+    ; palette 5 (jetpack)
+    ; color 1 (transparent)
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 2
+    ; GGGRRRRR
+    db %00000000
+    ; XBBBBBGG
+    db %00000000
+    ; color 3
+    ; GGGRRRRR
+    db %01011111
+    ; XBBBBBGG
+    db %00001101
+    ; color 4
+    ; GGGRRRRR
+    db %01101011
+    ; XBBBBBGG
+    db %00110001
 
 
 
