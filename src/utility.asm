@@ -365,14 +365,14 @@ SpritePaletteData::
     db %00000000
     ; color 2
     ; GGGRRRRR
-    db %01111001
-    ; XBBBBBGG
-    db %01010010
-    ; color 3
-    ; GGGRRRRR
     db %11011110
     ; XBBBBBGG
-    db %00101000
+    db %01111111
+    ; color 3
+    ; GGGRRRRR
+    db %01011111
+    ; XBBBBBGG
+    db %00000001
     ; color 4
     ; GGGRRRRR
     db %01000011
