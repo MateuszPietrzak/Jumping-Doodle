@@ -196,7 +196,7 @@ HandlePlayer::
 
     ; change velocity from $20 to $10 ($A0 to $90 for neg)
     ld a, [wPlayerVelocityX]
-    xor a, %0011_0000
+    sub a, $20
     ld [wPlayerVelocityX], a
 
 .noDash:
