@@ -1,4 +1,5 @@
 INCLUDE "include/hardware.inc/hardware.inc"
+INCLUDE "include/palettes.inc"
 
 SECTION "StateMenu", ROM0
 
@@ -133,8 +134,8 @@ StateMenu::
     call StateGame
 
     ; reload default color palette
-    ld a, %1110_0100
-    ld [rBGP], a
+    ld hl, PaletteNormalDGB
+    call SetPalette
 
     jp StateMenu
 .scoreSelected
@@ -143,8 +144,8 @@ StateMenu::
     call StateScores
 
     ; reload default color palette
-    ld a, %1110_0100
-    ld [rBGP], a
+    ld hl, PaletteNormalDGB
+    call SetPalette
 
     jp StateMenu
 .pressedAEnd

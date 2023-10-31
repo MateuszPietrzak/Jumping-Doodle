@@ -1,3 +1,4 @@
+INCLUDE "include/hardware.inc/hardware.inc"
 SECTION "MapGeneration", ROM0
 
 ; GenerateStripe
@@ -28,6 +29,7 @@ GenerateStripe::
     ld h, a
     ; Clear the stripe
     ld a, $14
+    ; push hl
 .clearStripe:
     cp a, $0
     jr z, .clearStripeEnd
@@ -38,6 +40,24 @@ GenerateStripe::
 
     jr .clearStripe
 .clearStripeEnd:
+;     pop hl
+
+;     ld a, $1
+;     ld [rVBK], a
+;     ld a, $14
+; .clearStripePalette:
+;     cp a, $0
+;     jr z, .clearStripePaletteEnd
+
+;     ld [hl], $0
+;     inc hl
+;     dec a
+
+;     jr .clearStripePalette
+; .clearStripePaletteEnd:
+;     xor a
+;     ld [rVBK], a
+
     ; free strip check
     pop hl
     ld a, l
@@ -106,6 +126,11 @@ GeneratePowerUP:
     ret z
 
     ; set tile to powerup
+    ; ld a, $1
+    ; ld [rVBK], a
+    ; ld [hl], %00000001
+    ; dec a
+    ; ld [rVBK], a
     ld [hl], $45
 
     ret

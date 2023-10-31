@@ -18,6 +18,21 @@ ResetPlayerState::
     call WaitForVBlank
     call LoadGameBackground
 
+    ; Load proper shield palette
+    ld a, %00000010
+    ld [OAMBuffer + 19], a
+    ld [OAMBuffer + 23], a
+    ld [OAMBuffer + 27], a
+    ld [OAMBuffer + 31], a
+
+    ; Load proper effects palette
+    ld a, %00000011
+    ld [OAMBuffer + 35], a
+    ld [OAMBuffer + 39], a
+    ld [OAMBuffer + 43], a
+    ld a, %00100011
+    ld [OAMBuffer + 47], a
+
     xor a
     ld [wAchievedHighscore], a
 
@@ -25,9 +40,10 @@ ResetPlayerState::
 
     ; Init screen Y scroll
     xor a
-    ld [wScreenScrollY], a
-    ld [wScreenScrollY + 1], a
     ld [rSCY], a
+    ld [wScreenScrollY], a
+    ld a, $80
+    ld [wScreenScrollY + 1], a
 
 .resetPosition::
     ; Init position (which is in form pixels * 16)
@@ -784,6 +800,7 @@ PlayerBufferToOAM::
 
     ; Jetpack animation
     ld a, [wJetpackFlags]
+    or a, %00000100
     ld [OAMBuffer + 15], a
 
     ; Shield animation
@@ -947,6 +964,8 @@ PlayerBufferToOAM::
     ld [wDashFlag], a
 
     ld a, [wPlayerFlags]
+    ; Ensure palette preservation
+    or a, %00000011
     ld [OAMBuffer + 43], a
 
 .noInitDash:

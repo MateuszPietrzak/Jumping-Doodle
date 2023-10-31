@@ -43,9 +43,9 @@ CheckCollisions::
 
     ld a, e
     ; Check if mod 8 <= 4
-    ; and a, %00000111
-    ; cp a, $4
-    ; jp nc, .casePowerUP
+    and a, %00000100
+    cp a, $4
+    jp nc, .casePowerUP
 
     ; check platforms only on negative velocity
     ld a, [wPlayerVelocityY]
@@ -120,8 +120,12 @@ CheckCollisions::
 .powerUPCollision:
 
     ; erase powerup
+    ; ld a, $1
+    ; ld [rVBK], a
     xor a
     ld [hl], a
+    ; ld [rVBK], a
+    ; ld [hl], a
 
     ld a, $2
     ret

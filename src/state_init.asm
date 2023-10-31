@@ -1,4 +1,5 @@
 INCLUDE "include/hardware.inc/hardware.inc"
+INCLUDE "include/palettes.inc"
 
 SECTION "StateInit", ROM0
 
@@ -7,6 +8,9 @@ SECTION "StateInit", ROM0
 ; This subroutine should never be called outside "header.asm" file
 
 StateInit::
+    ei
+    ld a, $1
+    ld [rIE], a
     call WaitForVBlank
 
     ; Disable LCD before writing to VRAM
@@ -24,6 +28,7 @@ StateInit::
     call InitPlayer
     call InitEnemy
     call LoadScores
+    call InitPalettes
 
     ; turn on the LCD
     ld a, [rLCDC]
@@ -31,8 +36,8 @@ StateInit::
     ld [rLCDC], a
 
     ; Set bg and window layers palette
-    ld a, %11100100
-    ld [rBGP], a
+    ld hl, PaletteNormalDGB
+    call SetPalette
 
     ; Load palette for sprites
     ld a, %11100100

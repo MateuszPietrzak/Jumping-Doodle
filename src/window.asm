@@ -1,5 +1,6 @@
 
 INCLUDE "hardware.inc/hardware.inc"
+INCLUDE "include/palettes.inc"
 
 SECTION "windowFunctions", ROM0
 
@@ -109,7 +110,7 @@ LoadGameBackground::
     call GenerateStripe
 
     ld bc, $0014
-    ld hl, $99C0
+    ld hl, $99E0
 
 .floorTiles:
     ld a, $44
@@ -119,6 +120,36 @@ LoadGameBackground::
     or a, c
     jr nz, .floorTiles
 
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
+    ld hl, $9800
+    ld a, $1
+    ld [rVBK], a
+REPT 16
+    ld d, $2
+    ld bc, $20
+    call Memset
+    ld d, $0
+    ld bc, $20
+    call Memset
+ENDR
+    xor a
+    ld [rVBK], a
+.noCGBPalette:
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPaletteWindow
+    ld a, $1
+    ld [rVBK], a
+    ld d, $1
+    ld hl, $9C00
+    ld bc, $60
+    call Memset
+    xor a
+    ld [rVBK], a
+.noCGBPaletteWindow:
 
     ; write text to window
     ld hl, ScoreText
@@ -169,7 +200,7 @@ ENDR
     ld [OAMBuffer + 42], a
     ld a, $30
     ld [OAMBuffer + 46], a
-    ld a, %00100000
+    ld a, %00100011
     ld [OAMBuffer + 47], a
 
     ; turn on the LCD
@@ -196,6 +227,20 @@ LoadMenuBackground::
     ld hl, GameTitle1
     call WriteTextToWindow
 
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
+    ld a, $1
+    ld [rVBK], a
+    ld d, $1
+    ld hl, $9800
+    ld bc, $300
+    call Memset
+    xor a
+    ld [rVBK], a
+.noCGBPalette:
+
     ld de, $9800 + $A0 + $8
     ld hl, GameTitle2
     call WriteTextToWindow
@@ -214,8 +259,8 @@ LoadScoresBackground::
     xor a
     ld [rLCDC], a
 
-    ld a, %1111_0101
-    ld [rBGP], a
+    ld hl, PaletteDarkDGB
+    call SetPalette
 
     ld bc, $03FF
     ld hl, $9800
@@ -261,8 +306,21 @@ LoadDeathScreenBackground::
     ld [rLCDC], a
 
     ; load darker palette
-    ld a, %1111_0101
-    ld [rBGP], a
+    ld hl, PaletteDarkDGB
+    call SetPalette
+
+    ld a, [wGameboyColor]
+    cp a, $1
+    jp nz, .noCGBPalette
+    ld a, $1
+    ld [rVBK], a
+    ld d, $3
+    ld hl, $9800
+    ld bc, $300
+    call Memset
+    xor a
+    ld [rVBK], a
+.noCGBPalette:
 
     ; Clear screen
     ld bc, $03FF
