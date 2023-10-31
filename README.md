@@ -1,8 +1,8 @@
 # Jumping Doodle
-![scr_333](https://github.com/MateuszPietrzak/GB-ASM-Game/assets/60319969/a27b08e6-7760-4c6a-b6b4-37fa5f73c088)
+![scr_349](https://github.com/MateuszPietrzak/Jumping-Doodle/assets/60319969/d17c590f-95ca-48d7-901e-bb499e16dfa8)
 ---
 ## Description
-A clone of some other popular game, downported for a Game Boy.
+A clone of some other popular game, downported for a Game Boy and Game Boy Color (both supported).
 Its features include:
 - Physics counted in subpixels
 - Powerup system
